@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
+using static UnityEngine.ParticleSystem;
+using UnityEngine.UIElements;
 
 public class PourFunctionality : MonoBehaviour
 {
@@ -24,26 +26,18 @@ public class PourFunctionality : MonoBehaviour
         if (particles == null) Debug.LogError("Particale effect have not been assigned");
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (isPouring())
         {
-            Debug.Log("isPouring pouring");
             calculatePouringSpeed();
             emitParticles();
+            detectCollision();
         }
         else
         {
             Debug.Log("stop piring");
             particles.Stop();
-        }
-    }
-
-    void FixedUpdate()
-    {
-        if (isPouring())
-        {
-            detectCollision();
         }
     }
 
@@ -66,17 +60,30 @@ public class PourFunctionality : MonoBehaviour
     /// <summary>
     /// Emit particles and set their velocity.
     /// </summary>
+    private List<ParticleSystem.Particle> activeParticles = new List<ParticleSystem.Particle>();
+
     private void emitParticles()
     {
+        if (particles == null) return;
+
         var main = particles.main;
-        main.startSpeed = pourSpeed;
-        main.gravityModifier = 1.0f; 
+        main.loop = false;
+        main.simulationSpace = ParticleSystemSimulationSpace.World;
+        main.startLifetime = 2f; 
+        main.startSpeed = 0; 
 
         if (!particles.isPlaying)
         {
             particles.Play();
         }
+
+        ParticleSystem.EmitParams emitParams = new ParticleSystem.EmitParams();
+        emitParams.position = pourPoint.position;
+        emitParams.velocity = pourPoint.up * pourSpeed;
+        particles.Emit(emitParams, 1);
     }
+
+
 
     /// <summary>
     /// Detect where the liquid lands.
@@ -96,6 +103,11 @@ public class PourFunctionality : MonoBehaviour
             {
                 lastHitPoint = hit.point;
                 Debug.Log("Liquid hit: " + hit.collider.name);
+                Glass_functionality glass = hit.collider.GetComponent<Glass_functionality>();
+                if (glass != null)
+                {
+                    glass.addLiquid(0.01f); 
+                }
                 break;
             }
 
