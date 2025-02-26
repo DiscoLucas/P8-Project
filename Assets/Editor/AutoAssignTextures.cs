@@ -8,7 +8,7 @@ public class AutoAssignTextures : EditorWindow
     [MenuItem("Tools/Assign Textures to Materials")]
     public static void ProcessAssetFolders()
     {
-        string probesPath = "Assets/saloon_interior_high/Probes";
+        string probesPath = "Assets/saloon_interior_high/Envoriment Textures";
         if (!Directory.Exists(probesPath))
         {
             Debug.LogError("Directory does not exist: " + probesPath);
@@ -38,7 +38,7 @@ public class AutoAssignTextures : EditorWindow
             foreach (string file in files)
             {
                 string fileName = Path.GetFileNameWithoutExtension(file);
-                foreach (string suffix in new string[] { "AO", "BaseColor", "Bump", "Cavity", "Displacement", "Gloss", "Normal", "Roughness", "Diffuse", "Metalness", "Specular" })
+                foreach (string suffix in new string[] { "AO", "BaseColor", "Bump", "Cavity", "Displacement", "Gloss", "Normal", "Roughness", "Diffuse", "Metalness", "Specular", "Albedo" })
                 {
                     if (fileName.EndsWith(suffix))
                     {
@@ -54,7 +54,7 @@ public class AutoAssignTextures : EditorWindow
         }
 
         // Check for essential textures.
-        if (!texDict.ContainsKey("BaseColor") && !texDict.ContainsKey("Diffuse"))
+        if (!texDict.ContainsKey("BaseColor") && !texDict.ContainsKey("Diffuse") && !texDict.ContainsKey("Albedo"))
         {
             Debug.LogError("Folder " + folderName + " is missing a BaseColor or Diffuse texture. Skipping.");
             return;
@@ -67,8 +67,10 @@ public class AutoAssignTextures : EditorWindow
         // Assign BaseColor (prefer BaseColor over Diffuse).
         if (texDict.ContainsKey("BaseColor"))
             mat.SetTexture("_BaseColorMap", texDict["BaseColor"]);
-        else
+        else if (texDict.ContainsKey("Diffuse"))
             mat.SetTexture("_BaseColorMap", texDict["Diffuse"]);
+        else
+            mat.SetTexture("_BaseColorMap", texDict["Albedo"]);
 
         // Assign Normal map (if Normal exists; else try Bump).
         if (texDict.ContainsKey("Normal"))
@@ -109,7 +111,7 @@ public class AutoAssignTextures : EditorWindow
             mat.SetTexture("_DetailAlbedoMap", texDict["Diffuse"]);
 
         // Create folder for generated materials.
-        string matFolder = "Assets/GeneratedMaterials";
+        string matFolder = "Assets/GeneratedMaterials/Enviroment";
         if (!AssetDatabase.IsValidFolder(matFolder))
             AssetDatabase.CreateFolder("Assets", "GeneratedMaterials");
 
