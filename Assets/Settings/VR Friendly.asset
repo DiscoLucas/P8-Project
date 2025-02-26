@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cf1dab834d4ec34195b920ea7bbf9ec, type: 3}
-  m_Name: HDRP Performant
+  m_Name: VR Friendly
   m_EditorClassIdentifier: 
   m_RenderPipelineSettings:
     supportShadowMask: 0
@@ -68,8 +68,8 @@ MonoBehaviour:
     highQualityLineRenderingMemoryBudget: 128
     msaaSampleCount: 1
     supportMotionVectors: 1
-    supportScreenSpaceLensFlare: 1
-    supportDataDrivenLensFlare: 1
+    supportScreenSpaceLensFlare: 0
+    supportDataDrivenLensFlare: 0
     supportDitheringCrossFade: 1
     supportRuntimeAOVAPI: 0
     supportTerrainHole: 0
@@ -106,8 +106,8 @@ MonoBehaviour:
         m_Bits: 0
       supportFabricConvolution: 0
       maxDirectionalLightsOnScreen: 16
-      maxPunctualLightsOnScreen: 512
-      maxAreaLightsOnScreen: 64
+      maxPunctualLightsOnScreen: 256
+      maxAreaLightsOnScreen: 32
       maxCubeReflectionOnScreen: 32
       maxPlanarReflectionOnScreen: 16
       maxDecalsOnScreen: 512
@@ -117,19 +117,19 @@ MonoBehaviour:
     hdShadowInitParams:
       maxShadowRequests: 128
       directionalShadowsDepthBits: 16
-      punctualShadowFilteringQuality: 1
-      directionalShadowFilteringQuality: 1
+      punctualShadowFilteringQuality: 0
+      directionalShadowFilteringQuality: 0
       areaShadowFilteringQuality: 0
       punctualLightShadowAtlas:
-        shadowAtlasResolution: 4096
-        shadowAtlasDepthBits: 16
-        useDynamicViewportRescale: 1
-      areaLightShadowAtlas:
         shadowAtlasResolution: 2048
         shadowAtlasDepthBits: 16
         useDynamicViewportRescale: 0
-      cachedPunctualLightShadowAtlas: 2048
-      cachedAreaLightShadowAtlas: 2048
+      areaLightShadowAtlas:
+        shadowAtlasResolution: 1024
+        shadowAtlasDepthBits: 16
+        useDynamicViewportRescale: 0
+      cachedPunctualLightShadowAtlas: 1024
+      cachedAreaLightShadowAtlas: 1024
       allowDirectionalMixedCachedShadows: 0
       shadowResolutionDirectional:
         m_Values: 80000000000100000002000000040000
@@ -219,14 +219,14 @@ MonoBehaviour:
       - 0.75
       - 2
       LimitManualRangeNearBlur: 000000
-      MotionBlurSampleCount: 04000000080000000c000000
-      BloomRes: 040000000200000002000000
-      BloomHighQualityFiltering: 000101
-      BloomHighQualityPrefiltering: 000001
-      ChromaticAberrationMaxSamples: 03000000060000000c000000
+      MotionBlurSampleCount: 020000000200000002000000
+      BloomRes: 040000000400000004000000
+      BloomHighQualityFiltering: 000000
+      BloomHighQualityPrefiltering: 000000
+      ChromaticAberrationMaxSamples: 030000000300000003000000
     lightSettings:
       useContactShadow:
-        m_Values: 000101
+        m_Values: 000000
         m_SchemaId:
           m_Id: 
     maximumLODLevel:
