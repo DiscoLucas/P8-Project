@@ -5,10 +5,28 @@ using System.Collections.Generic;
 
 public class AutoAssignTextures : EditorWindow
 {
-    [MenuItem("Tools/Assign Textures to Materials")]
+    [MenuItem("Tools/Assign Textures to Materials (Enviroment)")]
     public static void ProcessAssetFolders()
     {
-        string probesPath = "Assets/saloon_interior_high/Envoriment Textures";
+        string path = "Assets/saloon_interior_high/Envoriment Textures";
+        if (!Directory.Exists(path))
+        {
+            Debug.LogError("Directory does not exist: " + path);
+            return;
+        }
+
+        string[] directories = Directory.GetDirectories(path);
+        foreach (string dir in directories)
+        {
+            ProcessDirectory(dir);
+        }
+        AssetDatabase.Refresh();
+    }
+
+    [MenuItem("Tools/Assign Textures to Materials (probes)")]
+    public static void ProcessAssetProbes()
+    {
+        string probesPath = "Assets/saloon_interior_high/Probes";
         if (!Directory.Exists(probesPath))
         {
             Debug.LogError("Directory does not exist: " + probesPath);
@@ -60,60 +78,71 @@ public class AutoAssignTextures : EditorWindow
             return;
         }
 
-        // Create a new material using HDRP Lit shader.
-        Material mat = new Material(Shader.Find("HDRP/Lit"));
+        // Create a new material using URP Lit shader.
+        Material mat = new Material(Shader.Find("Universal Render Pipeline/Lit"));
         mat.name = folderName;
 
         // Assign BaseColor (prefer BaseColor over Diffuse).
         if (texDict.ContainsKey("BaseColor"))
-            mat.SetTexture("_BaseColorMap", texDict["BaseColor"]);
+            mat.SetTexture("_BaseMap", texDict["BaseColor"]);
         else if (texDict.ContainsKey("Diffuse"))
-            mat.SetTexture("_BaseColorMap", texDict["Diffuse"]);
+            mat.SetTexture("_BaseMap", texDict["Diffuse"]);
         else
-            mat.SetTexture("_BaseColorMap", texDict["Albedo"]);
+            mat.SetTexture("_BaseMap", texDict["Albedo"]);
 
         // Assign Normal map (if Normal exists; else try Bump).
-        if (texDict.ContainsKey("Normal"))
-            mat.SetTexture("_NormalMap", texDict["Normal"]);
-        else if (texDict.ContainsKey("Bump"))
-            mat.SetTexture("_NormalMap", texDict["Bump"]);
+        if (texDict.ContainsKey("Normal") || texDict.ContainsKey("Bump"))
+        {
+            Texture2D normalTex = texDict.ContainsKey("Normal") ? texDict["Normal"] : texDict["Bump"];
+            mat.SetTexture("_BumpMap", normalTex);
+            mat.EnableKeyword("_NORMALMAP");
+        }
 
-        // For displacement/height.
+        // For height/parallax.
         if (texDict.ContainsKey("Displacement"))
-            mat.SetTexture("_HeightMap", texDict["Displacement"]);
+        {
+            mat.SetTexture("_ParallaxMap", texDict["Displacement"]);
+            mat.EnableKeyword("_PARALLAXMAP");
+        }
 
-        // Generate a mask map if using a metallic workflow (if Metalness or Specular exists).
-        // HDRP Lit expects the Mask Map channels:
-        //   R = Metallic, G = Ambient Occlusion, B = Detail Mask, A = Smoothness.
-        if (texDict.ContainsKey("Metalness") || texDict.ContainsKey("Specular"))
+        // AO map
+        if (texDict.ContainsKey("AO"))
+        {
+            mat.SetTexture("_OcclusionMap", texDict["AO"]);
+            mat.EnableKeyword("_OCCLUSIONMAP");
+        }
+
+        // Generate a metallic/smoothness map for URP
+        // URP uses: R channel for metallic, A channel for smoothness
+        if (texDict.ContainsKey("Metalness") || texDict.ContainsKey("Specular") || 
+            texDict.ContainsKey("Gloss") || texDict.ContainsKey("Roughness"))
         {
             Texture2D metalTex = texDict.ContainsKey("Metalness") ? texDict["Metalness"] : null;
-            Texture2D aoTex = texDict.ContainsKey("AO") ? texDict["AO"] : null;
-            Texture2D detailTex = texDict.ContainsKey("Cavity") ? texDict["Cavity"] : null;
             // For smoothness: prefer Gloss; if not, use Roughness (inverted).
             Texture2D glossTex = texDict.ContainsKey("Gloss") ? texDict["Gloss"] : null;
             Texture2D roughTex = texDict.ContainsKey("Roughness") ? texDict["Roughness"] : null;
 
-            Texture2D maskMap = GenerateMaskMap(metalTex, aoTex, detailTex, glossTex, roughTex);
-            if (maskMap != null)
+            Texture2D metallicMap = GenerateMetallicMap(metalTex, glossTex, roughTex);
+            if (metallicMap != null)
             {
-                // Save the mask map as an asset alongside the textures.
-                string maskPath = Path.Combine(dir, folderName + "_MaskMap.png").Replace("\\", "/");
-                File.WriteAllBytes(maskPath, maskMap.EncodeToPNG());
-                AssetDatabase.ImportAsset(maskPath);
-                Texture2D importedMask = AssetDatabase.LoadAssetAtPath<Texture2D>(maskPath);
-                mat.SetTexture("_MaskMap", importedMask);
+                // Save the metallic map as an asset alongside the textures.
+                string metallicPath = Path.Combine(dir, folderName + "_MetallicSmoothness.png").Replace("\\", "/");
+                File.WriteAllBytes(metallicPath, metallicMap.EncodeToPNG());
+                AssetDatabase.ImportAsset(metallicPath);
+                Texture2D importedMetallic = AssetDatabase.LoadAssetAtPath<Texture2D>(metallicPath);
+                mat.SetTexture("_MetallicGlossMap", importedMetallic);
+                mat.EnableKeyword("_METALLICSPECGLOSSMAP");
             }
         }
-
-        // Optionally assign a detail albedo map if a Diffuse texture is available.
-        if (texDict.ContainsKey("Diffuse"))
-            mat.SetTexture("_DetailAlbedoMap", texDict["Diffuse"]);
 
         // Create folder for generated materials.
         string matFolder = "Assets/GeneratedMaterials/Enviroment";
         if (!AssetDatabase.IsValidFolder(matFolder))
-            AssetDatabase.CreateFolder("Assets", "GeneratedMaterials");
+        {
+            if (!AssetDatabase.IsValidFolder("Assets/GeneratedMaterials"))
+                AssetDatabase.CreateFolder("Assets", "GeneratedMaterials");
+            AssetDatabase.CreateFolder("Assets/GeneratedMaterials", "Enviroment");
+        }
 
         string materialPath = Path.Combine(matFolder, mat.name + ".mat").Replace("\\", "/");
         AssetDatabase.CreateAsset(mat, materialPath);
@@ -121,15 +150,15 @@ public class AutoAssignTextures : EditorWindow
     }
 
     /// <summary>
-    /// Generates a mask map by combining available textures.
-    /// Red: Metallic, Green: AO, Blue: Detail Mask, Alpha: Smoothness.
+    /// Generates a metallic/smoothness map for URP.
+    /// Red channel: Metallic, Alpha channel: Smoothness.
     /// For smoothness, if a Gloss texture is available, use it; otherwise, invert Roughness.
     /// </summary>
-    static Texture2D GenerateMaskMap(Texture2D metal, Texture2D ao, Texture2D detail, Texture2D gloss, Texture2D rough)
+    static Texture2D GenerateMetallicMap(Texture2D metal, Texture2D gloss, Texture2D rough)
     {
         // Determine target resolution (using the highest available among inputs).
         int width = 0, height = 0;
-        Texture2D[] candidates = { metal, ao, detail, gloss, rough };
+        Texture2D[] candidates = { metal, gloss, rough };
         foreach (Texture2D tex in candidates)
         {
             if (tex != null)
@@ -140,11 +169,11 @@ public class AutoAssignTextures : EditorWindow
         }
         if (width == 0 || height == 0)
         {
-            Debug.LogError("Cannot generate mask map: no valid texture resolutions found.");
+            Debug.LogError("Cannot generate metallic map: no valid texture resolutions found.");
             return null;
         }
 
-        Texture2D mask = new Texture2D(width, height, TextureFormat.RGBA32, false);
+        Texture2D metallicMap = new Texture2D(width, height, TextureFormat.RGBA32, false);
 
         // Loop through each pixel.
         for (int y = 0; y < height; y++)
@@ -152,8 +181,6 @@ public class AutoAssignTextures : EditorWindow
             for (int x = 0; x < width; x++)
             {
                 float metalVal = SampleTexture(metal, x, y, width, height, 0f);
-                float aoVal = SampleTexture(ao, x, y, width, height, 1f);
-                float detailVal = SampleTexture(detail, x, y, width, height, 1f);
                 float smoothVal = 1f;
                 if (gloss != null)
                 {
@@ -165,12 +192,12 @@ public class AutoAssignTextures : EditorWindow
                     smoothVal = 1f - SampleTexture(rough, x, y, width, height, 0f);
                 }
 
-                Color pixel = new Color(metalVal, aoVal, detailVal, smoothVal);
-                mask.SetPixel(x, y, pixel);
+                Color pixel = new Color(metalVal, 0f, 0f, smoothVal);
+                metallicMap.SetPixel(x, y, pixel);
             }
         }
-        mask.Apply();
-        return mask;
+        metallicMap.Apply();
+        return metallicMap;
     }
 
     /// <summary>
