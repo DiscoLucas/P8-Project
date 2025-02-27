@@ -10,7 +10,7 @@ public class PourFunctionality : MonoBehaviour
     public IngredientBase ingredient;
     [Header("Visuals")]
     [SerializeField] private ParticleSystem particles;
-    [SerializeField] private Transform pourPoint; 
+    [SerializeField] private Transform pourPoint;
 
     [Header("Properties")]
     [SerializeField] private float pourMultipliere = 10;
@@ -19,6 +19,7 @@ public class PourFunctionality : MonoBehaviour
     [SerializeField] private float timeStep = 0.05f;
     [SerializeField] private float gravity = 9.81f;
     [SerializeField] private LayerMask collisionLayers;
+    [SerializeField] private float pourAmount = 0.01f;
 
     [SerializeField]
     private float pourSpeed;
@@ -109,7 +110,7 @@ public class PourFunctionality : MonoBehaviour
                 Glass_functionality glass = hit.collider.GetComponent<Glass_functionality>();
                 if (glass != null)
                 {
-                    glass.AddIngredient(0.01f); 
+                    glass.AddIngredient(ingredient, pourAmount); 
                 }
                 break;
             }

@@ -1,4 +1,5 @@
 using Assets.Scripts.Ingridence;
+using AYellowpaper.SerializedCollections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,9 +9,8 @@ public class Glass_functionality : MonoBehaviour
     private float maxFill = 1.0f;
     [SerializeField]
     private float fillAmount = 0f;
-    [SerializeField]
-    private Dictionary<string, IngredientBase> ingredients = new Dictionary<string, IngredientBase>();
-
+    [SerializedDictionary("Name","Ingredient")]
+    public SerializedDictionary<string, IngredientBase> ingredients = new SerializedDictionary<string, IngredientBase>();
 
     private void Start()
     {

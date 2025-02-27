@@ -7,12 +7,12 @@ namespace Assets.Scripts.Ingridence
     [Serializable]
     public class IngredientBase 
     {
-        public string Name { get; private set; }
-        public float Amount { get; set; }
+        public string Name;
+        public float Amount;
         public bool solid = false;
-        public IngredientType Type { get; private set; }
-        public Color Color { get; private set; }
-        public float AlcoholContent { get; private set; } 
+        public IngredientType Type;
+        public Color Color;
+        public float AlcoholContent;
 
         public IngredientBase(string name, float amount, IngredientType type, Color color, float alcoholContent = 0)
         {
