@@ -3,7 +3,7 @@ using AYellowpaper.SerializedCollections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Glass_functionality : MonoBehaviour
+public class LiquidContainer : MonoBehaviour
 {
     [SerializeField] 
     private float maxFill = 1.0f;
@@ -11,6 +11,7 @@ public class Glass_functionality : MonoBehaviour
     private float fillAmount = 0f;
     [SerializedDictionary("Name","Ingredient")]
     public SerializedDictionary<string, IngredientBase> ingredients = new SerializedDictionary<string, IngredientBase>();
+    public IngredientBase ingredient;
 
     private void Start()
     {
@@ -27,7 +28,7 @@ public class Glass_functionality : MonoBehaviour
         updateLiquidVisual();
     }
 
-    public void AddIngredient(IngredientBase ingredient, float inputAmount)
+    public virtual void AddIngredient(IngredientBase ingredient, float inputAmount)
     {
         if (ingredient.solid == false)
         {
@@ -65,7 +66,7 @@ public class Glass_functionality : MonoBehaviour
     /// Updates the liquid level visualization
     /// TODO: implement
     /// </summary>
-    private void updateLiquidVisual()
+    internal void updateLiquidVisual()
     {
 
     }
@@ -73,8 +74,15 @@ public class Glass_functionality : MonoBehaviour
     /// <summary>
     /// Checks if the glass is full.
     /// </summary>
-    public bool isFull()
+    public virtual bool isFull()
     {
         return fillAmount >= maxFill;
     }
+
+    public virtual void depleateLiqued(float amount)
+    {
+        
+    }
+
+   
 }

@@ -13,6 +13,8 @@ namespace Assets.Scripts.Ingridence
         public IngredientType Type;
         public Color Color;
         public float AlcoholContent;
+        public IngredientBase[] componentIngrediences;
+
 
         public IngredientBase(string name, float amount, IngredientType type, Color color, float alcoholContent = 0)
         {

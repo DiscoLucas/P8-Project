@@ -4,30 +4,31 @@ using static UnityEngine.ParticleSystem;
 using UnityEngine.UIElements;
 using Assets.Scripts.Ingridence;
 
-public class PourFunctionality : MonoBehaviour
+public class LiquidPourer : MonoBehaviour
 {
     [Header("Drink")]
-    public IngredientBase ingredient;
+    public LiquidContainer liquidContainer;
     [Header("Visuals")]
-    [SerializeField] private ParticleSystem particles;
-    [SerializeField] private Transform pourPoint;
+    [SerializeField] internal ParticleSystem particles;
+    [SerializeField] internal Transform pourPoint;
 
     [Header("Properties")]
-    [SerializeField] private float pourMultipliere = 10;
-    [SerializeField] private float pourThreshold = 80f;
-    [SerializeField] private int arcResolution = 30;
-    [SerializeField] private float timeStep = 0.05f;
-    [SerializeField] private float gravity = 9.81f;
-    [SerializeField] private LayerMask collisionLayers;
-    [SerializeField] private float pourAmount = 0.01f;
+    [SerializeField] internal float pourMultipliere = 10;
+    [SerializeField] internal float pourThreshold = 80f;
+    [SerializeField] internal int arcResolution = 30;
+    [SerializeField] internal float timeStep = 0.05f;
+    [SerializeField] internal float gravity = 9.81f;
+    [SerializeField] internal LayerMask collisionLayers;
+    [SerializeField] internal float pourAmount = 0.01f;
 
     [SerializeField]
-    private float pourSpeed;
-    private Vector3 lastHitPoint;
+    internal float pourSpeed;
+    internal Vector3 lastHitPoint;
 
     void Start()
     {
         if (particles == null) Debug.LogError("Particale effect have not been assigned");
+
     }
 
     void FixedUpdate()
@@ -107,10 +108,10 @@ public class PourFunctionality : MonoBehaviour
             {
                 lastHitPoint = hit.point;
                 Debug.Log("Liquid hit: " + hit.collider.name);
-                Glass_functionality glass = hit.collider.GetComponent<Glass_functionality>();
+                LiquidContainer glass = hit.collider.GetComponent<LiquidContainer>();
                 if (glass != null)
                 {
-                    glass.AddIngredient(ingredient, pourAmount); 
+                    glass.AddIngredient(liquidContainer.ingredient, pourAmount); 
                 }
                 break;
             }
@@ -142,5 +143,14 @@ public class PourFunctionality : MonoBehaviour
 
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(lastHitPoint, 0.02f);
+    }
+
+    public void depleateLiqued()
+    {
+        if (liquidContainer != null) {
+            //
+           // if(liquidContainer.)
+        
+        }
     }
 }
