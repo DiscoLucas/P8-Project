@@ -9,21 +9,21 @@ public class LiquidPourer : MonoBehaviour
     [Header("Drink")]
     public LiquidContainer liquidContainer;
     [Header("Visuals")]
-    [SerializeField] internal ParticleSystem particles;
-    [SerializeField] internal Transform pourPoint;
+    [SerializeField] protected ParticleSystem particles;
+    [SerializeField] protected Transform pourPoint;
 
     [Header("Properties")]
-    [SerializeField] internal float pourMultipliere = 10;
-    [SerializeField] internal float pourThreshold = 80f;
-    [SerializeField] internal int arcResolution = 30;
-    [SerializeField] internal float timeStep = 0.05f;
-    [SerializeField] internal float gravity = 9.81f;
-    [SerializeField] internal LayerMask collisionLayers;
-    [SerializeField] internal float pourAmount = 0.01f;
+    [SerializeField] protected float pourMultipliere = 10;
+    [SerializeField] protected float pourThreshold = 80f;
+    [SerializeField] protected int arcResolution = 30;
+    [SerializeField] protected float timeStep = 0.05f;
+    [SerializeField] protected float gravity = 9.81f;
+    [SerializeField] protected LayerMask collisionLayers;
+    [SerializeField] protected float pourAmount = 0.01f;
 
     [SerializeField]
-    internal float pourSpeed;
-    internal Vector3 lastHitPoint;
+    protected float pourSpeed;
+    protected Vector3 lastHitPoint;
 
     void Start()
     {
@@ -41,8 +41,8 @@ public class LiquidPourer : MonoBehaviour
         }
         else
         {
-            Debug.Log("stop piring");
-            particles.Stop();
+            if(particles != null)
+                particles.Stop();
         }
     }
 
@@ -51,7 +51,11 @@ public class LiquidPourer : MonoBehaviour
     /// </summary>
     private bool isPouring()
     {
-        return Vector3.Dot(transform.up, Vector3.down) > Mathf.Cos(pourThreshold * Mathf.Deg2Rad);
+        bool isPouring = Vector3.Dot(transform.up, Vector3.down) > Mathf.Cos(pourThreshold * Mathf.Deg2Rad);
+        bool haveEnoughtLiqquid = false;
+        if (liquidContainer != null)
+            haveEnoughtLiqquid = liquidContainer.canPoourer();
+        return isPouring && haveEnoughtLiqquid;
     }
 
     /// <summary>
@@ -107,11 +111,14 @@ public class LiquidPourer : MonoBehaviour
             if (Physics.Raycast(point, newPoint - point, out RaycastHit hit, Vector3.Distance(point, newPoint), collisionLayers))
             {
                 lastHitPoint = hit.point;
-                Debug.Log("Liquid hit: " + hit.collider.name);
                 LiquidContainer glass = hit.collider.GetComponent<LiquidContainer>();
                 if (glass != null)
                 {
-                    glass.AddIngredient(liquidContainer.ingredient, pourAmount); 
+                    IngredientBase pouredMixture = liquidContainer.createPouredMixture(pourAmount);
+                    if (pouredMixture != null)
+                    {
+                        glass.AddIngredient(pouredMixture, pourAmount);
+                    }
                 }
                 break;
             }
@@ -119,6 +126,7 @@ public class LiquidPourer : MonoBehaviour
             point = newPoint;
         }
     }
+
 
     /// <summary>
     /// Draw the debug pouring arc in the scene view.
@@ -145,12 +153,14 @@ public class LiquidPourer : MonoBehaviour
         Gizmos.DrawSphere(lastHitPoint, 0.02f);
     }
 
+
+
+
+    /// <summary>
+    /// Depleate the liqued in the container
+    /// </summary>
     public void depleateLiqued()
     {
-        if (liquidContainer != null) {
-            //
-           // if(liquidContainer.)
-        
-        }
+        liquidContainer.depleateLiqued(pourAmount);
     }
 }

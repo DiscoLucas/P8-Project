@@ -1,5 +1,5 @@
 using UnityEngine;
-using EzySlice;
+//using EzySlice;
 using Unity.VisualScripting;
 
 public class Knife : MonoBehaviour
@@ -9,7 +9,7 @@ public class Knife : MonoBehaviour
         public Material inside;
         float cutForce = 1000;
 public void slice(GameObject target){
-    SlicedHull hull = target.Slice(knife.position, -knife.transform.TransformDirection(Vector3.forward));
+  /*  SlicedHull hull = target.Slice(knife.position, -knife.transform.TransformDirection(Vector3.forward));
 
     if(hull != null){
         GameObject upperHull = hull.CreateUpperHull(target, inside);
@@ -19,7 +19,7 @@ public void slice(GameObject target){
         SetupSlicedComponent(lowerHull);
 
         Destroy(target);
-    }
+    }*/
 }
 
 public void SetupSlicedComponent(GameObject slicedObject){
