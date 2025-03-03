@@ -1,17 +1,19 @@
+using Assets.Scripts.Drink_interaction;
 using Assets.Scripts.Ingridence;
 using AYellowpaper.SerializedCollections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class LiquidContainer : MonoBehaviour
 {
-    [SerializeField] 
-    private float maxFill = 1.0f;
     [SerializeField]
-    private float fillAmount = 0f;
+    protected float maxFill = 1.0f;
+    [SerializeField]
+    protected float fillAmount = 0f;
     [SerializedDictionary("Name","Ingredient")]
     public SerializedDictionary<string, IngredientBase> ingredients = new SerializedDictionary<string, IngredientBase>();
-    public IngredientBase ingredient;
+
 
     private void Start()
     {
@@ -28,6 +30,11 @@ public class LiquidContainer : MonoBehaviour
         updateLiquidVisual();
     }
 
+    /// <summary>
+    /// Add ingreident to the container
+    /// </summary>
+    /// <param name="ingredient">What you add</param>
+    /// <param name="inputAmount">The amount you add</param>
     public virtual void AddIngredient(IngredientBase ingredient, float inputAmount)
     {
         if (ingredient.solid == false)
@@ -61,6 +68,16 @@ public class LiquidContainer : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// If it is possiable to por'our
+    /// </summary>
+    /// <returns></returns>
+    public virtual bool canPoourer()
+    {
+        return ingredients.Values.Any(ing => ing.Amount > 0);
+    }
+
+
 
     /// <summary>
     /// Updates the liquid level visualization
@@ -81,8 +98,35 @@ public class LiquidContainer : MonoBehaviour
 
     public virtual void depleateLiqued(float amount)
     {
-        
+        if (fillAmount <= 0) return;
+
+        float totalLiquid = fillAmount;
+        float actualPouredAmount = Mathf.Min(amount, totalLiquid);
+
+        foreach (var kvp in ingredients.ToList()) // ToList() prevents modifying while iterating
+        {
+            IngredientBase ingredient = kvp.Value;
+            float proportion = ingredient.Amount / totalLiquid;
+            float amountToReduce = actualPouredAmount * proportion;
+
+            ingredient.Amount -= amountToReduce;
+            if (ingredient.Amount <= 0)
+                ingredients.Remove(kvp.Key);
+        }
+
+        fillAmount -= actualPouredAmount;
     }
 
-   
+    /// <summary>
+    /// Createe a mixture ingerident with all the ingreidents in the container
+    /// </summary>
+    /// <param name="pourAmount">Amount that needs to be poured out </param>
+    /// <returns></returns>
+    public virtual IngredientBase createPouredMixture(float pourAmount)
+    {
+       return null;
+    }
+
+
+
 }
