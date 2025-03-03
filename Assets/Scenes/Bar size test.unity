@@ -758,6 +758,7 @@ MonoBehaviour:
   fillAmount: 0
   ingredients:
     _serializedList: []
+  materialHaveBeenChange: 1
 --- !u!1 &228762607
 GameObject:
   m_ObjectHideFlags: 0
@@ -1432,6 +1433,7 @@ MonoBehaviour:
   fillAmount: 0
   ingredients:
     _serializedList: []
+  materialHaveBeenChange: 1
 --- !u!1 &438443441
 GameObject:
   m_ObjectHideFlags: 0
@@ -1731,19 +1733,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6082714432598881754, guid: b09bf6ec9a520a74a8d17d7fe57bf3ec, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.1026216
+      value: 4.0901227
       objectReference: {fileID: 0}
     - target: {fileID: 6082714432598881754, guid: b09bf6ec9a520a74a8d17d7fe57bf3ec, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.5827599
+      value: -0.5763419
       objectReference: {fileID: 0}
     - target: {fileID: 6082714432598881754, guid: b09bf6ec9a520a74a8d17d7fe57bf3ec, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.55199665
+      value: -0.8719226
       objectReference: {fileID: 0}
     - target: {fileID: 6082714432598881754, guid: b09bf6ec9a520a74a8d17d7fe57bf3ec, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.8338464
+      value: -0.48964363
       objectReference: {fileID: 0}
     - target: {fileID: 6082714432598881754, guid: b09bf6ec9a520a74a8d17d7fe57bf3ec, type: 3}
       propertyPath: m_LocalRotation.y
@@ -1755,7 +1757,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6082714432598881754, guid: b09bf6ec9a520a74a8d17d7fe57bf3ec, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -247.008
+      value: -301.366
       objectReference: {fileID: 0}
     - target: {fileID: 6082714432598881754, guid: b09bf6ec9a520a74a8d17d7fe57bf3ec, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -1784,6 +1786,18 @@ PrefabInstance:
     - target: {fileID: 6534919905978180928, guid: b09bf6ec9a520a74a8d17d7fe57bf3ec, type: 3}
       propertyPath: ingredient.Amount
       value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6572298012722894709, guid: b09bf6ec9a520a74a8d17d7fe57bf3ec, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6572298012722894709, guid: b09bf6ec9a520a74a8d17d7fe57bf3ec, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6572298012722894709, guid: b09bf6ec9a520a74a8d17d7fe57bf3ec, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7074543250354337088, guid: b09bf6ec9a520a74a8d17d7fe57bf3ec, type: 3}
       propertyPath: m_InteractionManager
@@ -2180,12 +2194,13 @@ MonoBehaviour:
   fillAmount: 50
   ingredients:
     _serializedList: []
+  materialHaveBeenChange: 1
   ingredient:
     Name: QQQQ
     Amount: 1000
     solid: 0
     Type: 0
-    Color: {r: 1, g: 0, b: 0, a: 0}
+    Color: {r: 1, g: 0.5094871, b: 0, a: 1}
     AlcoholContent: 44
     ingredients:
       _serializedList: []
@@ -3169,12 +3184,13 @@ MonoBehaviour:
   fillAmount: 50
   ingredients:
     _serializedList: []
+  materialHaveBeenChange: 1
   ingredient:
     Name: qqqww
     Amount: 1000
     solid: 0
     Type: 0
-    Color: {r: 1, g: 0, b: 0, a: 0}
+    Color: {r: 0, g: 0.21202517, b: 1, a: 1}
     AlcoholContent: 44
     ingredients:
       _serializedList: []
@@ -6035,6 +6051,30 @@ PrefabInstance:
     - target: {fileID: 3257681249291960625, guid: 6d392f63a8f67164491f0ed6f90a8d09, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6552826843533888546, guid: 6d392f63a8f67164491f0ed6f90a8d09, type: 3}
+      propertyPath: TrailModule.colorOverTrail.maxColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6552826843533888546, guid: 6d392f63a8f67164491f0ed6f90a8d09, type: 3}
+      propertyPath: TrailModule.colorOverTrail.maxColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6552826843533888546, guid: 6d392f63a8f67164491f0ed6f90a8d09, type: 3}
+      propertyPath: TrailModule.colorOverTrail.maxColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6552826843533888546, guid: 6d392f63a8f67164491f0ed6f90a8d09, type: 3}
+      propertyPath: TrailModule.colorOverLifetime.maxColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6552826843533888546, guid: 6d392f63a8f67164491f0ed6f90a8d09, type: 3}
+      propertyPath: TrailModule.colorOverLifetime.maxColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6552826843533888546, guid: 6d392f63a8f67164491f0ed6f90a8d09, type: 3}
+      propertyPath: TrailModule.colorOverLifetime.maxColor.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8627088003055280923, guid: 6d392f63a8f67164491f0ed6f90a8d09, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'

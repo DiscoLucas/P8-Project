@@ -13,7 +13,7 @@ public class LiquidContainer : MonoBehaviour
     protected float fillAmount = 0f;
     [SerializedDictionary("Name","Ingredient")]
     public SerializedDictionary<string, IngredientBase> ingredients = new SerializedDictionary<string, IngredientBase>();
-
+    public bool materialHaveBeenChange = true;
 
     private void Start()
     {
@@ -115,6 +115,14 @@ public class LiquidContainer : MonoBehaviour
         }
 
         fillAmount -= actualPouredAmount;
+    }
+
+    /// <summary>
+    /// Get the color for the current liquid;
+    /// </summary>
+    /// <returns></returns>
+    public virtual Color getLiquidColor() { 
+        return Color.magenta;
     }
 
     /// <summary>

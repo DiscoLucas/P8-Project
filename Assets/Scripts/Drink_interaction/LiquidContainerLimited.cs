@@ -12,6 +12,9 @@ namespace Assets.Scripts.Drink_interaction
     /// </summary>
     public class LiquidContainerLimited : LiquidContainer
     {
+        protected int lastCheckColorCount = 0;
+        protected Color outputColor = Color.white;
+
 
         public override void AddIngredient(IngredientBase ingredient, float inputAmount)
         {
@@ -54,21 +57,17 @@ namespace Assets.Scripts.Drink_interaction
 
             if (ingredients.Count == 1)
             {
-                // Handle single ingredient (as before)
                 IngredientBase singleIngredient = ingredients.Values.First();
                 float amountToPour = Mathf.Min(singleIngredient.Amount, actualPouredAmount);
-
-                // Deplete ingredient (limited container behavior)
                 singleIngredient.Amount -= amountToPour;
                 fillAmount -= amountToPour;
 
                 return new IngredientBase(singleIngredient.Name, amountToPour, singleIngredient.Type, singleIngredient.Color, singleIngredient.AlcoholContent);
             }
 
-            // Multiple ingredients, create mixture
             List<string> ingredientNames = new List<string>();
             IngredientBase pouredMixture = new IngredientBase("", 0, IngredientType.MixedLiquid, Color.clear);
-
+            Color objectColor = new Color(0, 0, 0, 0);
             foreach (var kvp in ingredients)
             {
                 IngredientBase ingredient = kvp.Value;
@@ -78,38 +77,44 @@ namespace Assets.Scripts.Drink_interaction
                 if (amountToPour > 0)
                 {
                     SerializedDictionary<string, IngredientBase> ingredientsList = pouredMixture.ingredients;
-                    // Modify the serialized dictionary correctly
                     if (ingredientsList.ContainsKey(ingredient.Name))
                     {
-                        // If the ingredient already exists, just update it
                         ingredientsList[ingredient.Name].Amount += amountToPour;
                     }
                     else
                     {
                         IngredientBase ind = ingredient.copy();
-                        Debug.Log(ind.Name + " Added  " + pouredMixture.ingredients.Count);
                         ingredientsList.Add(ind.Name,ind);
-                        Debug.Log(ind.Name + " have been added " + pouredMixture.ingredients.Count);
                     }
 
                     ingredientNames.Add(ingredient.Name);
-
-                    // Deplete ingredient (limited container behavior)
                     ingredient.Amount -= amountToPour;
                     ingredient.ingredients = ingredientsList;
+                    objectColor += new Color(ingredient.Color.r / ingredients.Count, ingredient.Color.g / ingredients.Count, ingredient.Color.b / ingredients.Count, 1);
                 }
             }
-
+            pouredMixture.Color = objectColor;
             fillAmount -= actualPouredAmount;
 
-            // Generate a readable name (max 3 ingredients in name)
             pouredMixture.Name = string.Join(", ", ingredientNames.Take(3));
             if (ingredientNames.Count > 3)
                 pouredMixture.Name += " & more";
 
+            
+
             return pouredMixture;
         }
 
+        public override Color getLiquidColor()
+        {
+            if (lastCheckColorCount != ingredients.Count) {
+                materialHaveBeenChange = true;
+                lastCheckColorCount = ingredients.Count;
+                IngredientBase mix = createPouredMixture(1);
+                outputColor = mix.Color;
+            }
+            return outputColor;
+        }
     }
 }
 

@@ -78,8 +78,22 @@ public class LiquidPourer : MonoBehaviour
         var main = particles.main;
         main.loop = false;
         main.simulationSpace = ParticleSystemSimulationSpace.World;
-        main.startLifetime = 2f; 
-        main.startSpeed = 0; 
+        main.startLifetime = 2f;
+        main.startSpeed = 0;
+
+        Color liquidColor = liquidContainer.getLiquidColor();
+        Debug.Log($"Emitting particles with color: {liquidColor}");
+
+        var renderer = particles.GetComponent<ParticleSystemRenderer>();
+
+        if (renderer != null && liquidContainer.materialHaveBeenChange)
+        {
+            renderer.material = new Material(renderer.material);
+            renderer.trailMaterial = new Material(renderer.trailMaterial);
+            renderer.material.color = liquidColor;
+            renderer.trailMaterial.color = liquidColor;
+            liquidContainer.materialHaveBeenChange = false; 
+        }
 
         if (!particles.isPlaying)
         {
@@ -91,6 +105,7 @@ public class LiquidPourer : MonoBehaviour
         emitParams.velocity = pourPoint.up * pourSpeed;
         particles.Emit(emitParams, 1);
     }
+
 
 
 

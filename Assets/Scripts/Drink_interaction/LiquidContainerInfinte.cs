@@ -49,7 +49,6 @@ namespace Assets.Scripts.Drink_interaction
             }
         }
 
-        // Override createPouredMixture for Infinite containers (ingredients don't deplete).
         public override IngredientBase createPouredMixture(float pourAmount)
         {
             if (fillAmount <= 0)
@@ -61,6 +60,11 @@ namespace Assets.Scripts.Drink_interaction
         public override bool canPoourer()
         {
             return true;
+        }
+
+        public override Color getLiquidColor()
+        {
+            return ingredient.Color;
         }
     }
 }
