@@ -14,7 +14,7 @@ namespace Assets.Scripts.Drink_interaction
     {
         protected int lastCheckColorCount = 0;
         protected Color outputColor = Color.white;
-
+        protected int orderCounter = 0;
 
         public override void AddIngredient(IngredientBase ingredient, float inputAmount)
         {
@@ -33,18 +33,24 @@ namespace Assets.Scripts.Drink_interaction
 
                 if (ingredients.ContainsKey(ingredient.Name))
                     ingredients[ingredient.Name].Amount += actualAddedAmount;
-                else
+                else {
                     ingredients[ingredient.Name] = ingredient.copy();
-
+                    orderCounter++;
+                }
                 updateLiquidVisual();
             }
             else
             {
                 if (ingredients.ContainsKey(ingredient.Name))
                     ingredients[ingredient.Name].Amount += inputAmount;
-                else
-                    ingredients[ingredient.Name] = ingredient.copy();
+                else {
+                    ingredients[ingredient.Name] = ingredient.copy(orderCounter);
+                    orderCounter++;
+                }
+                    
             }
+
+            
         }
 
         public override IngredientBase createPouredMixture(float pourAmount)
@@ -115,6 +121,39 @@ namespace Assets.Scripts.Drink_interaction
             }
             return outputColor;
         }
+
+        /// <summary>
+        /// Sort this dictonary of container and its ingreidents into a sortede list
+        /// </summary>
+        /// <returns>all the ingeridetns sortede in a list</returns>
+        public List<IngredientBase> getIngreidentsAsOrderedeList()
+        {
+            List<IngredientBase> orderedIngredients = new List<IngredientBase>();
+            var sortedIngredients = ingredients.Values.OrderBy(ing => ing.step.order);
+
+            foreach (var ingredient in sortedIngredients)
+            {
+                addIngredientRecursively(ingredient, orderedIngredients);
+            }
+
+            return orderedIngredients;
+        }
+
+        /// <summary>
+        /// Recursively adds an ingredient and its nested ingredients to the list.
+        /// </summary>
+        private void addIngredientRecursively(IngredientBase ingredient, List<IngredientBase> orderedList)
+        {
+            if (!orderedList.Contains(ingredient))
+                orderedList.Add(ingredient);
+
+            var nestedIngredients = ingredient.ingredients.Values.OrderBy(ing => ing.step.order);
+            foreach (var nestedIngredient in nestedIngredients)
+            {
+                addIngredientRecursively(nestedIngredient, orderedList);
+            }
+        }
+
     }
 }
 
