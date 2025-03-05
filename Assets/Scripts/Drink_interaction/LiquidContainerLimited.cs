@@ -129,9 +129,12 @@ namespace Assets.Scripts.Drink_interaction
         public List<IngredientBase> getIngreidentsAsOrderedeList()
         {
             List<IngredientBase> orderedIngredients = new List<IngredientBase>();
+            Debug.Log("orderingrend null" + (orderedIngredients == null));
             var sortedIngredients = ingredients.Values.OrderBy(ing => ing.step.order);
+            Debug.Log("sortedIngredients null" + (sortedIngredients == null));
 
-            foreach (var ingredient in sortedIngredients)
+  
+            foreach (IngredientBase ingredient in sortedIngredients)
             {
                 addIngredientRecursively(ingredient, orderedIngredients);
             }
