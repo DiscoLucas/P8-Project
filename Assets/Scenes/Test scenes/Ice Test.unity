@@ -3422,6 +3422,118 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1237627167
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1237627169}
+  - component: {fileID: 1237627168}
+  - component: {fileID: 1237627170}
+  - component: {fileID: 1237627171}
+  m_Layer: 0
+  m_Name: Uga
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1237627168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237627167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6be72c7fd69c2b488427f02d3307e02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drink: {fileID: 1237627170}
+  test: {fileID: 1237627171}
+--- !u!4 &1237627169
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237627167}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.442207, y: 2.1161852, z: 0.6780424}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1237627170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237627167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06602ec154ea5a24485fc392ed34d353, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxFill: 20
+  fillAmount: 15
+  ingredients:
+    _serializedList:
+    - Key: Orang
+      Value:
+        Name: Orang
+        Amount: 10
+        solid: 0
+        Type: 1
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        AlcoholContent: 0
+        ingredients:
+          _serializedList: []
+    - Key: Lemong
+      Value:
+        Name: Lemong
+        Amount: 5
+        solid: 0
+        Type: 1
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        AlcoholContent: 0
+        ingredients:
+          _serializedList: []
+  materialHaveBeenChange: 1
+--- !u!114 &1237627171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237627167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06602ec154ea5a24485fc392ed34d353, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxFill: 10
+  fillAmount: 5
+  ingredients:
+    _serializedList:
+    - Key: Bruh
+      Value:
+        Name: Bruh
+        Amount: 5
+        solid: 0
+        Type: 0
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        AlcoholContent: 5
+        ingredients:
+          _serializedList: []
+  materialHaveBeenChange: 1
 --- !u!1 &1282723175
 GameObject:
   m_ObjectHideFlags: 0
@@ -5554,3 +5666,4 @@ SceneRoots:
   - {fileID: 1130014356}
   - {fileID: 1663763695}
   - {fileID: 2024489929}
+  - {fileID: 1237627169}
