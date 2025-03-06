@@ -16,9 +16,6 @@ public class OrderManager : MonoBehaviour
     private void Start()
     {
         recipeManager = FindAnyObjectByType<RecipeManager>();
-        createOrder();
-        createOrder();
-        finnishOrder(currentOrderList.Values.ElementAt(0));
     }
 
     /// <summary>
@@ -28,7 +25,7 @@ public class OrderManager : MonoBehaviour
     public void finnishOrder(Order order) { 
 
         List<IngredientBase> ideal_List = recipeManager.recipes[order.recipieID].ingredients.ToList();
-        List<IngredientBase> order_List = recipeManager.recipes[order.recipieID].ingredients.ToList();//order.containerLimited.getIngreidentsAsOrderedeList();
+        List<IngredientBase> order_List = order.containerLimited.getIngreidentsAsOrderedeList();
 
         float score = recipeManager.compareTwoIngridienseList(ideal_List, order_List, out int wrongIngreidentCount, out float totalDeviation, out float totalOverpour, out float totalUnderpour);
         currentOrderList.Remove(order.orderID);
