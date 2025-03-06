@@ -14,11 +14,14 @@ namespace Assets.Scripts.Orders
         public string recipieID;
         public string orderID;
         public LiquidContainerLimited containerLimited;
-        public bool isFinnished = false;
+        public float startPoint;
+        public Transform location;
 
-        public Order(string recipieId, string orderID ) { 
+        public Order(string recipieId, string orderID, Transform location) { 
             recipieID = recipieId;
             this.orderID = orderID;
+            this.location = location;
+            startPoint = Time.timeSinceLevelLoad;
         }
     }
 }

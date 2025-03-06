@@ -37,7 +37,7 @@ public class RecipeManager : MonoBehaviour
     /// <param name="totalOverpour">The total overpour on all ingridents</param>
     /// <param name="totalUnderpour">The total underpour on all ingridents</param>
     /// <returns>The game score of this drink</returns>
-    public float compareTwoIngridienseList(List<IngredientBase> idealList, List<IngredientBase> actualList, out int wrongIngreidentCount, out float totalDeviation, out float totalOverpour, out float totalUnderpour)
+    public float compareTwoIngridienseList(List<IngredientBase> idealList, List<IngredientBase> actualList, float timeTaken, out int wrongIngreidentCount, out float totalDeviation, out float totalOverpour, out float totalUnderpour)
     {
         wrongIngreidentCount = 0;
         totalDeviation = 0f;
@@ -82,7 +82,7 @@ public class RecipeManager : MonoBehaviour
             }
         }
 
-        float totalScore = Mathf.Max(100 - (10 * wrongIngredients.Count) - (2 * totalOverpour) - (1 * totalUnderpour), 0);
+        float totalScore =  calculateScore(wrongIngredients.Count,totalOverpour, totalUnderpour, timeTaken);
 
         Debug.Log("========== DRINK MIX REPORT ==========");
         Debug.Log($"Ideal Ingredients: [{string.Join(", ", idealList.Select(i => $"{i.Name} ({i.Amount})"))}]");
@@ -91,6 +91,7 @@ public class RecipeManager : MonoBehaviour
         Debug.Log($"Overpour: {totalOverpour} ({(overpourList.Count > 0 ? string.Join(", ", overpourList) : "None")})");
         Debug.Log($"Underpour: {totalUnderpour} ({(underpourList.Count > 0 ? string.Join(", ", underpourList) : "None")})");
         Debug.Log($"Total Pouring Deviation: {totalDeviation}");
+        Debug.Log($"Time taken: {timeTaken}");
         Debug.Log($"Total score: {totalScore}");
         Debug.Log("=======================================");
 
@@ -99,4 +100,8 @@ public class RecipeManager : MonoBehaviour
         return totalScore;
     }
 
+
+    public float calculateScore(int wrongIngredients,float totalOverpour, float totalUnderpour, float timeTaken) {
+        return Mathf.Max(100 - (10 * wrongIngredients) - (2 * totalOverpour) - (1 * totalUnderpour), 0);
+    }
 }

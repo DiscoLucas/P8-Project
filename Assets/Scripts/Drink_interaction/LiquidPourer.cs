@@ -82,7 +82,6 @@ public class LiquidPourer : MonoBehaviour
         main.startSpeed = 0;
 
         Color liquidColor = liquidContainer.getLiquidColor();
-        Debug.Log($"Emitting particles with color: {liquidColor}");
 
         var renderer = particles.GetComponent<ParticleSystemRenderer>();
 
