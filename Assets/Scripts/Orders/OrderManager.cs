@@ -13,9 +13,14 @@ public class OrderManager : MonoBehaviour
     [SerializedDictionary("Id", "Order")]
     public SerializedDictionary<string, Order> currentOrderList;
     public RecipeManager recipeManager;
+    public GameObject deliverArea_Prefab;
+    public List<Transform> availableSpawnPoints = new List<Transform>(); 
+
+
     private void Start()
     {
         recipeManager = FindAnyObjectByType<RecipeManager>();
+
     }
 
     /// <summary>
@@ -23,22 +28,36 @@ public class OrderManager : MonoBehaviour
     /// </summary>
     /// <param name="order"></param>
     public void finnishOrder(Order order) { 
-
         List<IngredientBase> ideal_List = recipeManager.recipes[order.recipieID].ingredients.ToList();
         List<IngredientBase> order_List = order.containerLimited.getIngreidentsAsOrderedeList();
-
-        float score = recipeManager.compareTwoIngridienseList(ideal_List, order_List, out int wrongIngreidentCount, out float totalDeviation, out float totalOverpour, out float totalUnderpour);
+        float timeTaken = Time.timeSinceLevelLoad - order.startPoint;
+        float score = recipeManager.compareTwoIngridienseList(ideal_List, order_List, timeTaken, out int wrongIngreidentCount, out float totalDeviation, out float totalOverpour, out float totalUnderpour);
+        Destroy(order.containerLimited.gameObject);
+        availableSpawnPoints.Add(order.location);
         currentOrderList.Remove(order.orderID);
+
     }
 
     /// <summary>
     /// Create a new order
     /// </summary>
     public void createOrder() {
+
+        if(availableSpawnPoints.Count <=0)
+            return;
         string keyRecipe;
         CocktailRecipe recipe = recipeManager.getRandomCocktailRecipe(out keyRecipe);
+
+        Transform spawnPoint = availableSpawnPoints[0];
+        availableSpawnPoints.RemoveAt(0);
+
         string orderName = recipe.Name + Time.timeSinceLevelLoad;
-        Order order = new Order(keyRecipe,orderName);
+        Order order = new Order(keyRecipe, orderName, spawnPoint);
+
+        GameObject deliverArea = Instantiate(deliverArea_Prefab, spawnPoint.position,Quaternion.identity);
+        DeliverOrderArea deliverOrderArea = deliverArea.GetComponent<DeliverOrderArea>();
+        deliverOrderArea.order = order;
+        deliverOrderArea.orderDeliverede.AddListener(finnishOrder);
         currentOrderList.Add(orderName, order);
         
     }

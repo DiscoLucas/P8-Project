@@ -123,24 +123,29 @@ namespace Assets.Scripts.Drink_interaction
         }
 
         /// <summary>
-        /// Sort this dictonary of container and its ingreidents into a sortede list
+        /// Sort this dictionary of container and its ingredients into a sorted list
+        /// and filter out mixtures, keeping only base components.
         /// </summary>
-        /// <returns>all the ingeridetns sortede in a list</returns>
+        /// <returns>List of base ingredients in order</returns>
         public List<IngredientBase> getIngreidentsAsOrderedeList()
         {
             List<IngredientBase> orderedIngredients = new List<IngredientBase>();
-            Debug.Log("orderingrend null" + (orderedIngredients == null));
-            var sortedIngredients = ingredients.Values.OrderBy(ing => ing.step.order);
-            Debug.Log("sortedIngredients null" + (sortedIngredients == null));
+            Debug.Log("orderingrend null: " + (orderedIngredients == null));
 
-  
+            var sortedIngredients = ingredients.Values.OrderBy(ing => ing.step.order);
+            Debug.Log("sortedIngredients null: " + (sortedIngredients == null));
+
             foreach (IngredientBase ingredient in sortedIngredients)
             {
                 addIngredientRecursively(ingredient, orderedIngredients);
             }
+            orderedIngredients = orderedIngredients
+                .Where(ing => ing.ingredients == null || ing.ingredients.Count == 0)
+                .ToList();
 
             return orderedIngredients;
         }
+
 
         /// <summary>
         /// Recursively adds an ingredient and its nested ingredients to the list.
