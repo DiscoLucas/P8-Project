@@ -17,7 +17,7 @@ namespace Assets.Scripts.Ingridence
         public IngredientType Type;
         public Color Color;
         public float AlcoholContent;
-        public RecipeStep step;
+        public DrinkStep step;
         [SerializedDictionary("Name", "Ingredient")]
         public SerializedDictionary<string, IngredientBase> ingredients;
 
@@ -29,7 +29,7 @@ namespace Assets.Scripts.Ingridence
             Type = type;
             Color = color;
             ingredients = new SerializedDictionary<string, IngredientBase>();
-            step = new RecipeStep(order, action);
+            step = new DrinkStep(order, action);
         }
 
         /// <summary>

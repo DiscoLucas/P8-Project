@@ -1,18 +1,21 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Assets.Scripts.Ingridence
 {
-    public class RecipeStep
+    [Serializable]
+    public class DrinkStep
     {
         public int order; 
         public DrinkAction action;
-        public RecipeStep(int order,DrinkAction action = DrinkAction.None) {
+        public DrinkStep(int order,DrinkAction action = DrinkAction.None) {
             this.order = order;
             this.action = action;
         }
     }
 
+    [Serializable]
     public enum DrinkAction { 
         Shaked,
         Stirred,
