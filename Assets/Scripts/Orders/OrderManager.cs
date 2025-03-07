@@ -27,11 +27,12 @@ public class OrderManager : MonoBehaviour
     /// Finnish the given order
     /// </summary>
     /// <param name="order"></param>
-    public void finnishOrder(Order order) { 
-        List<IngredientBase> ideal_List = recipeManager.recipes[order.recipieID].ingredients.ToList();
+    public void finnishOrder(Order order) {
+        CocktailRecipe recipe = recipeManager.recipes[order.recipieID];
+        List<IngredientBase> ideal_List = recipe.ingredients.ToList();
         List<IngredientBase> order_List = order.containerLimited.getIngreidentsAsOrderedeList();
         float timeTaken = Time.timeSinceLevelLoad - order.startPoint;
-        float score = recipeManager.compareTwoIngridienseList(ideal_List, order_List, timeTaken, out int wrongIngreidentCount, out float totalDeviation, out float totalOverpour, out float totalUnderpour);
+        float score = recipeManager.compareTwoIngridienseList(ideal_List, order_List, timeTaken, recipe.expectedTime, out int wrongIngreidentCount, out float totalDeviation, out float totalOverpour, out float totalUnderpour);
         Destroy(order.containerLimited.gameObject);
         availableSpawnPoints.Add(order.location);
         currentOrderList.Remove(order.orderID);
