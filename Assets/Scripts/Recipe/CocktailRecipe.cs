@@ -10,4 +10,7 @@ public class CocktailRecipe
 {
     public string Name;
     public IngredientBase[] ingredients;
+
+    //Scoring variables
+    public float expectedTime;    
 }
