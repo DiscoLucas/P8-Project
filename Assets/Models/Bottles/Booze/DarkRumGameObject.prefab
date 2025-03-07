@@ -9,10 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4099808713345958030}
-  - component: {fileID: 4170909917009534116}
-  - component: {fileID: 2232061388349366484}
   - component: {fileID: 8339221302079728415}
   - component: {fileID: 4760002040860982589}
+  - component: {fileID: 1760808967287941361}
+  - component: {fileID: 7528780820853370382}
+  - component: {fileID: 1658647351920411211}
   m_Layer: 0
   m_Name: DarkRumGameObject
   m_TagString: Untagged
@@ -28,17 +29,69 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3433773869992385612}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 5.7305975, y: 0, z: -17.0753}
-  m_LocalScale: {x: 3.903389, y: 3.903389, z: 4.1402307}
-  m_ConstrainProportionsScale: 0
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 7444450292280037802}
-  - {fileID: 3371946589433347045}
-  - {fileID: 3236543844621616876}
+  - {fileID: 8350883463014151571}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: -90}
---- !u!54 &4170909917009534116
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8339221302079728415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3433773869992385612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03b79d54ac2ebdc4e820563e0d9e53e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxFill: 1
+  fillAmount: 0
+  ingredients:
+    _serializedList: []
+  materialHaveBeenChange: 1
+  ingredient:
+    Name: Dark Rum
+    Amount: 0
+    solid: 0
+    Type: 0
+    Color: {r: 0.57232696, g: 0.2871175, b: 0.05219328, a: 0.6901961}
+    AlcoholContent: 40
+    step:
+      order: 0
+      action: 0
+    ingredients:
+      _serializedList: []
+--- !u!114 &4760002040860982589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3433773869992385612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20977fca40b67c041a81e19b91402d2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  liquidContainer: {fileID: 8339221302079728415}
+  particles: {fileID: 6287652800747384693}
+  pourPoint: {fileID: 3371946589433347045}
+  pourMultipliere: 10
+  pourThreshold: 80
+  arcResolution: 30
+  timeStep: 0.05
+  gravity: 9.81
+  collisionLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  pourAmount: 0.01
+  pourSpeed: 0
+--- !u!54 &1760808967287941361
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -65,7 +118,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2232061388349366484
+--- !u!114 &7528780820853370382
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -137,7 +190,7 @@ MonoBehaviour:
   m_StartingHoverFilters: []
   m_StartingSelectFilters: []
   m_StartingInteractionStrengthFilters: []
-  m_AttachTransform: {fileID: 3236543844621616876}
+  m_AttachTransform: {fileID: 0}
   m_SecondaryAttachTransform: {fileID: 0}
   m_UseDynamicAttach: 0
   m_MatchAttachPosition: 1
@@ -187,60 +240,27 @@ MonoBehaviour:
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
   m_FarAttachMode: 0
---- !u!114 &8339221302079728415
-MonoBehaviour:
+--- !u!65 &1658647351920411211
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3433773869992385612}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03b79d54ac2ebdc4e820563e0d9e53e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxFill: 1
-  fillAmount: 0
-  ingredients:
-    _serializedList: []
-  materialHaveBeenChange: 1
-  ingredient:
-    Name: Dark Rum
-    Amount: 0
-    solid: 0
-    Type: 0
-    Color: {r: 0.57232696, g: 0.2871175, b: 0.05219328, a: 0.6901961}
-    AlcoholContent: 40
-    step:
-      order: 0
-      action: 0
-    ingredients:
-      _serializedList: []
---- !u!114 &4760002040860982589
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3433773869992385612}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20977fca40b67c041a81e19b91402d2b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  liquidContainer: {fileID: 8339221302079728415}
-  particles: {fileID: 6287652800747384693}
-  pourPoint: {fileID: 3371946589433347045}
-  pourMultipliere: 10
-  pourThreshold: 80
-  arcResolution: 30
-  timeStep: 0.05
-  gravity: 9.81
-  collisionLayers:
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  pourAmount: 0.01
-  pourSpeed: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.075, y: 0.2, z: 0.075}
+  m_Center: {x: 0, y: 0.01, z: 0}
 --- !u!1 &6275634593809268622
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,12 +287,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6275634593809268622}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0.0687}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0.0687}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4099808713345958030}
+  m_Father: {fileID: 8350883463014151571}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!198 &6287652800747384693
 ParticleSystem:
@@ -5133,6 +5153,40 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!1 &7882152976782037169
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8350883463014151571}
+  m_Layer: 0
+  m_Name: Orienation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8350883463014151571
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7882152976782037169}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7444450292280037802}
+  - {fileID: 3371946589433347045}
+  - {fileID: 3236543844621616876}
+  m_Father: {fileID: 4099808713345958030}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &7967864507374915110
 GameObject:
   m_ObjectHideFlags: 0
@@ -5162,7 +5216,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4099808713345958030}
+  m_Father: {fileID: 8350883463014151571}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &6979094413018068545
 PrefabInstance:
@@ -5170,7 +5224,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 4099808713345958030}
+    m_TransformParent: {fileID: 8350883463014151571}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: d27cd5b340a203a41b04d1a46395d672, type: 3}
       propertyPath: m_LocalScale.x
