@@ -2,10 +2,12 @@ using Assets.Scripts.Drink_interaction;
 using Assets.Scripts.Ingridence;
 using Assets.Scripts.Orders;
 using AYellowpaper.SerializedCollections;
+using Mono.Cecil;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.XR.CoreUtils.Collections;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 /// <summary>
 /// Contains and controll the recipes
@@ -54,13 +56,15 @@ public class RecipeManager : MonoBehaviour
 
         List<string> overpourList = new List<string>();
         List<string> underpourList = new List<string>();
-
+        float sumactualAmount = 0;
+        float sumidealAmount = 0;
         foreach (var actualIngredient in actualAmounts)
         {
             string name = actualIngredient.Key;
             float actualAmount = actualIngredient.Value;
             float idealAmount = idealAmounts.ContainsKey(name) ? idealAmounts[name] : 0f;
-
+            sumactualAmount += actualAmount;
+            sumidealAmount += idealAmount;
             if (idealAmount == 0)
             {
                 wrongIngredients.Add(name);
@@ -82,7 +86,7 @@ public class RecipeManager : MonoBehaviour
             }
         }
 
-        float totalScore =  calculateScore(wrongIngredients.Count,totalOverpour, totalUnderpour, timeTaken);
+        float totalScore =  calculateScore(wrongIngredients.Count,idealNames.Count,timeTaken,0,0,0);
 
         Debug.Log("========== DRINK MIX REPORT ==========");
         Debug.Log($"Ideal Ingredients: [{string.Join(", ", idealList.Select(i => $"{i.Name} ({i.Amount})"))}]");
@@ -100,8 +104,35 @@ public class RecipeManager : MonoBehaviour
         return totalScore;
     }
 
+public float calculateScore(int wrongIngredients, int idealIngredients, float timeTaken, float expectedTime, float actualAmount, float idealAmount) {
+    float score = 100f;
 
-    public float calculateScore(int wrongIngredients,float totalOverpour, float totalUnderpour, float timeTaken) {
-        return Mathf.Max(100 - (10 * wrongIngredients) - (2 * totalOverpour) - (1 * totalUnderpour), 0);
-    }
+
+    
+    // Define constants to avoid magic numbers
+    const float MAX_INGREDIENT_PENALTY = 40f;
+    const float INGREDIENT_PENALTY_PER_MISS = 8f; // If 5+ ingredients are wrong, max penalty
+
+    const float MAX_POUR_PENALTY = 40f;
+    const float POUR_PENALTY_FACTOR = 40f; // Scaling based on pour deviation
+
+    const float MAX_TIME_PENALTY = 20f;
+    const float TIME_PENALTY_FACTOR = 20f; // Max penalty when timeTaken is double expectedTime
+
+    // Wrong Ingredients Penalty
+    int ingredientDiff = idealIngredients - wrongIngredients;
+    float ingredientPenalty = Mathf.Clamp((5 - ingredientDiff) * INGREDIENT_PENALTY_PER_MISS, 0f, MAX_INGREDIENT_PENALTY);
+    score -= ingredientPenalty;
+
+    // Pour Accuracy Penalty
+    float pourPenalty = Mathf.Clamp((Mathf.Abs(actualAmount - idealAmount) / idealAmount) * POUR_PENALTY_FACTOR, 0f, MAX_POUR_PENALTY);
+    score -= pourPenalty;
+
+    // Time Taken Penalty
+    float timePenalty = Mathf.Clamp(((timeTaken / expectedTime) - 1) * TIME_PENALTY_FACTOR, 0f, MAX_TIME_PENALTY);
+    score -= timePenalty;
+
+    // Ensure score doesn't go below 0
+    return Mathf.Max(score, 0f);
+}
 }
