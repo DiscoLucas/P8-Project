@@ -13,9 +13,9 @@ public class LiquidPourer : MonoBehaviour
     [SerializeField] protected Transform pourPoint;
 
     [Header("Properties")]
-    [SerializeField] protected float pourMultipliere = 10;
+    [SerializeField] protected float pourMultipliere = 8;
     [SerializeField] protected float pourThreshold = 80f;
-    [SerializeField] protected int arcResolution = 30;
+    [SerializeField] protected int arcResolution = 10;
     [SerializeField] protected float timeStep = 0.05f;
     [SerializeField] protected float gravity = 9.81f;
     [SerializeField] protected LayerMask collisionLayers;
