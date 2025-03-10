@@ -19,17 +19,14 @@ public class RecipeManager : MonoBehaviour
     [SerializeField]
     float score = 100f;
     [SerializeField]
-    float MAX_INGREDIENT_PENALTY = 40f;
+    float MAX_INGREDIENT_PENALTY = 50f;
     [SerializeField]
-    float INGREDIENT_PENALTY_PER_MISS = 8f;
+    float INGREDIENT_PENALTY_PER_MISS = 10f;
     [SerializeField]
-    float MAX_POUR_PENALTY = 40f;
+    float MAX_POUR_PENALTY = 50f;
     [SerializeField]
-    float POUR_PENALTY_FACTOR = 40f;
+    float POUR_PENALTY_FACTOR = 50f;
     [SerializeField]
-    float MAX_TIME_PENALTY = 20f;
-    [SerializeField]
-    float TIME_PENALTY_FACTOR = 20f;
 
     /// <summary>
     /// Get a random cocktail recipe
@@ -124,8 +121,6 @@ public float calculateScore(int wrongIngredients, int idealIngredients, float ti
     score -= ingredientPenalty;
     float pourPenalty = Mathf.Clamp((Mathf.Abs(actualAmount - idealAmount) / idealAmount) * POUR_PENALTY_FACTOR, 0f, MAX_POUR_PENALTY);
     score -= pourPenalty;
-    float timePenalty = Mathf.Clamp(((timeTaken / expectedTime) - 1) * TIME_PENALTY_FACTOR, 0f, MAX_TIME_PENALTY);
-    score -= timePenalty;
     return Mathf.Max(score, 0f);
-}
+    }
 }
