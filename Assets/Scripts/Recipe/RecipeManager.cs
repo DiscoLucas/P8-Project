@@ -97,7 +97,7 @@ public class RecipeManager : MonoBehaviour
             }
         }
 
-        float totalScore =  calculateScore(wrongIngredients.Count,idealNames.Count,timeTaken, expectedTime, sumActualAmount,sumIdealAmount);
+        float totalScore =  calculateDrinkAccuracy(wrongIngredients.Count,idealNames.Count,timeTaken, expectedTime, sumActualAmount,sumIdealAmount);
 
         Debug.Log("========== DRINK MIX REPORT ==========");
         Debug.Log($"Ideal Ingredients: [{string.Join(", ", idealList.Select(i => $"{i.Name} ({i.Amount})"))}]");
@@ -115,7 +115,7 @@ public class RecipeManager : MonoBehaviour
         return totalScore;
     }
 
-public float calculateScore(int wrongIngredients, int idealIngredients, float timeTaken, float expectedTime, float actualAmount, float idealAmount) {
+public float calculateDrinkAccuracy(int wrongIngredients, int idealIngredients, float timeTaken, float expectedTime, float actualAmount, float idealAmount) {
     int ingredientDiff = idealIngredients - wrongIngredients;
     float ingredientPenalty = Mathf.Clamp((5 - ingredientDiff) * INGREDIENT_PENALTY_PER_MISS, 0f, MAX_INGREDIENT_PENALTY);
     score -= ingredientPenalty;
