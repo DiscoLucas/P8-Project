@@ -161,7 +161,9 @@ namespace Assets.Scripts.Drink_interaction
                 addIngredientRecursively(nestedIngredient, orderedList);
             }
         }
-
+    public float FillPercentage(){
+        return(Mathf.Clamp01(fillAmount/maxFill)); //Returns number between 0 and 1, how full cup is
+    }
     }
 }
 

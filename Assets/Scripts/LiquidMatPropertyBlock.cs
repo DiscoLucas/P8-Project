@@ -1,9 +1,12 @@
+using Assets.Scripts.Drink_interaction;
 using UnityEngine;
 
 public class LiquidMatPropertyBlock : MonoBehaviour
 {
     private MaterialPropertyBlock Block;
     private Renderer _renderer;
+
+    public LiquidContainerLimited liquidContainer;
 
     [Range(0, 1)] public float FillAmount = 0f;
 
@@ -16,6 +19,7 @@ public class LiquidMatPropertyBlock : MonoBehaviour
     {
         _renderer = GetComponent<Renderer>();
         Block = new MaterialPropertyBlock();
+        liquidContainer = GetComponentInParent<LiquidContainerLimited>(); //has to have a if null maybe
 
         _renderer.GetPropertyBlock(Block);
         Block.SetFloat("_CupMax", FillMax);
@@ -25,6 +29,8 @@ public class LiquidMatPropertyBlock : MonoBehaviour
 
     void Update()
     {
+        FillAmount = liquidContainer.FillPercentage();
+
         _renderer.GetPropertyBlock(Block);
         Block.SetFloat("_FillAmount", FillAmount); // Assign unique value
         _renderer.SetPropertyBlock(Block);
