@@ -164,6 +164,9 @@ namespace Assets.Scripts.Drink_interaction
     public float FillPercentage(){
         return(Mathf.Clamp01(fillAmount/maxFill)); //Returns number between 0 and 1, how full cup is
     }
+    public Color DrinkColor(){
+        return outputColor;
+    }
     }
 }
 

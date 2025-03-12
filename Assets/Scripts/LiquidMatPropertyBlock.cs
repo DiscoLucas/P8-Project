@@ -13,6 +13,7 @@ public class LiquidMatPropertyBlock : MonoBehaviour
     [Header("Do not tweak these values, this is clean code I promise")]
     public float FillMax = 0f;
     public float FillMin = 0f;
+    public Color liquidColor;
 
 
     void Start()
@@ -30,9 +31,12 @@ public class LiquidMatPropertyBlock : MonoBehaviour
     void Update()
     {
         FillAmount = liquidContainer.FillPercentage();
+        liquidColor = liquidContainer.DrinkColor();
 
         _renderer.GetPropertyBlock(Block);
         Block.SetFloat("_FillAmount", FillAmount); // Assign unique value
+        Block.SetColor("_SideCol", liquidColor);
+        Block.SetColor("_TopCol", liquidColor);
         _renderer.SetPropertyBlock(Block);
     }
 }
