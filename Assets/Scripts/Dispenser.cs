@@ -23,6 +23,8 @@ public class DispenseObjectFunction : MonoBehaviour
             Rigidbody drb = DispensedObj.GetComponent<Rigidbody>();
             drb.isKinematic = false;
             drb.useGravity = true;
+            drb.constraints = RigidbodyConstraints.None;
+           
             Destroy(this);
         }
     }

@@ -36,20 +36,20 @@ public class OrderManager : MonoBehaviour
     /// </summary>
     private IEnumerator GenerateOrders()
     {
-        while (true)
-        {
-            float waitTime = Random.Range(orderSpawnTimeRange.x, orderSpawnTimeRange.y);
-            yield return new WaitForSeconds(waitTime);
 
+        float waitTime = Random.Range(orderSpawnTimeRange.x, orderSpawnTimeRange.y);
+        yield return new WaitForSeconds(waitTime);
+
+        createOrder();
+
+        // Random chance to create a second order
+        if (Random.value < doubleOrderChance)
+        {
+            yield return new WaitForSeconds(1f); 
             createOrder();
 
-            // Random chance to create a second order
-            if (Random.value < doubleOrderChance)
-            {
-                yield return new WaitForSeconds(1f); // Small delay before second order
-                createOrder();
-            }
         }
+        
     }
 
     /// <summary>
@@ -102,7 +102,7 @@ public class OrderManager : MonoBehaviour
         Transform spawnPoint = agent.destionation;
         string keyRecipe;
         CocktailRecipe recipe = recipeManager.getRandomCocktailRecipe(out keyRecipe);
-        string orderName = recipe.Name + Time.timeSinceLevelLoad;
+        string orderName = recipe.Name +"#" +Mathf.FloorToInt((Time.timeSinceLevelLoad * 100));
 
         Order order = new Order(keyRecipe, orderName, spawnPoint);
 

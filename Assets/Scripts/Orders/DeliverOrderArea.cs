@@ -2,7 +2,7 @@ using Assets.Scripts.Drink_interaction;
 using Assets.Scripts.Orders;
 using UnityEngine;
 using UnityEngine.Events;
-
+using TMPro;
 public class DeliverOrderArea : MonoBehaviour
 {
     private string glassTag = "Glass";
@@ -10,7 +10,13 @@ public class DeliverOrderArea : MonoBehaviour
     public Order order;
     public GameObject tex_feild;
     public CustomerAgenet agent;
+    public TMP_Text text_title;
 
+
+    public void Start()
+    {
+        text_title.text = order.orderID;
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == glassTag) {
