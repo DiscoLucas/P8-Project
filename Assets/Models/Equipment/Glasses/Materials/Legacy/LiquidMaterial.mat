@@ -8,12 +8,12 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: LiquidMaterial
-  m_Shader: {fileID: -6465566751694194690, guid: b8b4336bbad28e24ca56daaa0ce33af9, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 0e7a68d5c109cab4fa843e99f88062ef, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 4
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -24,10 +24,6 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _Main_Texture:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -42,24 +38,20 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Amplitude: 0
-    - _FoamWidth: 0
-    - _Foam_Smoothness: 0
-    - _Frequency: 0
+    - _CupMax: 0.084
+    - _CupMin: -0.084
+    - _Fill: 0
+    - _FillAmount: 1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Rim_Power: 2
     - _WobbleX: 0
-    - _WobbleZ: -0
+    - _WobbleZ: 0
     m_Colors:
-    - _BottomColor: {r: 1, g: 0.75332546, b: 0.33490568, a: 1}
-    - _FillAmount: {r: 0.00000035762787, g: -0.51400584, b: 0, a: 0}
-    - _FoamColor: {r: 0.2850213, g: 0.990566, b: 0.7492778, a: 1}
-    - _Rim_Color: {r: 0.693879, g: 1, b: 0.32547167, a: 1}
-    - _TopColor: {r: 0.9056604, g: 0.078802586, b: 0, a: 1}
+    - _SideCol: {r: 0.99056596, g: 0.6872941, b: 0.0981221, a: 0}
+    - _TopCol: {r: 0.9921569, g: 0.68627447, b: 0.09803919, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &2228039810453050165
+--- !u!114 &9042924847961326694
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

@@ -135,7 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06602ec154ea5a24485fc392ed34d353, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxFill: 100
+  maxFill: 2
   fillAmount: 0
   ingredients:
     _serializedList: []
@@ -321,7 +321,7 @@ GameObject:
   - component: {fileID: 8840407543838338261}
   - component: {fileID: 3614386365233408319}
   - component: {fileID: 8452191250136185531}
-  - component: {fileID: 6193370013949356862}
+  - component: {fileID: 1881154441915271509}
   m_Layer: 0
   m_Name: Fill
   m_TagString: Untagged
@@ -375,7 +375,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b52cdfb3dcc02d64ba146f334c149316, type: 2}
+  - {fileID: 2100000, guid: e1cdcac71ec998b40873ad42347332cf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -397,7 +397,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6193370013949356862
+--- !u!114 &1881154441915271509
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -406,10 +406,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 8776615818063806448}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba79cc707cc3ea24482d75c026cc4c3d, type: 3}
+  m_Script: {fileID: 11500000, guid: a0302473a32daf143bc72398668f43bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  liquidContainer: {fileID: 0}
-  FillAmount: 0
-  FillMax: 0.045
-  FillMin: -0.008
+  updateMode: 0
+  MaxWobble: 0.03
+  WobbleSpeedMove: 1
+  DrinkColor: {r: 0.26779994, g: 0.67249143, b: 0.9622642, a: 0}
+  fillAmount: 1
+  fillAmountLerpMax: 0.52
+  fillAmountLerpMin: 0.47
+  Recovery: 1
+  Thickness: 1
+  CompensateShapeAmount: 0
+  mesh: {fileID: -8542463572726036090, guid: 24d9e3c355597be429c6473bcf7234ed, type: 3}
+  rend: {fileID: 8452191250136185531}
