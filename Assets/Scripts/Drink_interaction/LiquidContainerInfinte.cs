@@ -17,6 +17,13 @@ namespace Assets.Scripts.Drink_interaction
         [Header("**Ingerident that should be filled out**")]
         public IngredientBase ingredient;
 
+        internal override void drinkOnStart()
+        {
+            base.drinkOnStart();
+            if(ingridentTextDisplay != null)
+                ingridentTextDisplay.text = ingredient.Name;
+        }
+
         public override void AddIngredient(IngredientBase ingredient, float inputAmount)
         {
             if (ingredient.solid == false)

@@ -4,7 +4,10 @@ using AYellowpaper.SerializedCollections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
+using TMPro;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using UnityEngine.XR.Interaction.Toolkit;
+using System;
 public class LiquidContainer : MonoBehaviour
 {
     [SerializeField]
@@ -14,10 +17,40 @@ public class LiquidContainer : MonoBehaviour
     [SerializedDictionary("Name","Ingredient")]
     public SerializedDictionary<string, IngredientBase> ingredients = new SerializedDictionary<string, IngredientBase>();
     public bool materialHaveBeenChange = true;
+    [SerializeField]
+    internal XRGrabInteractable xrGrabInteractable;
+
+    [Header("Display")]
+    public TMP_Text ingridentTextDisplay;
 
     private void Start()
     {
+        drinkOnStart();
+
     }
+
+    internal virtual void drinkOnStart() {
+        if (xrGrabInteractable == null)
+            xrGrabInteractable = gameObject.GetComponent<XRGrabInteractable>();
+
+        if (ingridentTextDisplay != null)
+        {
+            ingridentTextDisplay.gameObject.SetActive(false);
+            xrGrabInteractable.hoverEntered.AddListener(activateDrinkDisplay);
+            xrGrabInteractable.hoverExited.AddListener(deactivateDrinkDisplay);
+        }
+    }
+
+    public virtual void deactivateDrinkDisplay(HoverExitEventArgs arg0)
+    {
+        ingridentTextDisplay.gameObject.SetActive(false);
+    }
+
+    public virtual void activateDrinkDisplay(HoverEnterEventArgs arg0)
+    {
+        ingridentTextDisplay.gameObject.SetActive(true);
+    }
+
 
     /// <summary>
     /// Adds liquid to the glass up to the max fill level.
@@ -83,9 +116,13 @@ public class LiquidContainer : MonoBehaviour
     /// Updates the liquid level visualization
     /// TODO: implement
     /// </summary>
-    internal void updateLiquidVisual()
+    internal virtual void updateLiquidVisual()
     {
 
+    }
+
+    internal virtual void updateLiquidDisplay() { 
+    
     }
 
     /// <summary>

@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: aa5d8aa892f1b8a4dbfea33306a01dcc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.3986115
+      value: 1.316
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: aa5d8aa892f1b8a4dbfea33306a01dcc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.8395807
+      value: 1.839
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: aa5d8aa892f1b8a4dbfea33306a01dcc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.4022528
+      value: -1.2408986
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: aa5d8aa892f1b8a4dbfea33306a01dcc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -59,7 +59,7 @@ PrefabInstance:
     - target: {fileID: -6151556266767842861, guid: aa5d8aa892f1b8a4dbfea33306a01dcc, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: b52cdfb3dcc02d64ba146f334c149316, type: 2}
+      objectReference: {fileID: 2100000, guid: e1cdcac71ec998b40873ad42347332cf, type: 2}
     - target: {fileID: 919132149155446097, guid: aa5d8aa892f1b8a4dbfea33306a01dcc, type: 3}
       propertyPath: m_Name
       value: Highball
@@ -88,16 +88,18 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: aa5d8aa892f1b8a4dbfea33306a01dcc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1187962555954208670}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: aa5d8aa892f1b8a4dbfea33306a01dcc, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2704799482163483095}
     - targetCorrespondingSourceObject: {fileID: -6475698432325073768, guid: aa5d8aa892f1b8a4dbfea33306a01dcc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2351127478905403050}
     - targetCorrespondingSourceObject: {fileID: -6475698432325073768, guid: aa5d8aa892f1b8a4dbfea33306a01dcc, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8514705699175714241}
+      addedObject: {fileID: 1594744848577554470}
   m_SourcePrefab: {fileID: 100100000, guid: aa5d8aa892f1b8a4dbfea33306a01dcc, type: 3}
+--- !u!23 &3311173327182466 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -6151556266767842861, guid: aa5d8aa892f1b8a4dbfea33306a01dcc, type: 3}
+  m_PrefabInstance: {fileID: 3074422890449165137}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &903879653829681097 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -6475698432325073768, guid: aa5d8aa892f1b8a4dbfea33306a01dcc, type: 3}
@@ -118,7 +120,7 @@ MonoBehaviour:
   MaxWobble: 0.1
   WobbleSpeed: 1
   Recovery: 0.5
---- !u!114 &8514705699175714241
+--- !u!114 &1594744848577554470
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,14 +129,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 903879653829681097}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba79cc707cc3ea24482d75c026cc4c3d, type: 3}
+  m_Script: {fileID: 11500000, guid: a0302473a32daf143bc72398668f43bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  liquidContainer: {fileID: 0}
-  FillAmount: 0
-  FillMax: 0.084
-  FillMin: -0.084
-  liquidColor: {r: 0, g: 0, b: 0, a: 0}
+  updateMode: 0
+  MaxWobble: 0.03
+  WobbleSpeedMove: 1
+  DrinkColor: {r: 0.8018868, g: 0.1441848, b: 0.003782494, a: 0}
+  fillAmount: 1
+  fillAmountLerpMax: 0.575
+  fillAmountLerpMin: 0.4
+  Recovery: 1
+  Thickness: 1
+  CompensateShapeAmount: 0
+  mesh: {fileID: -8542463572726036090, guid: aa5d8aa892f1b8a4dbfea33306a01dcc, type: 3}
+  rend: {fileID: 3311173327182466}
 --- !u!1 &2768555459332826624 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: aa5d8aa892f1b8a4dbfea33306a01dcc, type: 3}
@@ -163,7 +172,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -327,16 +336,3 @@ MonoBehaviour:
   ingredients:
     _serializedList: []
   materialHaveBeenChange: 1
---- !u!114 &2704799482163483095
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2768555459332826624}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c5eda1fefce1284496d67ca2bc8f1d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DispensedObject: {fileID: 2768555459332826624}
