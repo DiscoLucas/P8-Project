@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Drink_interaction;
 using UnityEngine;
  
 [ExecuteInEditMode]
@@ -15,6 +16,7 @@ public class Liquid : MonoBehaviour
     [SerializeField]
     public Color DrinkColor;
     [SerializeField]
+    public LiquidContainerLimited liquidProperty;
     public float fillAmount = 0.5f;
     public float fillAmountLerpMax = 1;
     public float fillAmountLerpMin = 0;
@@ -47,6 +49,7 @@ public class Liquid : MonoBehaviour
     void Start()
     {
         GetMeshAndRend();
+        liquidProperty = GetComponentInParent<LiquidContainerLimited>();
     }
  
     private void OnValidate()
@@ -68,6 +71,9 @@ public class Liquid : MonoBehaviour
 void Update()
 {
     fillAmountScaled = Mathf.Lerp(fillAmountLerpMin, fillAmountLerpMax, fillAmount);
+    DrinkColor = liquidProperty.getLiquidColor();
+    fillAmount = liquidProperty.FillPercentage();
+
     float deltaTime = 0;
 
     switch (updateMode)
