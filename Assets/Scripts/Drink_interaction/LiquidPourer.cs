@@ -13,7 +13,7 @@ public class LiquidPourer : MonoBehaviour
     [SerializeField] protected Transform pourPoint;
 
     [Header("Properties")]
-    [SerializeField] protected float pourMultipliere = 8;
+    [SerializeField] protected float pourMultiplier = 8;
     [SerializeField] protected float pourThreshold = 80f;
     [SerializeField] protected int arcResolution = 10;
     [SerializeField] protected float timeStep = 0.05f;
@@ -63,7 +63,7 @@ public class LiquidPourer : MonoBehaviour
     /// </summary>
     private void calculatePouringSpeed()
     {
-        pourSpeed = Vector3.Dot(transform.up, Vector3.down) * pourMultipliere; 
+        pourSpeed = Vector3.Dot(transform.up, Vector3.down) * pourMultiplier; 
     }
 
     /// <summary>

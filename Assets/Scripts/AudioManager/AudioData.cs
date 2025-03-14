@@ -1,34 +1,54 @@
-using UnityEngine.Audio;
 using UnityEngine;
+using UnityEditor;
+using System.Linq;
 
+[System.Serializable]
 public class AudioData
 {
-	//This class is to store all the Audio properties.
-	public string name;
+    [HideInInspector]
+    public string name; // Still needed for internal logic
 
-	public AudioClip clip;
+    [SerializeField]
+    private int selectedClipIndex = 0; // Used to store dropdown selection
 
-	[Range(0f, 10f)]
-	public float volume = 1f;
-	[Range(-3f, 3f)]
-	public float pitch = 1f;
+    public AudioClip clip;
 
-	[Range(0f, 1)]
-	public float spatialBlend = 1f;
+    [Range(0f, 1f)]
+    public float volume = 1f;
+    [Range(-3f, 3f)]
+    public float pitch = 1f;
+    [Range(0f, 1)]
+    public float spatialBlend = 1f;
 
+    public bool spatialize;
+    public bool loop;
 
+    [HideInInspector]
+    public float doblerEffect = 0f;
+    [HideInInspector]
+    public AudioSource source;
 
-	public bool spatialize;
+    // Dropdown list for selecting a sound
+    public string GetClipName()
+    {
+        return clip ? clip.name : "None";
+    }
 
+    public void SetClipFromList(string[] clipNames)
+    {
+        if (selectedClipIndex < clipNames.Length)
+        {
+            name = clipNames[selectedClipIndex];
+        }
+    }
 
-	public bool loop;
+    public void SetClipIndex(int index)
+    {
+        selectedClipIndex = index;
+    }
 
-	[HideInInspector]
-	public float doblerEffect = 0f;
-
-	[HideInInspector]
-	public AudioSource source;
-
-	//public AudioMixerGroup mixerGroup;
-	//public AudioMixer mixer;
+    public int GetClipIndex()
+    {
+        return selectedClipIndex;
+    }
 }
