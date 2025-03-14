@@ -38,6 +38,7 @@ namespace Assets.Scripts.Drink_interaction
                     orderCounter++;
                 }
                 updateLiquidVisual();
+                updateLiquidDisplay();
             }
             else
             {
@@ -47,8 +48,12 @@ namespace Assets.Scripts.Drink_interaction
                     ingredients[ingredient.Name] = ingredient.copy(orderCounter);
                     orderCounter++;
                 }
-                    
+
+                updateLiquidDisplay();
+
             }
+
+           
 
             
         }
@@ -106,7 +111,7 @@ namespace Assets.Scripts.Drink_interaction
             if (ingredientNames.Count > 3)
                 pouredMixture.Name += " & more";
 
-            
+            updateLiquidDisplay();
 
             return pouredMixture;
         }
@@ -161,12 +166,29 @@ namespace Assets.Scripts.Drink_interaction
                 addIngredientRecursively(nestedIngredient, orderedList);
             }
         }
-    public float FillPercentage(){
-        return(Mathf.Clamp01(fillAmount/maxFill)); //Returns number between 0 and 1, how full cup is
-    }
-    public Color DrinkColor(){
-        return outputColor;
-    }
+
+        public float FillPercentage(){
+            return(Mathf.Clamp01(fillAmount/maxFill)); //Returns number between 0 and 1, how full cup is
+        }
+
+        public Color DrinkColor(){
+            return outputColor;
+        }
+
+        internal override void updateLiquidDisplay()
+        {
+            if (ingridentTextDisplay != null) {
+                string infoScreenText = "Ingriedents:\n";
+                foreach (IngredientBase ingBase in ingredients.Values) {
+                    string name = ingBase.Name;
+                    string amount = (ingBase.Amount).ToString();
+                    infoScreenText += $"[{name}]:{amount}/{maxFill}\n";
+                }
+
+                ingridentTextDisplay.text = infoScreenText;
+            }
+        }
+
     }
 }
 
