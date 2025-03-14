@@ -49,6 +49,7 @@ public class Liquid : MonoBehaviour
     void Start()
     {
         GetMeshAndRend();
+        //rend.material = new Material(rend.material);
         liquidProperty = GetComponentInParent<LiquidContainerLimited>();
     }
  

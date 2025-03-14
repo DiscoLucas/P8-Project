@@ -31,7 +31,7 @@ public class LiquidMatPropertyBlock : MonoBehaviour
     void Update()
     {
         FillAmount = liquidContainer.FillPercentage();
-        liquidColor = liquidContainer.DrinkColor();
+        liquidColor = liquidContainer.getLiquidColor();
 
         _renderer.GetPropertyBlock(Block);
         Block.SetFloat("_FillAmount", FillAmount); // Assign unique value

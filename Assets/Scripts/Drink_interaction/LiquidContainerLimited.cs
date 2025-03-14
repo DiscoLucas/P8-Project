@@ -121,7 +121,7 @@ namespace Assets.Scripts.Drink_interaction
             if (lastCheckColorCount != ingredients.Count) {
                 materialHaveBeenChange = true;
                 lastCheckColorCount = ingredients.Count;
-                IngredientBase mix = createPouredMixture(1);
+                IngredientBase mix = createPouredMixture(0);
                 outputColor = mix.Color;
             }
             return outputColor;
@@ -168,17 +168,13 @@ namespace Assets.Scripts.Drink_interaction
         }
 
         public float FillPercentage(){
-            return(Mathf.Clamp01(fillAmount/maxFill)); //Returns number between 0 and 1, how full cup is
-        }
-
-        public Color DrinkColor(){
-            return outputColor;
+            return(fillAmount / maxFill); 
         }
 
         internal override void updateLiquidDisplay()
         {
             if (ingridentTextDisplay != null) {
-                string infoScreenText = "Ingriedents:\n";
+                string infoScreenText = $"Ingriedents [{(FillPercentage()*100)}%]:\n";
                 foreach (IngredientBase ingBase in ingredients.Values) {
                     string name = ingBase.Name;
                     string amount = (ingBase.Amount).ToString();
