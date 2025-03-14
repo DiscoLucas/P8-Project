@@ -118,7 +118,10 @@ void Update()
     propBlock.SetFloat("_WobbleX", wobbleAmountX);
     propBlock.SetFloat("_WobbleZ", wobbleAmountZ);
 
-    UpdatePos(deltaTime, propBlock);
+    UpdatePos(deltaTime);
+
+    //IF statement goes here.
+    UpdateMat(propBlock);
 
     // Apply changes
     rend.SetPropertyBlock(propBlock);
@@ -128,7 +131,7 @@ void Update()
     lastRot = transform.rotation;
 }
 
-void UpdatePos(float deltaTime, MaterialPropertyBlock propBlock)
+void UpdatePos(float deltaTime)
 {
     Vector3 worldPos = transform.TransformPoint(mesh.bounds.center);
     
@@ -149,7 +152,9 @@ void UpdatePos(float deltaTime, MaterialPropertyBlock propBlock)
     {
         pos = worldPos - transform.position - new Vector3(0, 1f - fillAmountScaled, 0);
     }
+}
 
+void UpdateMat(MaterialPropertyBlock propBlock){
     propBlock.SetVector("_FillAmount", pos);
     propBlock.SetColor("_BottomColor", DrinkColor);
     propBlock.SetColor("_TopColor", DrinkColor);
