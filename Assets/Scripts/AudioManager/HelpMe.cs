@@ -5,9 +5,9 @@ using UnityEngine;
 public class HelpMe : MonoBehaviour
 {
     //This script is only to support the Audio Manager in new sceens
-    public void Play(string name)
+    public void Play(string name, GameObject gameobject)
     {
-        AudioManager.instance.Play(name);
+        AudioManager.instance.Play(name, gameobject);
     }
 
     public void PlayVoice(string name)

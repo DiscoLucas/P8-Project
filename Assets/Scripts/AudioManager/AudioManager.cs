@@ -30,6 +30,7 @@ public class AudioManager : MonoBehaviour
         foreach (Sound s in soundsArray)
         {
             s.source = gameObject.AddComponent<AudioSource>();
+            s.MetaXRAudioSource = gameObject.AddComponent<MetaXRAudioSource>();
             s.source.clip = s.clip;
 
             s.source.volume = s.volume;
@@ -47,6 +48,7 @@ public class AudioManager : MonoBehaviour
         foreach (Voice v in voiceArray)
         {
             v.source = gameObject.AddComponent<AudioSource>();
+            v.MetaXRAudioSource = gameObject.AddComponent<MetaXRAudioSource>();
             v.source.clip = v.clip;
             v.source.spatialBlend = v.spatialBlend;
             v.source.volume = v.volume;
@@ -62,6 +64,7 @@ public class AudioManager : MonoBehaviour
         foreach (Music m in musicArray)
         {
             m.source = gameObject.AddComponent<AudioSource>();
+            m.MetaXRAudioSource = gameObject.AddComponent<MetaXRAudioSource>();
             m.source.clip = m.clip;
 
             m.source.volume = m.volume;
@@ -78,7 +81,7 @@ public class AudioManager : MonoBehaviour
 
     void Start()
     {
-        Play("Electic");
+        //Play("Electic");
         PlayMusic("Music");
     }
 
@@ -88,9 +91,28 @@ public class AudioManager : MonoBehaviour
     /// This function is for selecting a specific audio clip in the Sounds catagory of the AudioManager. Input the name of a given Element.
     /// </summary>
     /// <param name="name"></param>
-    public void Play(string name)
+    public void Play(string name, GameObject caller)
     {
-        Sound s = Array.Find(soundsArray, soundsArray => soundsArray.name == name);
+        Sound s = Array.Find(soundsArray, sound => sound.name == name);
+
+        if (s == null)
+        {
+            Debug.LogWarning($"Sound '{name}' not found in AudioManager!");
+            return;
+        }
+
+        // Add an AudioSource to the caller GameObject if it doesn't have one
+        AudioSource audioSource = caller.GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = caller.AddComponent<AudioSource>();
+        }
+        // Add an AudioSource to the caller GameObject if it doesn't have one
+        MetaXRAudioSource metaXRAudioSource = caller.GetComponent<MetaXRAudioSource>();
+        if (metaXRAudioSource == null)
+        {
+            metaXRAudioSource = caller.AddComponent<MetaXRAudioSource>();
+        }
 
         if (s == null)
         {
@@ -214,12 +236,12 @@ public class AudioManager : MonoBehaviour
     }
 
     // Play a sound with random pitch within a specified range
-    public void playSoundRandomPitch(string sClip, float min, float max)
+    public void playSoundRandomPitch(string sClip, float min, float max, GameObject local)
     {
         float randomPitch = UnityEngine.Random.Range(min, max);
         Sound s = GetSoundClip(sClip);
         s.source.pitch = randomPitch;
-        Play(sClip);
+        Play(sClip, local);
     }
 
     // Check if a sound clip is currently playing

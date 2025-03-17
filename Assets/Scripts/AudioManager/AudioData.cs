@@ -28,6 +28,8 @@ public class AudioData
     [HideInInspector]
     public AudioSource source;
 
+    public MetaXRAudioSource MetaXRAudioSource;
+
     // Dropdown list for selecting a sound
     public string GetClipName()
     {
