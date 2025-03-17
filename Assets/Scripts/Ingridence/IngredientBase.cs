@@ -15,7 +15,7 @@ namespace Assets.Scripts.Ingridence
         public float Amount;
         public bool solid = false;
         public IngredientType Type;
-        public Color Color;
+        public Color Color = Color.magenta;
         public float AlcoholContent;
         public DrinkStep step;
         [SerializedDictionary("Name", "Ingredient")]

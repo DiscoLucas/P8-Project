@@ -17,6 +17,9 @@ public class XRInstantiateGrabbableObject : MonoBehaviour
 
     private void attachNewPrefab(SelectEnterEventArgs arg0)
     {
+        //Ungrab me
+        
+
         // Instantiate object
         GameObject newObject = Instantiate(DispensedObject, transformToInstantiate.position, Quaternion.identity);
 

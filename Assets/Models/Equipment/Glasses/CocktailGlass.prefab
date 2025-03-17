@@ -235,6 +235,7 @@ GameObject:
   - component: {fileID: 595639018323949352}
   - component: {fileID: 5955766301382303332}
   - component: {fileID: 5646212567129237630}
+  - component: {fileID: 7556654494760103638}
   m_Layer: 0
   m_Name: CocktailGlass
   m_TagString: Glass
@@ -279,6 +280,7 @@ MonoBehaviour:
   materialHaveBeenChange: 1
   xrGrabInteractable: {fileID: 5955766301382303332}
   ingridentTextDisplay: {fileID: 1895218210500443096}
+  outputColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!54 &595639018323949352
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -449,6 +451,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.13, y: 0.15, z: 0.13}
   m_Center: {x: 0, y: 0.07, z: 0}
+--- !u!114 &7556654494760103638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5993190295414277689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c5eda1fefce1284496d67ca2bc8f1d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DispensedObject: {fileID: 5993190295414277689}
 --- !u!1 &7981016853543206048
 GameObject:
   m_ObjectHideFlags: 0
