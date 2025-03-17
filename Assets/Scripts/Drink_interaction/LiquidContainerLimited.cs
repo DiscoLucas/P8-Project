@@ -15,6 +15,7 @@ namespace Assets.Scripts.Drink_interaction
         protected int lastCheckColorCount = 0;
         protected Color outputColor = Color.white;
         protected int orderCounter = 0;
+        public GlassType glassType;
 
         public override void AddIngredient(IngredientBase ingredient, float inputAmount)
         {

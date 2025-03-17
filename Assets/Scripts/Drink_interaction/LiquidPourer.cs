@@ -49,7 +49,7 @@ public class LiquidPourer : MonoBehaviour
     /// <summary>
     /// Check if the bottle is tilted enough to pour.
     /// </summary>
-    private bool isPouring()
+    protected bool isPouring()
     {
         bool isPouring = Vector3.Dot(transform.up, Vector3.down) > Mathf.Cos(pourThreshold * Mathf.Deg2Rad);
         bool haveEnoughtLiqquid = false;
@@ -71,7 +71,7 @@ public class LiquidPourer : MonoBehaviour
     /// </summary>
     private List<ParticleSystem.Particle> activeParticles = new List<ParticleSystem.Particle>();
 
-    private void emitParticles()
+    protected virtual void emitParticles()
     {
         if (particles == null) return;
 
@@ -111,7 +111,7 @@ public class LiquidPourer : MonoBehaviour
     /// <summary>
     /// Detect where the liquid lands.
     /// </summary>
-    private void detectCollision()
+    protected virtual void detectCollision()
     {
         Vector3 start = pourPoint.position;
         Vector3 velocity = pourPoint.up * pourSpeed;

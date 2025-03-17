@@ -61,7 +61,7 @@ public class OrderManager : MonoBehaviour
         List<IngredientBase> ideal_List = recipe.ingredients.ToList();
         List<IngredientBase> order_List = order.containerLimited.getIngreidentsAsOrderedeList();
         float timeTaken = Time.timeSinceLevelLoad - order.startPoint;
-        float score = recipeManager.compareTwoIngridienseList(ideal_List, order_List, timeTaken, recipe.expectedTime, out int wrongIngreidentCount, out float totalDeviation, out float totalOverpour, out float totalUnderpour);
+        float score = recipeManager.compareTwoIngridienseList(ideal_List, order_List, order.recipieID,order.containerLimited.glassType, timeTaken, out int wrongIngreidentCount, out float totalDeviation, out float totalOverpour, out float totalUnderpour);
 
         totalScore += score;
         scoreCounter.text = $"Score: {totalScore}";

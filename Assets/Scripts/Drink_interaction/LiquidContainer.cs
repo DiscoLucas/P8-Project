@@ -172,6 +172,8 @@ public class LiquidContainer : MonoBehaviour
        return null;
     }
 
-
-
+    internal float getCurrentLiquidAmount()
+    {
+        throw new NotImplementedException();
+    }
 }
