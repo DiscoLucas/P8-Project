@@ -2910,7 +2910,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1186069746
 Transform:
   m_ObjectHideFlags: 0
@@ -4914,7 +4914,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1837110104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9514,7 +9514,7 @@ MonoBehaviour:
     ikTarget: {fileID: 4476297797093924823}
     trackingPositionOffset: {x: 0, y: -0.032, z: -0.13}
     trackingRotationOffset: {x: 0, y: 270, z: -98.5}
-  headBodyPositionOffset: {x: 0.01, y: -0.55, z: 0}
+  headBodyPositionOffset: {x: 0.02, y: -0.58, z: 0}
   headBodyYawOffset: 0
 --- !u!1 &2358381702416732743
 GameObject:
@@ -10896,7 +10896,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9216286740425215397}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c9b3d17eeb2e6bc47ada81d8f7f638d8, type: 3}
   m_Name: 
@@ -14264,7 +14264,7 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -14880,7 +14880,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &5105266915876729788
 GameObject:
   m_ObjectHideFlags: 0
@@ -16874,9 +16874,9 @@ MonoBehaviour:
     m_Bits: 1
   body: {fileID: 5358991061124022400}
   otherFoot: {fileID: 8296550699064792228}
-  speed: 10
+  speed: 5
   stepDistance: 0.5
-  stepLength: 0.5
+  stepLength: 0.4
   sideStepLength: 0.3
   stepHeight: 0.3
   footOffset: {x: 0, y: 0, z: 0}
@@ -24359,9 +24359,9 @@ MonoBehaviour:
     m_Bits: 1
   body: {fileID: 5358991061124022400}
   otherFoot: {fileID: 5748717092710115369}
-  speed: 10
+  speed: 5
   stepDistance: 0.5
-  stepLength: 0.5
+  stepLength: 0.4
   sideStepLength: 0.3
   stepHeight: 0.3
   footOffset: {x: 0, y: 0, z: 0}
