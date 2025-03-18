@@ -28,7 +28,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 697643520026870819}
   m_LocalRotation: {x: -0, y: -0, z: -0.00013837684, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.042}
   m_LocalScale: {x: 0.00035000002, y: 0.00035000002, z: 0.00035}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -37,7 +37,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.117, y: -0.0119}
+  m_AnchoredPosition: {x: 0, y: 0.085}
   m_SizeDelta: {x: 400, y: 547}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &9087082155737866735
@@ -265,6 +265,92 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &6617920504814403259
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9062355062304236555}
+  - component: {fileID: 2605493247797024295}
+  - component: {fileID: 7475428760748440299}
+  m_Layer: 0
+  m_Name: TulipGlass_01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9062355062304236555
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6617920504814403259}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3251654082841033914}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &2605493247797024295
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6617920504814403259}
+  m_Mesh: {fileID: -7121433009800864280, guid: 60781db57c76fd65c9a8c18fd7206d56, type: 3}
+--- !u!23 &7475428760748440299
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6617920504814403259}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: e079aaae6ba5d464e9ca8ff21f8ca34f, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1001 &3074422890449165137
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -318,8 +404,12 @@ PrefabInstance:
       value: 81.70085
       objectReference: {fileID: 0}
     - target: {fileID: -6538645217118300227, guid: aa5d8aa892f1b8a4dbfea33306a01dcc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6538645217118300227, guid: aa5d8aa892f1b8a4dbfea33306a01dcc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.0011
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -6151556266767842861, guid: aa5d8aa892f1b8a4dbfea33306a01dcc, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -327,7 +417,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: e1cdcac71ec998b40873ad42347332cf, type: 2}
     - target: {fileID: 919132149155446097, guid: aa5d8aa892f1b8a4dbfea33306a01dcc, type: 3}
       propertyPath: m_Name
-      value: Highball
+      value: HuricaneGlass
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: aa5d8aa892f1b8a4dbfea33306a01dcc, type: 3}
       propertyPath: m_TagString
@@ -338,8 +428,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: e079aaae6ba5d464e9ca8ff21f8ca34f, type: 2}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5162820104835090806, guid: aa5d8aa892f1b8a4dbfea33306a01dcc, type: 3}
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: aa5d8aa892f1b8a4dbfea33306a01dcc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9062355062304236555}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: aa5d8aa892f1b8a4dbfea33306a01dcc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6892580898411148359}
@@ -607,6 +701,7 @@ MonoBehaviour:
   materialHaveBeenChange: 1
   xrGrabInteractable: {fileID: 1178208279871253436}
   ingridentTextDisplay: {fileID: 4959672221898419751}
+  glassType: 0
 --- !u!4 &3251654082841033914 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: aa5d8aa892f1b8a4dbfea33306a01dcc, type: 3}
