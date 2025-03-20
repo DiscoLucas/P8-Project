@@ -2281,13 +2281,13 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 0.7
+  m_Height: 1.8
   m_Radius: 0.1
   m_SlopeLimit: 45
   m_StepOffset: 0.5
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.76072, z: 0}
+  m_Center: {x: 0, y: 0.85, z: 0}
 --- !u!114 &8329244592323983421
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4775,7 +4775,7 @@ RectTransform:
   m_GameObject: {fileID: 2462687970372126320}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3392627152767068750}
@@ -7207,7 +7207,7 @@ Camera:
     height: 1
   near clip plane: 0.01
   far clip plane: 1000
-  field of view: 60
+  field of view: 90
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -9007,7 +9007,7 @@ MonoBehaviour:
   head:
     vrTarget: {fileID: 3577672971223719436}
     ikTarget: {fileID: 6032065791818745121}
-    trackingPositionOffset: {x: 0, y: 0, z: 0}
+    trackingPositionOffset: {x: 0, y: -0.5, z: 0}
     trackingRotationOffset: {x: 0, y: 0, z: 0}
   leftHand:
     vrTarget: {fileID: 2861515266561389746}
@@ -9019,7 +9019,7 @@ MonoBehaviour:
     ikTarget: {fileID: 3843035019925105927}
     trackingPositionOffset: {x: 0, y: -0.032, z: -0.13}
     trackingRotationOffset: {x: 0, y: 270, z: -98.5}
-  headBodyPositionOffset: {x: 0.02, y: -0.62, z: 0}
+  headBodyPositionOffset: {x: 0.02, y: -0.5, z: 0}
   headBodyYawOffset: 0
 --- !u!114 &7846139834261358073
 MonoBehaviour:
@@ -9893,7 +9893,7 @@ RectTransform:
   m_GameObject: {fileID: 4668509208250956324}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7664797780485331478}
@@ -11916,7 +11916,6 @@ Transform:
   - {fileID: 536324862947861242}
   - {fileID: 7277533644984198387}
   - {fileID: 3040317071895903279}
-  - {fileID: 650879313634363419}
   m_Father: {fileID: 4158930137955823135}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5355161477592686784
@@ -12912,14 +12911,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5506594377014720951}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.5000005, y: 0.49999973, z: -0.4999995, w: -0.50000036}
+  m_LocalPosition: {x: -0.7133322, y: 0.033129215, z: -0.05548525}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8209326100294844385}
   - {fileID: 3867138054522680529}
-  m_Father: {fileID: 4542756842031278511}
+  m_Father: {fileID: 3725131043052914589}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5589399020915923619
 GameObject:
@@ -21088,6 +21087,7 @@ Transform:
   - {fileID: 4467214426197393052}
   - {fileID: 7329593987354947926}
   - {fileID: 2861515266561389746}
+  - {fileID: 650879313634363419}
   m_Father: {fileID: 6312568635534687392}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4491891652187972470
