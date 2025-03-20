@@ -20,8 +20,8 @@ public class LiquidPourer : MonoBehaviour
     [SerializeField] protected float gravity = 9.81f;
     [SerializeField] protected LayerMask collisionLayers;
     [SerializeField] protected float pourAmount = 0.01f;
-
-    [SerializeField]
+    [Tooltip("Defines how strictly the liquid must hit the top of the glass to be considered valid. A value closer to 1 means only near-perfect top hits count, while lower values allow slight angles.")]
+    [SerializeField] protected float hitThreashold = 0.5f;
     protected float pourSpeed;
     protected Vector3 lastHitPoint;
 
@@ -126,12 +126,20 @@ public class LiquidPourer : MonoBehaviour
             {
                 lastHitPoint = hit.point;
                 LiquidContainer glass = hit.collider.GetComponent<LiquidContainer>();
+
                 if (glass != null)
                 {
-                    IngredientBase pouredMixture = liquidContainer.createPouredMixture(pourAmount);
-                    if (pouredMixture != null)
+                    // Get the local up direction of the glass
+                    Vector3 glassUp = glass.transform.up;
+
+                    // Compare hit normal to the glass's up direction
+                    if (Vector3.Dot(hit.normal, glassUp) > hitThreashold) // Adjust threshold as needed
                     {
-                        glass.AddIngredient(pouredMixture, pourAmount);
+                        IngredientBase pouredMixture = liquidContainer.createPouredMixture(pourAmount);
+                        if (pouredMixture != null)
+                        {
+                            glass.AddIngredient(pouredMixture, pourAmount);
+                        }
                     }
                 }
                 break;
@@ -140,6 +148,8 @@ public class LiquidPourer : MonoBehaviour
             point = newPoint;
         }
     }
+
+
 
 
     /// <summary>
