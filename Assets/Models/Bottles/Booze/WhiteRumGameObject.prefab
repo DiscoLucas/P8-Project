@@ -296,7 +296,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 2.536, y: 2.536, z: 2.536}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2543897556056628478}
@@ -357,7 +357,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   pourAmount: 0.01
-  pourSpeed: 0
+  hitThreashold: 0.5
 --- !u!54 &2953293407819480524
 Rigidbody:
   m_ObjectHideFlags: 0

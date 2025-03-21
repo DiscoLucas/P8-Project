@@ -42,6 +42,21 @@ public class RecipeManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Get a random cocktail recipe based on the closest difficulty level.
+    /// </summary>
+    /// <param name="recipeKey">Returns the key of the selected recipe in the list.</param>
+    /// <param name="targetDifficulty">The target difficulty level to match.</param>
+    /// <returns>A cocktail recipe with the closest difficulty level.</returns>
+    public CocktailRecipe getRandomCocktailRecipe(out string recipeKey, float targetDifficulty) {
+        // Find the recipe with the closest difficulty to the targetDifficulty
+        var closestRecipe = recipes.OrderBy(r => Mathf.Abs(r.Value.diffuculty - targetDifficulty)).FirstOrDefault();
+
+        // Extract the recipe and its key
+        recipeKey = closestRecipe.Key;
+        return closestRecipe.Value;
+    }
+
+    /// <summary>
     /// Take two list of ingredient then compare them and calcualte a score
     /// </summary>
     /// <param name="idealList"> or called Recipe. this is the list that is wantede </param>
