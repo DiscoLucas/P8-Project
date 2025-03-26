@@ -6,6 +6,7 @@ public class AudioTest : MonoBehaviour
 {
     [SerializeField] private int selectedClipIndex = 0; // Stores dropdown selection
     private string[] soundNames; // Stores all available sound names
+    public GameObject gameobject;
 
     private void Start()
     {
@@ -21,7 +22,7 @@ public class AudioTest : MonoBehaviour
         }
 
         string selectedSound = soundNames[selectedClipIndex];
-        AudioManager.instance.Play(selectedSound);
+        AudioManager.instance.Play(selectedSound, gameobject);
     }
 
     public string GetSelectedSoundName()

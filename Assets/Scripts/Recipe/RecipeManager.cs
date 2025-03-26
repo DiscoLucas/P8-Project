@@ -27,6 +27,7 @@ public class RecipeManager : MonoBehaviour
     [SerializeField]
     float POUR_PENALTY_FACTOR = 50f;
     [SerializeField]
+    float MISHANDLED_INGREDIENT_PENALTY = 5f;
 
     /// <summary>
     /// Get a random cocktail recipe
@@ -41,6 +42,21 @@ public class RecipeManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Get a random cocktail recipe based on the closest difficulty level.
+    /// </summary>
+    /// <param name="recipeKey">Returns the key of the selected recipe in the list.</param>
+    /// <param name="targetDifficulty">The target difficulty level to match.</param>
+    /// <returns>A cocktail recipe with the closest difficulty level.</returns>
+    public CocktailRecipe getRandomCocktailRecipe(out string recipeKey, float targetDifficulty) {
+        // Find the recipe with the closest difficulty to the targetDifficulty
+        var closestRecipe = recipes.OrderBy(r => Mathf.Abs(r.Value.diffuculty - targetDifficulty)).FirstOrDefault();
+
+        // Extract the recipe and its key
+        recipeKey = closestRecipe.Key;
+        return closestRecipe.Value;
+    }
+
+    /// <summary>
     /// Take two list of ingredient then compare them and calcualte a score
     /// </summary>
     /// <param name="idealList"> or called Recipe. this is the list that is wantede </param>
@@ -50,13 +66,13 @@ public class RecipeManager : MonoBehaviour
     /// <param name="totalOverpour">The total overpour on all ingridents</param>
     /// <param name="totalUnderpour">The total underpour on all ingridents</param>
     /// <returns>The game score of this drink</returns>
-    public float compareTwoIngridienseList(List<IngredientBase> idealList, List<IngredientBase> actualList, float expectedTime, float timeTaken, out int wrongIngreidentCount, out float totalDeviation, out float totalOverpour, out float totalUnderpour)
+    public float compareTwoIngridienseList(List<IngredientBase> idealList, List<IngredientBase> actualList, string recipeID,GlassType currentGlass, float timeTaken, out int wrongIngreidentCount, out float totalDeviation, out float totalOverpour, out float totalUnderpour)
     {
         wrongIngreidentCount = 0;
         totalDeviation = 0f;
         totalOverpour = 0f;
         totalUnderpour = 0f;
-
+        CocktailRecipe cocktailRecipe = recipes[recipeID];
         var idealNames = new HashSet<string>(idealList.Select(i => i.Name));
         var actualNames = new HashSet<string>(actualList.Select(i => i.Name));
 
@@ -69,6 +85,7 @@ public class RecipeManager : MonoBehaviour
         List<string> underpourList = new List<string>();
         float sumActualAmount = 0;
         float sumIdealAmount = 0;
+        int mishandledIngredientCount = 0;
         foreach (var actualIngredient in actualAmounts)
         {
             string name = actualIngredient.Key;
@@ -76,10 +93,11 @@ public class RecipeManager : MonoBehaviour
             float idealAmount = idealAmounts.ContainsKey(name) ? idealAmounts[name] : 0f;
             sumActualAmount += actualAmount;
             sumIdealAmount += idealAmount;
-            if (idealAmount == 0)
+
+            if (!idealAmounts.ContainsKey(name))
             {
                 wrongIngredients.Add(name);
-                continue; 
+                continue;
             }
 
             float difference = actualAmount - idealAmount;
@@ -95,9 +113,23 @@ public class RecipeManager : MonoBehaviour
                 totalUnderpour += Mathf.Abs(difference);
                 underpourList.Add($"{name} ({difference})");
             }
+
+
+            IngredientBase idealIngredient = idealList.FirstOrDefault(i => i.Name == name);
+            IngredientBase actualIngredientObj = actualList.FirstOrDefault(i => i.Name == name);
+
+            if (idealIngredient != null && actualIngredientObj != null)
+            {
+                if (idealIngredient.step.action != actualIngredientObj.step.action)
+                {
+                    mishandledIngredientCount++;
+                }
+            }
         }
 
-        float totalScore =  calculateDrinkAccuracy(wrongIngredients.Count,idealNames.Count,timeTaken, expectedTime, sumActualAmount,sumIdealAmount);
+
+        bool correctGlass = cocktailRecipe.glassType == currentGlass;
+        float totalScore =  calculateDrinkAccuracy(wrongIngredients.Count,idealNames.Count,timeTaken, cocktailRecipe.expectedTime, sumActualAmount,sumIdealAmount,mishandledIngredientCount,correctGlass, cocktailRecipe.maxScore);
 
         Debug.Log("========== DRINK MIX REPORT ==========");
         Debug.Log($"Ideal Ingredients: [{string.Join(", ", idealList.Select(i => $"{i.Name} ({i.Amount})"))}]");
@@ -115,12 +147,27 @@ public class RecipeManager : MonoBehaviour
         return totalScore;
     }
 
-public float calculateDrinkAccuracy(int wrongIngredients, int idealIngredients, float timeTaken, float expectedTime, float actualAmount, float idealAmount) {
-    int ingredientDiff = idealIngredients - wrongIngredients;
-    float ingredientPenalty = Mathf.Clamp((5 - ingredientDiff) * INGREDIENT_PENALTY_PER_MISS, 0f, MAX_INGREDIENT_PENALTY);
-    score -= ingredientPenalty;
-    float pourPenalty = Mathf.Clamp((Mathf.Abs(actualAmount - idealAmount) / idealAmount) * POUR_PENALTY_FACTOR, 0f, MAX_POUR_PENALTY);
-    score -= pourPenalty;
-    return Mathf.Max(score, 0f);
+    public float calculateDrinkAccuracy(int wrongIngredients, int idealIngredients, float timeTaken, float expectedTime, float actualAmount, float idealAmount, int mishandledIngredientCount,bool correctGlass, float maxScore)
+    {
+        float finalScore = maxScore;
+        float ingredientPenalty = Mathf.Clamp(wrongIngredients * INGREDIENT_PENALTY_PER_MISS, 0f, MAX_INGREDIENT_PENALTY);
+        finalScore -= ingredientPenalty;
+        float mishandledPenalty = Mathf.Clamp(mishandledIngredientCount * 5f, 0f, MAX_INGREDIENT_PENALTY);
+        finalScore -= mishandledPenalty;
+        float pourPenalty = Mathf.Clamp((Mathf.Abs(actualAmount - idealAmount) / idealAmount) * POUR_PENALTY_FACTOR, 0f, MAX_POUR_PENALTY);
+        finalScore -= pourPenalty;
+        float timePenalty = 0f;
+        if (timeTaken > expectedTime)
+        {
+            float overtimeRatio = (timeTaken - expectedTime) / expectedTime;
+            timePenalty = Mathf.Clamp(overtimeRatio * 20f, 0f, MAX_POUR_PENALTY);
+        }
+        finalScore -= timePenalty;
+        if (!correctGlass)
+        {
+            finalScore -= 10f;
+        }
+        return Mathf.Max(finalScore, 0f);
     }
+
 }

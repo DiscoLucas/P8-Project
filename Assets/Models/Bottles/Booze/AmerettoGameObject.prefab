@@ -160,7 +160,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 2.536, y: 2.536, z: 2.536}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 219827360860263076}
@@ -212,7 +212,7 @@ MonoBehaviour:
   liquidContainer: {fileID: 8339221302079728415}
   particles: {fileID: 6754546422295657130}
   pourPoint: {fileID: 3371946589433347045}
-  pourMultipliere: 10
+  pourMultiplier: 8
   pourThreshold: 80
   arcResolution: 30
   timeStep: 0.05
@@ -221,7 +221,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   pourAmount: 0.01
-  pourSpeed: 0
+  hitThreashold: 0.5
 --- !u!54 &757309670502424851
 Rigidbody:
   m_ObjectHideFlags: 0

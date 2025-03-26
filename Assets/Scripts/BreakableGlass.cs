@@ -1,27 +1,61 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
-[RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(MeshCollider))]
+//[RequireComponent(typeof(Rigidbody))]
+//[RequireComponent(typeof(MeshCollider))]
 public class Glass : MonoBehaviour
 {
-    Rigidbody rb;
+    public Rigidbody rb;
     Breakable breakable;
     public float breakForce = 1f;
+
+    public GameObject glassShatter;
+
+    [Header("Breaking Settings")]
+    [SerializeField] private int radialCuts = 5; // Number of vertical cuts around the glass
+    [SerializeField] private int heightCuts = 3; // Number of horizontal cuts along the glass height
+    [SerializeField] private float randomOffset = 0.1f; // Random offset for cut positions
+    [SerializeField] private float explosionForce = 300f; // Force applied to pieces
+    [SerializeField] private float explosionRadius = 1.5f; // Radius of explosion
+    [SerializeField] private float upwardModifier = 0.4f; // Upward force bias
+    [SerializeField] private AudioClip breakSound; // Optional sound effect
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        //rb = GetComponent<Rigidbody>();
         breakable = GetComponent<Breakable>();
     }
 
     void OnCollisionEnter(Collision collision)
     {
+        Debug.Log("Collision!: " + collision.gameObject.name);
         if (collision.impulse.magnitude > breakForce)
         {
             //rb.AddForce(collision.impulse, ForceMode.Impulse);
-            breakable.Break(collision.contacts[0].point, collision.impulse.magnitude);
+            //breakable.Break(collision.contacts[0].point, collision.impulse.magnitude);
+            GameObject brokenGlass = Instantiate(glassShatter, transform.position, transform.rotation);
+            float hitForce = (explosionForce * collision.impulse.magnitude)/brokenGlass.transform.childCount;
+            float pieceMass = rb.mass / brokenGlass.transform.childCount;
+            foreach (Transform child in brokenGlass.transform)
+            {
+                Rigidbody rb = child.GetComponent<Rigidbody>();
+                if(rb == null){
+                    rb = child.AddComponent<Rigidbody>();
+                    BoxCollider boxCollider = child.AddComponent<BoxCollider>();
+                }    
+                rb.mass = pieceMass;
+                rb.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
+                rb.AddExplosionForce(
+                    hitForce ,
+                    collision.contacts[0].point,
+                    explosionRadius,
+                    upwardModifier);
+                rb.AddTorque(Random.insideUnitSphere * hitForce);
+
+            }
+            Destroy(gameObject);
             Debug.Log("Glass broken!");
         }
     }

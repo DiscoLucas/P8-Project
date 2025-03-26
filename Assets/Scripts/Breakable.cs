@@ -15,6 +15,7 @@ public class Breakable : MonoBehaviour
     [SerializeField] private Material fragmentMaterial; // Material to apply to fragments
     [SerializeField] private bool useBoxCollidersAsFallback = true; // Use box colliders if mesh collider fails
 
+    [SerializeField] private GameObject breakableMeshObject; 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -64,7 +65,7 @@ public class Breakable : MonoBehaviour
     private List<GameObject> CreateGlassShards()
     {
         List<GameObject> shards = new List<GameObject>();
-        MeshFilter meshFilter = GetComponent<MeshFilter>();
+        MeshFilter meshFilter = breakableMeshObject.GetComponent<MeshFilter>();
         
         if (meshFilter == null || meshFilter.mesh == null)
         {
@@ -73,7 +74,7 @@ public class Breakable : MonoBehaviour
         }
 
         Mesh originalMesh = meshFilter.mesh;
-        Renderer originalRenderer = GetComponent<Renderer>();
+        Renderer originalRenderer = breakableMeshObject.GetComponent<Renderer>();
         
         // If no material specified, use the original object's material
         if (fragmentMaterial == null && originalRenderer != null)
@@ -276,16 +277,19 @@ public class Breakable : MonoBehaviour
             // Triangle is entirely on the positive side
             if (side0 && side1 && side2)
             {
+                Debug.Log("Triangle is entirely on the positive side");
                 AddTriangle(posVertices, posTriangles, posUVs, v0, v1, v2, uv0, uv1, uv2);
             }
             // Triangle is entirely on the negative side
             else if (!side0 && !side1 && !side2)
             {
+                Debug.Log("Triangle is entirely on the negative side");
                 AddTriangle(negVertices, negTriangles, negUVs, v0, v1, v2, uv0, uv1, uv2);
             }
             // Triangle intersects the plane and needs to be split
             else
             {
+                Debug.Log("Triangle intersects the plane and needs to be split");
                 // Split triangle based on the plane and add to respective sides
                 SplitTriangle(v0, v1, v2, uv0, uv1, uv2, side0, side1, side2, plane, 
                     posVertices, posTriangles, posUVs, negVertices, negTriangles, negUVs);

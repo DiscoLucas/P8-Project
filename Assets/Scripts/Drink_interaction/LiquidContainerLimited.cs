@@ -17,6 +17,7 @@ namespace Assets.Scripts.Drink_interaction
         [SerializeField]
         protected Color outputColor = Color.white;
         protected int orderCounter = 0;
+        public GlassType glassType;
 
         public override void AddIngredient(IngredientBase ingredient, float inputAmount)
         {
