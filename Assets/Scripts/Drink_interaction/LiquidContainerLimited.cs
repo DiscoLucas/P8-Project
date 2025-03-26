@@ -13,6 +13,8 @@ namespace Assets.Scripts.Drink_interaction
     public class LiquidContainerLimited : LiquidContainer
     {
         protected int lastCheckColorCount = 0;
+
+        [SerializeField]
         protected Color outputColor = Color.white;
         protected int orderCounter = 0;
         public GlassType glassType;
@@ -80,32 +82,40 @@ namespace Assets.Scripts.Drink_interaction
             List<string> ingredientNames = new List<string>();
             IngredientBase pouredMixture = new IngredientBase("", 0, IngredientType.MixedLiquid, Color.clear);
             Color objectColor = new Color(0, 0, 0, 0);
+            Vector4 sum= new Vector4(0, 0, 0, 0);
             foreach (var kvp in ingredients)
             {
+                Debug.Log(kvp.Value.Name);
                 IngredientBase ingredient = kvp.Value;
                 float proportion = ingredient.Amount / totalCurrentLiquid;
                 float amountToPour = actualPouredAmount * proportion;
 
-                if (amountToPour > 0)
+                
+                Debug.Log(kvp.Value.Amount);
+                SerializedDictionary<string, IngredientBase> ingredientsList = pouredMixture.ingredients;
+                if (ingredientsList.ContainsKey(ingredient.Name))
                 {
-                    SerializedDictionary<string, IngredientBase> ingredientsList = pouredMixture.ingredients;
-                    if (ingredientsList.ContainsKey(ingredient.Name))
-                    {
-                        ingredientsList[ingredient.Name].Amount += amountToPour;
-                    }
-                    else
-                    {
-                        IngredientBase ind = ingredient.copy();
-                        ingredientsList.Add(ind.Name,ind);
-                    }
-
-                    ingredientNames.Add(ingredient.Name);
-                    ingredient.Amount -= amountToPour;
-                    ingredient.ingredients = ingredientsList;
-                    objectColor += new Color(ingredient.Color.r / ingredients.Count, ingredient.Color.g / ingredients.Count, ingredient.Color.b / ingredients.Count, 1);
+                    ingredientsList[ingredient.Name].Amount += amountToPour;
                 }
+                else
+                {
+                    IngredientBase ind = ingredient.copy();
+                    ingredientsList.Add(ind.Name,ind);
+                }
+
+                ingredientNames.Add(ingredient.Name);
+                ingredient.Amount -= amountToPour;
+                ingredient.ingredients = ingredientsList;
+                    Debug.Log( " color : "+ kvp.Value.Color + " of " + kvp.Value.Name);
+                sum = new Vector4(sum.x + ingredient.Color.r*(kvp.Value.Amount/fillAmount)
+                , sum.y + ingredient.Color.g*(kvp.Value.Amount/fillAmount)
+                , sum.z + ingredient.Color.b*(kvp.Value.Amount/fillAmount)
+                , sum.w + ingredient.Color.a*(kvp.Value.Amount/fillAmount)
+                );
+               
             }
-            pouredMixture.Color = objectColor;
+            Debug.Log(sum);
+            pouredMixture.Color = new Color(sum.x,sum.y,sum.z,sum.w);
             fillAmount -= actualPouredAmount;
 
             pouredMixture.Name = string.Join(", ", ingredientNames.Take(3));
@@ -124,6 +134,7 @@ namespace Assets.Scripts.Drink_interaction
                 lastCheckColorCount = ingredients.Count;
                 IngredientBase mix = createPouredMixture(0);
                 outputColor = mix.Color;
+                Debug.Log(outputColor.ToString());
             }
             return outputColor;
         }
