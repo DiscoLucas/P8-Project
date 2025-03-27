@@ -37,21 +37,25 @@ public class TrafficManager : MonoBehaviour
     {
         if (Time.time >= nextSpawnTime && activeCars.Count < maxCars)
         {
+            Debug.Log("Spawning car");
             SpawnCar();
             SetNextSpawnTime();
         }
         // remove cars that have reached their destination
-        CleanupCars();
+        //CleanupCars();
     }
 
     private void SetNextSpawnTime()
     {
         nextSpawnTime = Time.time + Random.Range(minTimeBetweenSpawns, maxTimeBetweenSpawns);
+        Debug.Log("Next spawn time: " + nextSpawnTime);
     }
 
     private void SpawnCar()
     {
         Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
+
+        //Debug.Log("Spawning car at " + spawnPoint.position);
 
         // Select the car type
         GameObject prefabToSpawn;
@@ -73,6 +77,7 @@ public class TrafficManager : MonoBehaviour
         
         // spawn the car
         GameObject carObject = Instantiate(prefabToSpawn, spawnPoint.position, spawnPoint.rotation);
+        
         TrafficCar car = carObject.GetComponent<TrafficCar>();
 
         if (car == null)

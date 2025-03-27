@@ -21,10 +21,17 @@ public class TrafficLight : MonoBehaviour
     {
         try 
         {
-        greenLight = gameObject.GetNamedChild("Green Light").GetComponent<Light>();
-        yellowLight = gameObject.GetNamedChild("Yellow Light").GetComponent<Light>();
-        redLight = gameObject.GetNamedChild("Red Light").GetComponent<Light>();
-        lightAvailable = true;
+        greenLight = transform.Find("Green Light")?.GetComponent<Light>();
+        yellowLight = transform.Find("Yellow Light")?.GetComponent<Light>();
+        redLight = transform.Find("Red Light")?.GetComponent<Light>();
+        lightAvailable = greenLight != null && yellowLight != null && redLight != null;
+
+        if (lightAvailable)
+        {
+            greenLight.enabled = false;
+            yellowLight.enabled = false;
+            redLight.enabled = true;
+        }
         }
         catch (System.Exception e)
         {
