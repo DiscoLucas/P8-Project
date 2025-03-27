@@ -1,6 +1,7 @@
+using System.Collections;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : SingletonPersistent<GameManager>
 {
     public Condition condition { get; private set; }
 
@@ -15,6 +16,25 @@ public class GameManager : MonoBehaviour
     {
         
     }
+    /// <summary>
+    /// Removes a GameObject after a specified delay.
+    /// </summary>
+    /// <param name="target">The GameObject to remove.</param>
+    /// <param name="delay">The time in seconds to wait before removing the GameObject.</param>
+    public void RemoveAfterDelay(GameObject target, float delay)
+    {
+        StartCoroutine(RemoveCoroutine(target, delay));
+    }
+
+    private IEnumerator RemoveCoroutine(GameObject target, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (target != null)
+        {
+            Destroy(target);
+        }
+    }
+
 }
 
 public enum Condition

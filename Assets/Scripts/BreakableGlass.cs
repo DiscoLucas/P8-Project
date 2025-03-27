@@ -20,6 +20,8 @@ public class Glass : MonoBehaviour
     [SerializeField] private float explosionRadius = 1.5f; // Radius of explosion
     [SerializeField] private float upwardModifier = 0.4f; // Upward force bias
     [SerializeField] private AudioClip breakSound; // Optional sound effect
+
+    [SerializeField] private float deSpawnTime = 5f; // Time before despawning broken glass
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -55,6 +57,7 @@ public class Glass : MonoBehaviour
                 rb.AddTorque(Random.insideUnitSphere * hitForce);
 
             }
+            GameManager.Instance.RemoveAfterDelay(brokenGlass, deSpawnTime);
             Destroy(gameObject);
             Debug.Log("Glass broken!");
         }
