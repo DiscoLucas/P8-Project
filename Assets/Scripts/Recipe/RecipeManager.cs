@@ -129,7 +129,7 @@ public class RecipeManager : MonoBehaviour
 
 
         bool correctGlass = cocktailRecipe.glassType == currentGlass;
-        float totalScore =  calculateDrinkAccuracy(wrongIngredients.Count,idealNames.Count,timeTaken, cocktailRecipe.expectedTime, sumActualAmount,sumIdealAmount,mishandledIngredientCount,correctGlass, cocktailRecipe.maxScore);
+        float totalScore =  calculateDrinkScore(wrongIngredients.Count,idealNames.Count,timeTaken, cocktailRecipe.expectedTime, sumActualAmount,sumIdealAmount,mishandledIngredientCount,correctGlass, cocktailRecipe.maxScore);
 
         Debug.Log("========== DRINK MIX REPORT ==========");
         Debug.Log($"Ideal Ingredients: [{string.Join(", ", idealList.Select(i => $"{i.Name} ({i.Amount})"))}]");
@@ -147,7 +147,7 @@ public class RecipeManager : MonoBehaviour
         return totalScore;
     }
 
-    public float calculateDrinkAccuracy(int wrongIngredients, int idealIngredients, float timeTaken, float expectedTime, float actualAmount, float idealAmount, int mishandledIngredientCount,bool correctGlass, float maxScore)
+    public float calculateDrinkScore(int wrongIngredients, int idealIngredients, float timeTaken, float expectedTime, float actualAmount, float idealAmount, int mishandledIngredientCount,bool correctGlass, float maxScore)
     {
         float finalScore = maxScore;
         float ingredientPenalty = Mathf.Clamp(wrongIngredients * INGREDIENT_PENALTY_PER_MISS, 0f, MAX_INGREDIENT_PENALTY);
@@ -163,6 +163,22 @@ public class RecipeManager : MonoBehaviour
             timePenalty = Mathf.Clamp(overtimeRatio * 20f, 0f, MAX_POUR_PENALTY);
         }
         finalScore -= timePenalty;
+        if (!correctGlass)
+        {
+            finalScore -= 10f;
+        }
+        return Mathf.Max(finalScore, 0f);
+    }
+
+    public float calculateDrinkAccurary(int wrongIngredients, int idealIngredient, float actualAmount, float idealAmount, int mishandledIngredientCount, bool correctGlass)
+    {
+        float finalScore = 100f;
+        float ingredientPenalty = Mathf.Clamp(wrongIngredients * INGREDIENT_PENALTY_PER_MISS, 0f, MAX_INGREDIENT_PENALTY);
+        finalScore -= ingredientPenalty;
+        float mishandledPenalty = Mathf.Clamp(mishandledIngredientCount * 5f, 0f, MAX_INGREDIENT_PENALTY);
+        finalScore -= mishandledPenalty;
+        float pourPenalty = Mathf.Clamp((Mathf.Abs(actualAmount - idealAmount) / idealAmount) * POUR_PENALTY_FACTOR, 0f, MAX_POUR_PENALTY);
+        finalScore -= pourPenalty;
         if (!correctGlass)
         {
             finalScore -= 10f;
