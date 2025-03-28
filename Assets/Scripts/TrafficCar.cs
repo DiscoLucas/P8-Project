@@ -9,6 +9,7 @@ public class TrafficCar : MonoBehaviour
     [SerializeField] private float braking = 4f;
     [SerializeField] private float steeringSpeed = 3f;
     [SerializeField] private float lookAheadDistance = 10f;
+    [SerializeField] private float waypointReachedDistance = 3f;
     [SerializeField] private AudioSource engineSound;
     [SerializeField] private AudioSource hornSound;
     [SerializeField] private AudioSource sirenSound;
@@ -24,7 +25,7 @@ public class TrafficCar : MonoBehaviour
     public void Initialize(TrafficManager manager, List<Transform> path, bool specialVehicle)
     {
         trafficManager = manager;
-        waypoints = path;
+        waypoints = new List<Transform>(path); // Create a copy of the waypoints
         isSpecialVehicle = specialVehicle;
         targetSpeed = specialVehicle ? specialVehicleSpeed : regularSpeed;
         
@@ -32,9 +33,10 @@ public class TrafficCar : MonoBehaviour
         if (rb == null) {
             rb = gameObject.AddComponent<Rigidbody>();
             rb.mass = 1000f;
-            rb.drag = 1f;
-            rb.angularDrag = 5f;
+            rb.linearDamping = 1f;
+            rb.angularDamping = 5f;
             rb.interpolation = RigidbodyInterpolation.Interpolate;
+            rb.useGravity = false;
         }
         
         // Start engine sounds
@@ -56,7 +58,7 @@ public class TrafficCar : MonoBehaviour
         float distanceToWaypoint = directionToWaypoint.magnitude;
         
         // Check if we should move to next waypoint
-        if (distanceToWaypoint < 3f) {
+        if (distanceToWaypoint < waypointReachedDistance) {
             currentWaypointIndex++;
             
             // If we reached the last waypoint, destroy the car
@@ -70,10 +72,13 @@ public class TrafficCar : MonoBehaviour
         bool obstacle = CheckForObstacles();
         
         // Adjust target speed based on conditions
-        if (obstacle) {
+        if (obstacle) 
+        {
             targetSpeed = 0f;
             if (engineSound != null) engineSound.pitch = 0.6f;
-        } else {
+        } 
+        else 
+        {
             targetSpeed = isSpecialVehicle ? specialVehicleSpeed : regularSpeed;
             
             // Slow down for turns
@@ -106,16 +111,16 @@ public class TrafficCar : MonoBehaviour
                                                 steeringSpeed * Time.fixedDeltaTime);
             
             // Move forward
-            rb.velocity = transform.forward * currentSpeed;
+            rb.linearVelocity = transform.forward * currentSpeed;
         } else {
-            rb.velocity = Vector3.zero;
+            rb.linearVelocity = Vector3.zero;
         }
     }
     
     private bool CheckForObstacles() 
     {
         // Check for red lights
-        bool atRedLight = trafficManager.IsRedLightAtPosition(transform.position + transform.forward * lookAheadDistance);
+        bool atRedLight = trafficManager.IsRedLightAtPosition(transform.position + transform.forward * lookAheadDistance + transform.up * 5f);
         
         // Raycast to detect other cars
         bool carAhead = Physics.Raycast(transform.position, transform.forward, lookAheadDistance, LayerMask.GetMask("Car"));
