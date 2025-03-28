@@ -1,79 +1,130 @@
 using UnityEngine;
-using UnityEngine.AI;
+using System.Collections.Generic;
 
 public class TrafficCar : MonoBehaviour
 {
-    public NavMeshAgent agent;
     [SerializeField] private float regularSpeed = 8f;
     [SerializeField] private float specialVehicleSpeed = 12f;
-    private float stoppingDistance;
-    [SerializeField] private float detectionRadius = 10f;
+    [SerializeField] private float acceleration = 2f;
+    [SerializeField] private float braking = 4f;
+    [SerializeField] private float steeringSpeed = 3f;
+    [SerializeField] private float lookAheadDistance = 10f;
+    [SerializeField] private float waypointReachedDistance = 3f;
     [SerializeField] private AudioSource engineSound;
     [SerializeField] private AudioSource hornSound;
     [SerializeField] private AudioSource sirenSound;
 
     private TrafficManager trafficManager;
-    private Transform destination;
-    private Transform targetDespawnPoint;
+    private List<Transform> waypoints = new List<Transform>();
+    private int currentWaypointIndex = 0;
+    private float currentSpeed = 0f;
+    private float targetSpeed;
     private bool isSpecialVehicle;
-    private float currentSpeed;
-    private bool isAtRedLight;
+    private Rigidbody rb;
 
-    /// <summary>
-    /// Initializes the car with the given parameters
-    /// </summary>
-    /// <param name="manager">Reference to the traffic manager, spawning the car</param>
-    /// <param name="despawnPoint">The final point that the car will despawn at.</param>
-    /// <param name="isSpecialVehicle">Enables emergency vehicle behaviors such as sirenes.</param>
-    public void Initialize(TrafficManager manager, Transform despawnPoint, bool isSpecialVehicle)
+    public void Initialize(TrafficManager manager, List<Transform> path, bool specialVehicle)
     {
-        agent = GetComponent<NavMeshAgent>();
-        stoppingDistance = agent.stoppingDistance;
-        agent.speed = currentSpeed;
         trafficManager = manager;
-        targetDespawnPoint = despawnPoint;
-        this.isSpecialVehicle = isSpecialVehicle;
-        currentSpeed = isSpecialVehicle ? specialVehicleSpeed : regularSpeed;
-        agent.destination = targetDespawnPoint.position;
-        engineSound.Play();
-
-        if (isSpecialVehicle && sirenSound != null)
-        {
-            sirenSound.Play();
+        waypoints = new List<Transform>(path); // Create a copy of the waypoints
+        isSpecialVehicle = specialVehicle;
+        targetSpeed = specialVehicle ? specialVehicleSpeed : regularSpeed;
+        
+        rb = GetComponent<Rigidbody>();
+        if (rb == null) {
+            rb = gameObject.AddComponent<Rigidbody>();
+            rb.mass = 1000f;
+            rb.linearDamping = 1f;
+            rb.angularDamping = 5f;
+            rb.interpolation = RigidbodyInterpolation.Interpolate;
+            rb.useGravity = false;
         }
         
+        // Start engine sounds
+        if (engineSound != null) engineSound.Play();
+        if (isSpecialVehicle && sirenSound != null) sirenSound.Play();
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
-        if (destination == null)
-        {
+        if (waypoints.Count == 0 || currentWaypointIndex >= waypoints.Count)
             return;
-        }
 
-        // Check for red lights ahead
-        isAtRedLight = trafficManager.IsRedLightAtPosition(transform.position + transform.forward * detectionRadius);
-        // Check for cars ahead
-        bool carAhead = Physics.Raycast(transform.position, transform.forward, stoppingDistance, LayerMask.GetMask("Car"));
-
-        if (!isAtRedLight && !carAhead)
-        {
-            agent.speed = regularSpeed;
-            agent.SetDestination(destination.position);
-
-            // Occasionally honk the horn if it's a special vehicle
-            if (isSpecialVehicle && hornSound != null && Random.value < 0.001f)
-            {
-                hornSound.Play();
+        // Get current target waypoint
+        Transform targetWaypoint = waypoints[currentWaypointIndex];
+        
+        // Calculate distances and directions
+        Vector3 directionToWaypoint = targetWaypoint.position - transform.position;
+        directionToWaypoint.y = 0; // Keep on same vertical plane
+        float distanceToWaypoint = directionToWaypoint.magnitude;
+        
+        // Check if we should move to next waypoint
+        if (distanceToWaypoint < waypointReachedDistance) {
+            currentWaypointIndex++;
+            
+            // If we reached the last waypoint, destroy the car
+            if (currentWaypointIndex >= waypoints.Count) {
+                Destroy(gameObject);
+                return;
             }
         }
-        else
+        
+        // Check for obstacles
+        bool obstacle = CheckForObstacles();
+        
+        // Adjust target speed based on conditions
+        if (obstacle) 
         {
-            // stopped at traffic light or car ahead
-            agent.speed = 0f; // todo: change this to set a temporary destination behind the car ahead or light
+            targetSpeed = 0f;
+            if (engineSound != null) engineSound.pitch = 0.6f;
+        } 
+        else 
+        {
+            targetSpeed = isSpecialVehicle ? specialVehicleSpeed : regularSpeed;
+            
+            // Slow down for turns
+            if (currentWaypointIndex < waypoints.Count - 1) {
+                Vector3 nextDirection = waypoints[currentWaypointIndex+1].position - targetWaypoint.position;
+                float turnAngle = Vector3.Angle(directionToWaypoint, nextDirection);
+                if (turnAngle > 45f) {
+                    targetSpeed *= 0.5f; // Slow down for sharp turns
+                }
+            }
+        }
+        
+        // Smoothly adjust speed
+        if (currentSpeed < targetSpeed) {
+            currentSpeed = Mathf.Min(currentSpeed + acceleration * Time.fixedDeltaTime, targetSpeed);
+        } else if (currentSpeed > targetSpeed) {
+            currentSpeed = Mathf.Max(currentSpeed - braking * Time.fixedDeltaTime, targetSpeed);
+        }
+        
+        // Adjust engine sound based on speed
+        if (engineSound != null) {
+            engineSound.pitch = 0.6f + (currentSpeed / regularSpeed) * 0.6f;
+        }
+        
+        // Apply movement
+        if (currentSpeed > 0.1f) {
+            // Steering behavior to align with waypoint direction
+            Quaternion targetRotation = Quaternion.LookRotation(directionToWaypoint);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 
+                                                steeringSpeed * Time.fixedDeltaTime);
+            
+            // Move forward
+            rb.linearVelocity = transform.forward * currentSpeed;
+        } else {
+            rb.linearVelocity = Vector3.zero;
         }
     }
-
     
+    private bool CheckForObstacles() 
+    {
+        // Check for red lights
+        bool atRedLight = trafficManager.IsRedLightAtPosition(transform.position + transform.forward * lookAheadDistance + transform.up * 5f);
+        
+        // Raycast to detect other cars
+        bool carAhead = Physics.Raycast(transform.position, transform.forward, lookAheadDistance, LayerMask.GetMask("Car"));
+        
+        return atRedLight || carAhead;
+    }
 }
