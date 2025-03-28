@@ -29,7 +29,7 @@ public class TrafficManager : MonoBehaviour
         {
             light.Initialize();
         }
-        SetNextSpawnTime();
+        SpawnCar();
     }
 
     // Update is called once per frame
@@ -44,6 +44,8 @@ public class TrafficManager : MonoBehaviour
         // remove cars that have reached their destination
         //CleanupCars();
     }
+
+    
 
     private void SetNextSpawnTime()
     {
@@ -89,7 +91,19 @@ public class TrafficManager : MonoBehaviour
         car.Initialize(this, destinationPoints[Random.Range(0, destinationPoints.Count)], isSpecialVehicle);
         activeCars.Add(car);
     }
+
+
+List<Transform> GeneratePathForCar(Transform startPoint) 
+{
+    List<Transform> path = new List<Transform>();
+    // Add waypoints along the route
+    // ...
+    // Add despawn point as final waypoint
+    path.Add(FindClosestDespawnPoint(startPoint));
+    return path;
+}
     
+    /*
     private void CleanupCars()
     {
         List<TrafficCar> carsToRemove = new List<TrafficCar>();
@@ -108,7 +122,7 @@ public class TrafficManager : MonoBehaviour
         }
         
     }
-
+*/
     public bool IsRedLightAtPosition(Vector3 position, float checkDistance = 5f)
     {
         foreach (var light in trafficLights)
