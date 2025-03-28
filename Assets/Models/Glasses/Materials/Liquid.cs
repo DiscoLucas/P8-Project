@@ -16,6 +16,8 @@ public class Liquid : MonoBehaviour
     [SerializeField] public Color DrinkColor; // Color of the liquid
     [SerializeField] public LiquidContainerLimited liquidProperty; // Reference to the liquid container
     public float fillAmount = 0.5f; // Current fill amount (0 to 1)
+
+    public float fillOffset = 2; // Offset for fill amount
     public float fillAmountLerpMax = 1; // Maximum fill amount for lerping
     public float fillAmountLerpMin = 0; // Minimum fill amount for lerping
     float fillAmountScaled; // Scaled fill amount based on lerp values
@@ -24,7 +26,8 @@ public class Liquid : MonoBehaviour
     [Range(0, 1)] public float CompensateShapeAmount; // Compensation for shape deformation
     [SerializeField] Mesh mesh; // Mesh of the liquid object
     [SerializeField] Renderer rend; // Renderer for the liquid object
-
+    [SerializeField] private bool isCone = false; // True if the glass is a cone, false if it's a cylinder
+    [SerializeField] private float coneFillPower = 1.5f;
     // Variables for tracking position, velocity, and wobble
     Vector3 pos;
     Vector3 lastPos;
@@ -40,7 +43,7 @@ public class Liquid : MonoBehaviour
     float time = 0.5f; // Time tracker for wobble effect
     Vector3 comp; // Compensation vector for shape deformation
     MaterialPropertyBlock propBlock; // Material property block for shader updates
-
+    [SerializeField] Vector3 scaleRatios;
     // Cached values for optimization
     float cachedLowestY = float.MaxValue; // Cached lowest Y value of the mesh
     bool needsRecalculateLowestY = true; // Flag to recalculate the lowest Y value
@@ -52,12 +55,14 @@ public class Liquid : MonoBehaviour
         liquidProperty = GetComponentInParent<LiquidContainerLimited>(); // Get reference to the parent liquid container
         propBlock = new MaterialPropertyBlock(); // Initialize material property block
 
-        // Calculate scale ratios relative to the Y-axis
-      /*  scaleRatios = new Vector3(
-            transform.localScale.x / transform.localScale.y, // X relative to Y
-            1f, // Y relative to itself
-            transform.localScale.z / transform.localScale.y // Z relative to Y
-        );*/
+        // Get the extents of the mesh bounds and scale them by the transform's local scale
+        scaleRatios = Vector3.Scale(mesh.bounds.extents, transform.localScale);
+
+        if (scaleRatios == Vector3.zero)
+        {
+            Debug.LogWarning("Scale ratios are zero. Please check the mesh bounds.");
+            scaleRatios = new Vector3(1, 1, 1); // Default to (1, 1, 1) if zero
+        }
     }
 
     // Called when a value is changed in the inspector
@@ -93,6 +98,7 @@ public class Liquid : MonoBehaviour
         {
             DrinkColor = liquidProperty.getLiquidColor(); // Get the liquid color
             fillAmount = liquidProperty.FillPercentage(); // Get the fill percentage
+            Debug.Log("Fill amount: " + fillAmount.ToString()); // Log the fill amount
         }
 
         // Determine delta time based on the update mode
@@ -135,30 +141,42 @@ public class Liquid : MonoBehaviour
         // Get the world position of the mesh's center
         Vector3 worldPos = transform.TransformPoint(mesh.bounds.center);
 
+        float adjustedFillAmount = isCone && fillAmount != 0? Mathf.Pow(fillAmount, coneFillPower) : fillAmount;
+
         // Calculate the fill amount transformation
-        float transformFillAmount = -2 * fillAmount + 1;
+        float transformFillAmount = -fillOffset * adjustedFillAmount + 1;
+
+        // Calculate dot products for alignment
         float dotX = Mathf.Abs(Vector3.Dot(Vector3.up, transform.right));   // Alignment with X-axis
-        float dotY = Mathf.Abs(Vector3.Dot(Vector3.up.normalized, transform.up));      // Alignment with Y-axis
-        float dotZ = Mathf.Abs(Vector3.Dot(Vector3.up.normalized, transform.forward)); // Alignment with Z-axis
+        float dotY = Mathf.Abs(Vector3.Dot(Vector3.up, transform.up));      // Alignment with Y-axis
+        float dotZ = Mathf.Abs(Vector3.Dot(Vector3.up, transform.forward)); // Alignment with Z-axis
 
         // Normalize the dot products to ensure they sum to 1
         float totalDot = dotX + dotY + dotZ;
-        dotX /= totalDot;
-        dotY /= totalDot;
-        dotZ /= totalDot;
+        if (totalDot == 0)
+        {
+            Debug.LogWarning("TotalDot is zero. Falling back to equal distribution.");
+            dotX = dotY = dotZ = 1f / 3f; // Equal distribution
+        }
+        else
+        {
+            dotX /= totalDot;
+            dotY /= totalDot;
+            dotZ /= totalDot;
+        }
 
         // Lerp the scale ratios based on the alignment
         float scaledTransformFillAmount = 
-            (dotX * mesh.bounds.extents.x) +  // Contribution from X-axis
-            (dotY * mesh.bounds.extents.y) +  // Contribution from Y-axis
-            (dotZ * mesh.bounds.extents.z);   // Contribution from Z-axis
+            (dotX * scaleRatios.x) +  // Contribution from X-axis
+            (dotY * scaleRatios.y) +  // Contribution from Y-axis
+            (dotZ * scaleRatios.z);   // Contribution from Z-axis
 
-;
         transformFillAmount *= scaledTransformFillAmount; // Scale the fill amount
+
         // Adjust the compensation vector if needed
         if (CompensateShapeAmount > 0)
         {
-            Vector3 targetComp = worldPos - new Vector3(0, GetLowestPoint(), 0); 
+            Vector3 targetComp = worldPos - new Vector3(0, GetLowestPoint(), 0);
 
             if (deltaTime > 0)
             {
@@ -170,12 +188,12 @@ public class Liquid : MonoBehaviour
             }
 
             // Adjust the position based on the calculated "up" direction
-            pos = worldPos - transform.position - (Vector3.up * (transformFillAmount- (comp.y * CompensateShapeAmount)));
+            pos = worldPos - transform.position - (Vector3.up * (transformFillAmount - (comp.y * CompensateShapeAmount)));
         }
         else
         {
             // Adjust the position based on the calculated "up" direction
-            pos = worldPos - transform.position - (Vector3.up* transformFillAmount*transform.localScale.y);
+            pos = worldPos - transform.position - (Vector3.up * transformFillAmount * transform.localScale.y);
         }
 
         // Update the shader with the new position
@@ -246,31 +264,37 @@ public class Liquid : MonoBehaviour
     void OnDrawGizmos()
     {
         // Set the color for the gizmo
-        Gizmos.color = Color.red;
+        Gizmos.color = Color.cyan;
 
-        // Draw a sphere at the position of 'pos'
-        Gizmos.DrawSphere(transform.position + pos, 0.05f); // Adjust the size (0.05f) as needed
+        // Draw a box to represent the scaleRatios
+        if (scaleRatios != Vector3.zero)
+        {
+            // Calculate the center of the box
+            Vector3 boxCenter = transform.position;
 
-        // Optionally, draw a line from the object's position to 'pos'
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(transform.position, transform.position + pos);
+            // Use scaleRatios as the size of the box
+            Vector3 boxSize = scaleRatios * 2; // Multiply by 2 to represent extents as full size
+
+            // Draw the box
+            Gizmos.DrawWireCube(boxCenter, boxSize);
+        }
 
         // Visualize transform.position
         Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(transform.position, 0.05f); // Draw a yellow sphere at transform.position
+        Gizmos.DrawSphere(transform.position, 0.005f); // Draw a yellow sphere at transform.position
 
         // Visualize worldPos
         if (mesh != null)
         {
             Vector3 worldPos = transform.TransformPoint(mesh.bounds.center); // Calculate worldPos
             Gizmos.color = Color.green;
-            Gizmos.DrawSphere(worldPos, 0.05f); // Draw a green sphere at worldPos
+            Gizmos.DrawSphere(worldPos, 0.005f); // Draw a green sphere at worldPos
             Gizmos.DrawLine(transform.position, worldPos); // Draw a line from the object's position to worldPos
 
             // Visualize (worldPos - transform.position)
             Gizmos.color = Color.magenta;
             Vector3 offset = worldPos - transform.position;
-            Gizmos.DrawSphere(transform.position + offset, 0.05f); // Draw a magenta sphere at the offset position
+            Gizmos.DrawSphere(transform.position + offset, 0.005f); // Draw a magenta sphere at the offset position
             Gizmos.DrawLine(transform.position, transform.position + offset); // Draw a line to the offset position
         }
     }

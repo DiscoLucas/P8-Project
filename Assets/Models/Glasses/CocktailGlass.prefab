@@ -235,7 +235,7 @@ GameObject:
   - component: {fileID: 595639018323949352}
   - component: {fileID: 5955766301382303332}
   - component: {fileID: 5646212567129237630}
-  - component: {fileID: 7556654494760103638}
+  - component: {fileID: 7727275540566925897}
   m_Layer: 0
   m_Name: CocktailGlass
   m_TagString: Glass
@@ -253,7 +253,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.005, y: 1.743, z: -1.6}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.77112, y: 1.77112, z: 1.77112}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8840407543838338261}
@@ -281,6 +281,7 @@ MonoBehaviour:
   xrGrabInteractable: {fileID: 5955766301382303332}
   ingridentTextDisplay: {fileID: 1895218210500443096}
   outputColor: {r: 1, g: 1, b: 1, a: 1}
+  glassType: 0
 --- !u!54 &595639018323949352
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -289,7 +290,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5993190295414277689}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.2
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -349,7 +350,19 @@ MonoBehaviour:
       m_Calls: []
   m_FirstSelectEntered:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7727275540566925897}
+        m_TargetAssemblyTypeName: Glass, Assembly-CSharp
+        m_MethodName: SetCanBreak
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   m_LastSelectExited:
     m_PersistentCalls:
       m_Calls: []
@@ -451,7 +464,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.13, y: 0.15, z: 0.13}
   m_Center: {x: 0, y: 0.07, z: 0}
---- !u!114 &7556654494760103638
+--- !u!114 &7727275540566925897
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -460,10 +473,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 5993190295414277689}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c5eda1fefce1284496d67ca2bc8f1d0, type: 3}
+  m_Script: {fileID: 11500000, guid: 0ce8a7cd1ee7cc39ba008a6e596ccf25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DispensedObject: {fileID: 5993190295414277689}
+  rb: {fileID: 595639018323949352}
+  breakForce: 2.5
+  canBreak: 0
+  glassShatter: {fileID: 480192681678799797, guid: d576c4a0ae6a138408b90bc22bcd56ae, type: 3}
+  radialCuts: 5
+  heightCuts: 3
+  randomOffset: 0.1
+  explosionForce: 25
+  explosionRadius: 1.5
+  upwardModifier: 0.07
+  breakSound: {fileID: 0}
+  deSpawnTime: 30
 --- !u!1 &7981016853543206048
 GameObject:
   m_ObjectHideFlags: 0
@@ -698,8 +722,9 @@ MonoBehaviour:
   DrinkColor: {r: 1, g: 1, b: 1, a: 1}
   liquidProperty: {fileID: 7635783990638302592}
   fillAmount: 0
-  fillAmountLerpMax: 0.52
-  fillAmountLerpMin: 0.47
+  fillOffset: 2
+  fillAmountLerpMax: 1
+  fillAmountLerpMin: 0
   Recovery: 1
   Thickness: 1
   CompensateShapeAmount: 0

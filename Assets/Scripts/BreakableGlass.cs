@@ -9,7 +9,7 @@ public class Glass : MonoBehaviour
     public Rigidbody rb;
     Breakable breakable;
     public float breakForce = 1f;
-
+    public bool canBreak = false;
     public GameObject glassShatter;
 
     [Header("Breaking Settings")]
@@ -32,8 +32,8 @@ public class Glass : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Collision!: " + collision.gameObject.name);
-        if (collision.impulse.magnitude > breakForce)
+        Debug.Log("Collision!: " + collision.gameObject.name + " with force: " + collision.impulse.magnitude);
+        if (collision.impulse.magnitude > breakForce && canBreak)
         {
             //rb.AddForce(collision.impulse, ForceMode.Impulse);
             //breakable.Break(collision.contacts[0].point, collision.impulse.magnitude);
@@ -59,7 +59,7 @@ public class Glass : MonoBehaviour
             }
             GameManager.Instance.RemoveAfterDelay(brokenGlass, deSpawnTime);
             Destroy(gameObject);
-            Debug.Log("Glass broken!");
+            Debug.Log("Glass broken! with force: " + collision.impulse.magnitude);
         }
     }
 
@@ -67,5 +67,10 @@ public class Glass : MonoBehaviour
     void FixedUpdate()
     {
         
+    }
+
+    public void SetCanBreak(bool canBreak)
+    {
+        this.canBreak = canBreak;
     }
 }
