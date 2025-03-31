@@ -25,10 +25,12 @@ public class OrderManager : MonoBehaviour
     [Header("Order Generation Settings")]
     public Vector2 orderSpawnTimeRange = new Vector2(5f, 15f); // Min & Max time between orders
     public float doubleOrderChance = 0.3f; 
-
+    [SerializeField]
+    PhaseManager phaseManager;
     private void Start()
     {
         recipeManager = FindAnyObjectByType<RecipeManager>();
+        phaseManager = FindAnyObjectByType<PhaseManager>();
     }
 
     /// <summary>
@@ -57,7 +59,7 @@ public class OrderManager : MonoBehaviour
     /// </summary>
     public void finnishOrder(Order order, CustomerAgenet agent)
     {
-        CocktailRecipe recipe = recipeManager.recipes[order.recipieID];
+        CocktailRecipe recipe = phaseManager.getRecipe(order.recipieID);
         List<IngredientBase> ideal_List = recipe.ingredients.ToList();
         List<IngredientBase> order_List = order.containerLimited.getIngreidentsAsOrderedeList();
         float timeTaken = Time.timeSinceLevelLoad - order.startPoint;
@@ -101,7 +103,7 @@ public class OrderManager : MonoBehaviour
     {
         Transform spawnPoint = agent.destionation;
         string keyRecipe;
-        CocktailRecipe recipe = recipeManager.getRandomCocktailRecipe(out keyRecipe);
+        CocktailRecipe recipe = recipeManager.getCocktailRecipe(out keyRecipe);
         string orderName = recipe.Name +"#" +Mathf.FloorToInt((Time.timeSinceLevelLoad * 100));
 
         Order order = new Order(keyRecipe, orderName, spawnPoint);
@@ -121,6 +123,6 @@ public class OrderManager : MonoBehaviour
         currentOrderList.Add(orderName, order);
 
         agent.reachedDistation.RemoveAllListeners();
-        agent.startOrder(orderName, order);
+        //agent.startOrder(orderName, order);
     }
 }
