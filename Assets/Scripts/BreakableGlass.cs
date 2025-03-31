@@ -1,6 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
+using UnityEngine.Audio;
 
 //[RequireComponent(typeof(Rigidbody))]
 //[RequireComponent(typeof(MeshCollider))]
@@ -19,15 +20,23 @@ public class Glass : MonoBehaviour
     [SerializeField] private float explosionForce = 300f; // Force applied to pieces
     [SerializeField] private float explosionRadius = 1.5f; // Radius of explosion
     [SerializeField] private float upwardModifier = 0.4f; // Upward force bias
-    [SerializeField] private AudioClip breakSound; // Optional sound effect
 
     [SerializeField] private float deSpawnTime = 5f; // Time before despawning broken glass
-    
+    [Header("Audio")]
+    [SerializeField] private AudioClip breakSound; // Optional sound effect
+    [SerializeField] private float beackSoundMinPitch = 0.8f; // Minimum pitch for break sound
+    [SerializeField] private float breakSoundMaxPitch = 1.2f; // Maximum pitch for break sound
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         //rb = GetComponent<Rigidbody>();
         breakable = GetComponent<Breakable>();
+        AudioSource audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
     }
 
     void OnCollisionEnter(Collision collision)
@@ -59,6 +68,13 @@ public class Glass : MonoBehaviour
             }
             GameManager.Instance.RemoveAfterDelay(brokenGlass, deSpawnTime);
             Destroy(gameObject);
+            AudioSource audioSource = GetComponent<AudioSource>();
+            if (audioSource != null && breakSound != null)
+            {
+                audioSource.clip = breakSound;
+                audioSource.pitch = Random.Range(beackSoundMinPitch, breakSoundMaxPitch);
+                audioSource.Play();
+            }
             Debug.Log("Glass broken! with force: " + collision.impulse.magnitude);
         }
     }

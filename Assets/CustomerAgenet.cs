@@ -1,3 +1,4 @@
+using Assets.Scripts.Orders;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -34,7 +35,8 @@ public class CustomerAgenet : MonoBehaviour
     }
 
 
-    public void startOrder(){
+    public void startOrder(string orderName, Order order)
+    {
         
     }
     private void FixedUpdate()
