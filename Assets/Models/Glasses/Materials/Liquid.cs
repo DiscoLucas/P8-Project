@@ -98,7 +98,6 @@ public class Liquid : MonoBehaviour
         {
             DrinkColor = liquidProperty.getLiquidColor(); // Get the liquid color
             fillAmount = liquidProperty.FillPercentage(); // Get the fill percentage
-            Debug.Log("Fill amount: " + fillAmount.ToString()); // Log the fill amount
         }
 
         // Determine delta time based on the update mode

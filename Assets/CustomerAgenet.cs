@@ -33,6 +33,10 @@ public class CustomerAgenet : MonoBehaviour
         return (Vector3.Distance(destionation.position, transform.position) < minDistance);
     }
 
+
+    public void startOrder(){
+        
+    }
     private void FixedUpdate()
     {
         if (navMeshAgent.hasPath && nearDistination()) {
