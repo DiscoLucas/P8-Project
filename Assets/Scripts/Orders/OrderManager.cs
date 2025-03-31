@@ -113,7 +113,6 @@ public class OrderManager : MonoBehaviour
 
         GameObject deliverArea = Instantiate(deliverArea_Prefab, spawnPoint.position, Quaternion.identity);
         DeliverOrderArea deliverOrderArea = deliverArea.GetComponent<DeliverOrderArea>();
-
         deliverOrderArea.tex_feild = textProbemt;
         deliverOrderArea.order = order;
         deliverOrderArea.orderDeliverede.AddListener(finnishOrder);
@@ -122,5 +121,6 @@ public class OrderManager : MonoBehaviour
         currentOrderList.Add(orderName, order);
 
         agent.reachedDistation.RemoveAllListeners();
+        agent.startOrder(orderName, order);
     }
 }
