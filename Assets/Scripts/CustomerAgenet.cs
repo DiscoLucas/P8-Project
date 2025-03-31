@@ -18,32 +18,49 @@ public class CustomerAgenet : MonoBehaviour
     public UnityEvent<CustomerAgenet> reachedDistation;
     [SerializeField]
     Transform hand;
+    [SerializeField]
+    Animator animator; // Reference to the Animator component
+    public Transform target;
     public void Start()
     {
-        
+        if (animator == null)
+        {
+            animator = GetComponent<Animator>(); // Automatically get Animator if not assigned
+            if (animator == null)
+            {
+                Debug.LogError("Animator component is missing on the customer!");
+            }
+        }
     }
 
-    public void setDestionation(Transform destionation) {
+    public void setDestionation(Transform destionation)
+    {
         this.destionation = destionation;
         navMeshAgent.SetDestination(destionation.position);
     }
 
-    public bool nearDistination() {
-        if(destionation == null)
+    public bool nearDistination()
+    {
+        if (destionation == null)
             return false;
-        return (Vector3.Distance(destionation.position, transform.position) < minDistance);
+        else
+        return false;
+        //return (Vector3.Distance(destionation.position, transform.position) < minDistance);
+    }
+
+    private void FixedUpdate()
+    {
+        animator.SetFloat("WalkSpeed", navMeshAgent.velocity.magnitude/navMeshAgent.speed);
+        setDestionation(target);
+        if (navMeshAgent.hasPath && nearDistination())
+        {
+            reachedDistation.Invoke(this);
+        }
     }
 
 
     public void startOrder(string orderName, Order order)
     {
-        
-    }
-    private void FixedUpdate()
-    {
-        if (navMeshAgent.hasPath && nearDistination()) {
-            reachedDistation.Invoke(this);
-        }
     }
 
     public void AddObjectToHand(GameObject objectToHand)
@@ -85,12 +102,8 @@ public class CustomerAgenet : MonoBehaviour
         obj.transform.localRotation = Quaternion.identity;
     }
 
-
-
-
-    public void destoryAgent(CustomerAgenet agent) { 
+    public void destoryAgent(CustomerAgenet agent)
+    {
         Destroy(agent.gameObject);
     }
-
-
 }
