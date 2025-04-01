@@ -4,6 +4,9 @@ using UnityEngine;
 
 // Source https://github.com/geegaz/Unity-Workshop---Rope-physics/blob/main/Assets/Ropes/VerletRope/VerletRope.cs
 
+/// <summary>
+/// Implementation of a verlet-integration based rope physics system.
+/// </summary>
 public class VerletRope : MonoBehaviour
 {
     public int pointsNb = 20;
@@ -45,14 +48,17 @@ public class VerletRope : MonoBehaviour
 
     private LineRenderer line;
 
-    private void Awake() {
+        private void Awake() {
         line = GetComponent<LineRenderer>();
     }
 
-    private void Start() {
+        private void Start() {
         CreatePoints();
     }
 
+    /// <summary>
+    /// Updates the rope physics simulation and renders the rope.
+    /// </summary>
     private void FixedUpdate() {
         if (pointsNb > 1) {
             ApplyForces();
@@ -66,6 +72,9 @@ public class VerletRope : MonoBehaviour
             line.SetPositions(pos);
     }
 
+    /// <summary>
+    /// Creates the initial rope points and distributes them between the starting position and target position.
+    /// </summary>
     private void CreatePoints() {
         pos = new Vector3[pointsNb];
         prevPos = new Vector3[pointsNb];
@@ -85,6 +94,12 @@ public class VerletRope : MonoBehaviour
         if (line) line.positionCount = pointsNb;
     }
 
+    /// <summary>
+    /// Attaches a transform to a specific point on the rope.
+    /// </summary>
+    /// <param name="id">The index of the point to attach to.</param>
+    /// <param name="attach">The transform to attach to the point.</param>
+    /// <returns>The AttachedPoint object created or updated.</returns>
     public AttachedPoint AttachPoint(int id, Transform attach) {
         AttachedPoint newPoint = new AttachedPoint(id, attach);
         AttachedPoint point;
@@ -104,11 +119,19 @@ public class VerletRope : MonoBehaviour
         return newPoint;
     }
 
+    /// <summary>
+    /// Detaches a point from the rope using an AttachedPoint reference.
+    /// </summary>
+    /// <param name="point">The AttachedPoint to remove.</param>
     public void DetachPoint(AttachedPoint point) {
         attachedPoints.Remove(point);
         mass[point.id] = 1.0f;
     }
 
+    /// <summary>
+    /// Detaches a point from the rope using the point index.
+    /// </summary>
+    /// <param name="id">The index of the point to detach.</param>
     public void DetachPoint(int id) {
         foreach (AttachedPoint point in attachedPoints)
         {
@@ -119,6 +142,12 @@ public class VerletRope : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Finds the index of the rope point closest to the specified position.
+    /// </summary>
+    /// <param name="targetPos">The position to find the closest point to.</param>
+    /// <param name="range">Maximum search range. Points beyond this range will be ignored.</param>
+    /// <returns>The index of the closest point, or -1 if no point is within range.</returns>
     public int GetClosestPoint(Vector3 targetPos, float range = float.PositiveInfinity) {
         float distance;
         float distanceMin = range;
@@ -134,6 +163,15 @@ public class VerletRope : MonoBehaviour
         return pointMin;
     }
 
+    /// <summary>
+    /// Calculates the constraint forces between two points to maintain the desired distance.
+    /// </summary>
+    /// <param name="p1">Index of the first point.</param>
+    /// <param name="p2">Index of the second point.</param>
+    /// <param name="distance">The desired distance between points.</param>
+    /// <param name="constraint">Array to store the calculated constraint forces.</param>
+    /// <param name="useMass">Whether to consider point masses in the calculation.</param>
+    /// <returns>The difference factor between current and desired distance.</returns>
     private float GetConstraint(int p1, int p2, float distance, Vector3[] constraint, bool useMass = true) {
         Vector3 delta = pos[p2] - pos[p1];
         float length = delta.magnitude;
@@ -153,6 +191,9 @@ public class VerletRope : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Applies verlet integration to update point positions based on previous positions and forces.
+    /// </summary>
     private void ApplyVerlet() {
         Vector3 temp;
         for (int i = 0; i < pointsNb; i++) {
@@ -163,6 +204,9 @@ public class VerletRope : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Applies distance constraints between adjacent points and height constraints.
+    /// </summary>
     private void ApplyConstraints() {
         Vector3[] constraint = new Vector3[2];
         for (int iteration = 0; iteration < constraintDistanceIterations; iteration++) {
@@ -179,6 +223,9 @@ public class VerletRope : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Updates the positions of attached points and calculates forces between them.
+    /// </summary>
     private void ApplyAttach() {
         Vector3[] constraint = new Vector3[2];
         AttachedPoint previousPoint = null;
@@ -203,6 +250,9 @@ public class VerletRope : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Applies forces to attached rigidbodies.
+    /// </summary>
     private void ApplyForces() {
         Rigidbody body = null;
         foreach (AttachedPoint point in attachedPoints) {
@@ -216,6 +266,11 @@ public class VerletRope : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Calculates the inverse of a mass value, handling zero mass as a very small value.
+    /// </summary>
+    /// <param name="mass">The mass value to invert.</param>
+    /// <returns>The inverse of the mass value.</returns>
     private static float InverseMass(float mass) {
         return mass == 0.0f ? 0.00000001f : 1.0f / mass;
     }
