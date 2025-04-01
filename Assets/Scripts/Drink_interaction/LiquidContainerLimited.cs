@@ -25,6 +25,7 @@ namespace Assets.Scripts.Drink_interaction
         [Header("Garnishing")]
         public GameObject garnish = null;
         public Transform garnishPoint;
+        public bool hasGarnish = false;
 
 
         public void setGarnish(GameObject garnish)
@@ -34,8 +35,8 @@ namespace Assets.Scripts.Drink_interaction
             garnish.transform.SetParent(this.transform);
 
             //Orientation & Freezing
-            garnish.transform.position = garnishPoint.position;
-            garnish.transform.rotation = garnishPoint.rotation;
+            garnish.transform.SetParent(garnishPoint);
+            garnish.transform.localPosition = Vector3.zero;
 
             if(garnish.gameObject.TryGetComponent<XRGrabInteractable>(out XRGrabInteractable grab))
             {
@@ -53,8 +54,8 @@ namespace Assets.Scripts.Drink_interaction
 
         void OnCollisionEnter(Collision collision)
         {
-            if(collision.gameObject.tag == "Garnish")
-            setGarnish(collision.gameObject);
+            if(collision.gameObject.tag == "Garnish" && !hasGarnish)
+            setGarnish(collision.gameObject); hasGarnish = true;
         }
 
         public override void AddIngredient(IngredientBase ingredient, float inputAmount)
