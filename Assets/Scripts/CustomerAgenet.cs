@@ -6,16 +6,16 @@ using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Transformers;
 
-public class CustomerAgenet : MonoBehaviour
+public class CustomerAgent : MonoBehaviour
 {
     [SerializeField]
     NavMeshAgent navMeshAgent;
     [SerializeField]
-    public Transform destionation;
+    public Transform destination;
     [SerializeField]
     float minDistance = 0.2f;
     [SerializeField]
-    public UnityEvent<CustomerAgenet> reachedDistation;
+    public UnityEvent<CustomerAgent> reachedDestination;
     [SerializeField]
     Transform hand;
     [SerializeField]
@@ -33,15 +33,15 @@ public class CustomerAgenet : MonoBehaviour
         }
     }
 
-    public void setDestionation(Transform destionation)
+    public void setDestination(Transform destination)
     {
-        this.destionation = destionation;
-        navMeshAgent.SetDestination(destionation.position);
+        this.destination = destination;
+        navMeshAgent.SetDestination(destination.position);
     }
 
-    public bool nearDistination()
+    public bool nearDestination()
     {
-        if (destionation == null)
+        if (destination == null)
             return false;
         else
         return false;
@@ -51,10 +51,10 @@ public class CustomerAgenet : MonoBehaviour
     private void FixedUpdate()
     {
         animator.SetFloat("WalkSpeed", navMeshAgent.velocity.magnitude/navMeshAgent.speed);
-        setDestionation(target);
-        if (navMeshAgent.hasPath && nearDistination())
+        setDestination(target);
+        if (navMeshAgent.hasPath && nearDestination())
         {
-            reachedDistation.Invoke(this);
+            reachedDestination.Invoke(this);
         }
     }
 
@@ -102,7 +102,7 @@ public class CustomerAgenet : MonoBehaviour
         obj.transform.localRotation = Quaternion.identity;
     }
 
-    public void destoryAgent(CustomerAgenet agent)
+    public void destroyAgent(CustomerAgent agent)
     {
         Destroy(agent.gameObject);
     }
