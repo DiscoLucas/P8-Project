@@ -3,7 +3,10 @@ using AYellowpaper.SerializedCollections;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 namespace Assets.Scripts.Drink_interaction
 {
@@ -18,6 +21,41 @@ namespace Assets.Scripts.Drink_interaction
         protected Color outputColor = Color.white;
         protected int orderCounter = 0;
         public GlassType glassType;
+
+        [Header("Garnishing")]
+        public GameObject garnish = null;
+        public Transform garnishPoint;
+
+
+        public void setGarnish(GameObject garnish)
+        {
+            Debug.Log("Garnish set: " + garnish.name);
+            this.garnish = garnish;
+            garnish.transform.SetParent(this.transform);
+
+            //Orientation & Freezing
+            garnish.transform.position = garnishPoint.position;
+            garnish.transform.rotation = garnishPoint.rotation;
+
+            if(garnish.gameObject.TryGetComponent<XRGrabInteractable>(out XRGrabInteractable grab))
+            {
+                Destroy(grab);
+            }
+            if(garnish.gameObject.TryGetComponent<Rigidbody>(out Rigidbody rb))
+            {
+                Destroy(rb);
+            }
+            if(garnish.gameObject.TryGetComponent<Collider>(out Collider col))
+            {
+                Destroy(col);
+            }
+        }
+
+        void OnCollisionEnter(Collision collision)
+        {
+            if(collision.gameObject.tag == "Garnish")
+            setGarnish(collision.gameObject);
+        }
 
         public override void AddIngredient(IngredientBase ingredient, float inputAmount)
         {

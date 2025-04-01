@@ -352,9 +352,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 10758165fbbe8f045adfa8848d37a5be, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7989576239287781135}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 10758165fbbe8f045adfa8848d37a5be, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8764896761024105146}
     - targetCorrespondingSourceObject: {fileID: -6475698432325073768, guid: 10758165fbbe8f045adfa8848d37a5be, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5303706869827207620}
@@ -557,19 +554,9 @@ MonoBehaviour:
   xrGrabInteractable: {fileID: 0}
   ingridentTextDisplay: {fileID: 0}
   outputColor: {r: 1, g: 1, b: 1, a: 1}
---- !u!114 &8764896761024105146
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4864591048938316599}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c5eda1fefce1284496d67ca2bc8f1d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DispensedObject: {fileID: 4864591048938316599}
+  glassType: 0
+  garnish: {fileID: 0}
+  garnishPoint: {fileID: 0}
 --- !u!4 &5244916091845818765 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 10758165fbbe8f045adfa8848d37a5be, type: 3}
@@ -618,6 +605,7 @@ MonoBehaviour:
   DrinkColor: {r: 1, g: 1, b: 1, a: 1}
   liquidProperty: {fileID: 7989576239287781135}
   fillAmount: 0
+  fillOffset: 2
   fillAmountLerpMax: 0.596
   fillAmountLerpMin: 0.4
   Recovery: 1
@@ -625,3 +613,6 @@ MonoBehaviour:
   CompensateShapeAmount: 0
   mesh: {fileID: -8542463572726036090, guid: 10758165fbbe8f045adfa8848d37a5be, type: 3}
   rend: {fileID: 7341533911458504629}
+  isCone: 0
+  coneFillPower: 1.5
+  scaleRatios: {x: 0, y: 0, z: 0}
