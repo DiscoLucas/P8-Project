@@ -19,6 +19,7 @@ namespace Assets.Scripts.Ingridence
     public enum DrinkAction { 
         Shaked,
         Stirred,
+        Muddled,
         None
     }
 }

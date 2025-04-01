@@ -2,6 +2,7 @@ using Assets.Scripts.Drink_interaction;
 using Assets.Scripts.Ingridence;
 using Assets.Scripts.Orders;
 using AYellowpaper.SerializedCollections;
+using JetBrains.Annotations;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.XR.CoreUtils.Collections;
@@ -13,9 +14,8 @@ using UnityEngine.SocialPlatforms.Impl;
 /// </summary>
 public class RecipeManager : MonoBehaviour
 {
-    [SerializedDictionary("Key", "Cocktail Recipe")]
-    public SerializedDictionary<string, CocktailRecipe> recipes;
-
+    [SerializeField]
+    PhaseManager phaseManager;
     [SerializeField]
     float score = 100f;
     [SerializeField]
@@ -29,31 +29,18 @@ public class RecipeManager : MonoBehaviour
     [SerializeField]
     float MISHANDLED_INGREDIENT_PENALTY = 5f;
 
-    /// <summary>
-    /// Get a random cocktail recipe
-    /// </summary>
-    /// <param name="recipeKey">return the key of this recipe in the list</param>
-    /// <returns></returns>
-    public CocktailRecipe getRandomCocktailRecipe(out string recipeKey) {
-        int index = Random.Range(0, recipes.Count);
-        CocktailRecipe recipe = recipes.Values.ElementAt(index);
-        recipeKey = recipes.Keys.ElementAt(index);
-        return recipe;
+
+    void Start()
+    {
+        phaseManager = FindAnyObjectByType<PhaseManager>();
     }
 
-    /// <summary>
-    /// Get a random cocktail recipe based on the closest difficulty level.
-    /// </summary>
-    /// <param name="recipeKey">Returns the key of the selected recipe in the list.</param>
-    /// <param name="targetDifficulty">The target difficulty level to match.</param>
-    /// <returns>A cocktail recipe with the closest difficulty level.</returns>
-    public CocktailRecipe getRandomCocktailRecipe(out string recipeKey, float targetDifficulty) {
-        // Find the recipe with the closest difficulty to the targetDifficulty
-        var closestRecipe = recipes.OrderBy(r => Mathf.Abs(r.Value.diffuculty - targetDifficulty)).FirstOrDefault();
-
-        // Extract the recipe and its key
-        recipeKey = closestRecipe.Key;
-        return closestRecipe.Value;
+    public CocktailRecipe getCocktailRecipe(out string recipeKey){
+        SerializedDictionary<string, CocktailRecipe> phaseRecipes = phaseManager.getPhasRecipes();
+        int index = Random.Range(0, phaseRecipes.Count);
+        CocktailRecipe recipe = phaseRecipes.Values.ElementAt(index);
+        recipeKey = phaseRecipes.Keys.ElementAt(index);
+        return recipe;
     }
 
     /// <summary>
@@ -72,7 +59,7 @@ public class RecipeManager : MonoBehaviour
         totalDeviation = 0f;
         totalOverpour = 0f;
         totalUnderpour = 0f;
-        CocktailRecipe cocktailRecipe = recipes[recipeID];
+        CocktailRecipe cocktailRecipe = phaseManager.getRecipe(recipeID);
         var idealNames = new HashSet<string>(idealList.Select(i => i.Name));
         var actualNames = new HashSet<string>(actualList.Select(i => i.Name));
 

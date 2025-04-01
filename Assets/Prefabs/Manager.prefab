@@ -1,0 +1,332 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &352891363207671342
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4820238856807226183}
+  m_Layer: 0
+  m_Name: Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4820238856807226183
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 352891363207671342}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -18.177345, y: -6.08009, z: 5.683793}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7965337010203981227}
+  - {fileID: 4151206969001711725}
+  - {fileID: 1491446895076597607}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3824265777420112814
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1491446895076597607}
+  - component: {fileID: 3422246333768099530}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1491446895076597607
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3824265777420112814}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4820238856807226183}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3422246333768099530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3824265777420112814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37a484a113ba6df2280c7b4d444679a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1001 &2551983314127522080
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4820238856807226183}
+    m_Modifications:
+    - target: {fileID: 2641977030617088264, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: m_Name
+      value: RecepieManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611758375587118219, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.18792343
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611758375587118219, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.1282418
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611758375587118219, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.1098223
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611758375587118219, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611758375587118219, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611758375587118219, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611758375587118219, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611758375587118219, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611758375587118219, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611758375587118219, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.data[0].Key
+      value: sb_gin
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.data[1].Key
+      value: sb_vodks
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.data[2].Key
+      value: Den grumme
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.data[3].Key
+      value: Tissemanden
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.data[4].Key
+      value: sb_gin_small
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.data[0].Value.Name
+      value: Gin
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.data[1].Value.Name
+      value: Vodka
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.data[2].Value.Name
+      value: Den Gruumme martini
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.data[3].Value.Name
+      value: Tissemanden
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.data[4].Value.Name
+      value: Gin
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.data[0].Value.ingredients.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.data[1].Value.ingredients.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.data[2].Value.ingredients.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.data[3].Value.ingredients.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.data[4].Value.ingredients.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.data[0].Value.ingredients.Array.data[0].Name
+      value: Gin
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.data[1].Value.ingredients.Array.data[0].Name
+      value: Vodka
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.data[2].Value.ingredients.Array.data[0].Name
+      value: Vodka
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.data[2].Value.ingredients.Array.data[1].Name
+      value: Vermout
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.data[3].Value.ingredients.Array.data[0].Name
+      value: Vodka
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.data[3].Value.ingredients.Array.data[1].Name
+      value: Light Rum
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.data[4].Value.ingredients.Array.data[0].Name
+      value: Gin
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.data[1].Value.ingredients.Array.data[0].Amount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.data[2].Value.ingredients.Array.data[0].Amount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.data[2].Value.ingredients.Array.data[1].Amount
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.data[3].Value.ingredients.Array.data[0].Amount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.data[3].Value.ingredients.Array.data[1].Amount
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741289190899723749, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+      propertyPath: recipes._serializedList.Array.data[4].Value.ingredients.Array.data[0].Amount
+      value: 10
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+--- !u!4 &7965337010203981227 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5611758375587118219, guid: 6f47808ebc6128d4382fb357736e89cc, type: 3}
+  m_PrefabInstance: {fileID: 2551983314127522080}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4791813662979508368
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4820238856807226183}
+    m_Modifications:
+    - target: {fileID: 2447658782364286232, guid: 7c05c878172f62b4890684b9c42a8bd4, type: 3}
+      propertyPath: Agent_prefab
+      value: 
+      objectReference: {fileID: 1106221283152014824, guid: be31316aed02bfe45bb7639f1ffb67d0, type: 3}
+    - target: {fileID: 2447658782364286232, guid: 7c05c878172f62b4890684b9c42a8bd4, type: 3}
+      propertyPath: deliverySpawnPoints.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2447658782364286232, guid: 7c05c878172f62b4890684b9c42a8bd4, type: 3}
+      propertyPath: availableSpawnPoints.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5176128425498909050, guid: 7c05c878172f62b4890684b9c42a8bd4, type: 3}
+      propertyPath: m_Name
+      value: OrderManager (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8927257740950687997, guid: 7c05c878172f62b4890684b9c42a8bd4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.18792343
+      objectReference: {fileID: 0}
+    - target: {fileID: 8927257740950687997, guid: 7c05c878172f62b4890684b9c42a8bd4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.1282418
+      objectReference: {fileID: 0}
+    - target: {fileID: 8927257740950687997, guid: 7c05c878172f62b4890684b9c42a8bd4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.1098223
+      objectReference: {fileID: 0}
+    - target: {fileID: 8927257740950687997, guid: 7c05c878172f62b4890684b9c42a8bd4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8927257740950687997, guid: 7c05c878172f62b4890684b9c42a8bd4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8927257740950687997, guid: 7c05c878172f62b4890684b9c42a8bd4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8927257740950687997, guid: 7c05c878172f62b4890684b9c42a8bd4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8927257740950687997, guid: 7c05c878172f62b4890684b9c42a8bd4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8927257740950687997, guid: 7c05c878172f62b4890684b9c42a8bd4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8927257740950687997, guid: 7c05c878172f62b4890684b9c42a8bd4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7c05c878172f62b4890684b9c42a8bd4, type: 3}
+--- !u!4 &4151206969001711725 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8927257740950687997, guid: 7c05c878172f62b4890684b9c42a8bd4, type: 3}
+  m_PrefabInstance: {fileID: 4791813662979508368}
+  m_PrefabAsset: {fileID: 0}
