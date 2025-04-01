@@ -6,10 +6,10 @@ using TMPro;
 public class DeliverOrderArea : MonoBehaviour
 {
     private string glassTag = "Glass";
-    public UnityEvent<Order,CustomerAgenet> orderDeliverede = new UnityEvent<Order, CustomerAgenet>();
+    public UnityEvent<Order,CustomerAgent> orderDeliverede = new UnityEvent<Order, CustomerAgent>();
     public Order order;
     public GameObject tex_feild;
-    public CustomerAgenet agent;
+    public CustomerAgent agent;
     public TMP_Text text_title;
 
 

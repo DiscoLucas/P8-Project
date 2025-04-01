@@ -57,7 +57,7 @@ public class OrderManager : MonoBehaviour
     /// <summary>
     /// Finishes the given order and moves the agent to exit.
     /// </summary>
-    public void finnishOrder(Order order, CustomerAgenet agent)
+    public void finnishOrder(Order order, CustomerAgent agent)
     {
         CocktailRecipe recipe = phaseManager.getRecipe(order.recipieID);
         List<IngredientBase> ideal_List = recipe.ingredients.ToList();
@@ -70,9 +70,9 @@ public class OrderManager : MonoBehaviour
 
         agent.AddObjectToHand(order.containerLimited.gameObject);
 
-        agent.reachedDistation.RemoveAllListeners();
-        agent.reachedDistation.AddListener(agent.destoryAgent);
-        agent.setDestionation(agentEndPoint);
+        agent.reachedDestination.RemoveAllListeners();
+        agent.reachedDestination.AddListener(agent.destroyAgent);
+        agent.setDestination(agentEndPoint);
 
         availableSpawnPoints.Add(order.location);
         currentOrderList.Remove(order.orderID);
@@ -91,17 +91,17 @@ public class OrderManager : MonoBehaviour
         availableSpawnPoints.RemoveAt(0);
 
         GameObject agent = Instantiate(Agent_prefab, agentSpawnPoint.position, Quaternion.identity);
-        CustomerAgenet customerAgenet = agent.GetComponent<CustomerAgenet>();
-        customerAgenet.reachedDistation.AddListener(placeOrder);
-        customerAgenet.setDestionation(spawnPoint);
+        CustomerAgent customerAgenet = agent.GetComponent<CustomerAgent>();
+        customerAgenet.reachedDestination.AddListener(placeOrder);
+        customerAgenet.setDestination(spawnPoint);
     }
 
     /// <summary>
     /// Places an order at the customer's location.
     /// </summary>
-    public void placeOrder(CustomerAgenet agent)
+    public void placeOrder(CustomerAgent agent)
     {
-        Transform spawnPoint = agent.destionation;
+        Transform spawnPoint = agent.destination;
         string keyRecipe;
         CocktailRecipe recipe = recipeManager.getCocktailRecipe(out keyRecipe);
         string orderName = recipe.Name +"#" +Mathf.FloorToInt((Time.timeSinceLevelLoad * 100));
@@ -122,7 +122,7 @@ public class OrderManager : MonoBehaviour
 
         currentOrderList.Add(orderName, order);
 
-        agent.reachedDistation.RemoveAllListeners();
+        agent.reachedDestination.RemoveAllListeners();
         //agent.startOrder(orderName, order);
     }
 }
