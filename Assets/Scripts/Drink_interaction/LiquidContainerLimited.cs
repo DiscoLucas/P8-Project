@@ -30,6 +30,10 @@ namespace Assets.Scripts.Drink_interaction
 
         public void setGarnish(GameObject garnish)
         {
+            IngredientBase ib = new IngredientBase(garnish.name, 1, IngredientType.Garnish, Color.white);
+            ib.solid = true;
+            AddIngredient(ib, 1); //This is white for now, change later
+
             Debug.Log("Garnish set: " + garnish.name);
             this.garnish = garnish;
             garnish.transform.SetParent(this.transform);

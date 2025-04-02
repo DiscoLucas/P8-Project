@@ -22,8 +22,10 @@ namespace Assets.Scripts.Ingridence
         public SerializedDictionary<string, IngredientBase> ingredients;
 
 
-        public IngredientBase(string name, float amount, IngredientType type, Color color, float alcoholContent = 0,int order = 0, DrinkAction action = DrinkAction.None)
+        public IngredientBase(string name, float amount, IngredientType type, Color color, float alcoholContent = 0,int order = 0, DrinkAction action = DrinkAction.None, bool solid = false)
         {
+            AlcoholContent = alcoholContent;
+            this.solid = solid;
             Name = name;
             Amount = amount;
             Type = type;
