@@ -853,8 +853,8 @@ MonoBehaviour:
   m_Camera: {fileID: 3877471226887194444}
   m_OriginBaseGameObject: {fileID: 1342056510139338801}
   m_CameraFloorOffsetObject: {fileID: 1608998513988734459}
-  m_RequestedTrackingOriginMode: 2
-  m_CameraYOffset: 0.5
+  m_RequestedTrackingOriginMode: 1
+  m_CameraYOffset: 1.4
 --- !u!143 &6605853394977691493
 CharacterController:
   m_ObjectHideFlags: 0
@@ -5164,7 +5164,7 @@ MonoBehaviour:
   m_AngleStabilization: 20
   m_SmoothOffset: 0
   m_SmoothingSpeed: 10
-  m_UseDistanceBasedVelocityScaling: 0
+  m_UseDistanceBasedVelocityScaling: 1
   m_UseMomentum: 1
   m_MomentumDecayScale: 1.25
   m_ZVelocityRampThreshold: 0.3
@@ -6426,7 +6426,7 @@ MonoBehaviour:
   m_AngleStabilization: 20
   m_SmoothOffset: 0
   m_SmoothingSpeed: 10
-  m_UseDistanceBasedVelocityScaling: 0
+  m_UseDistanceBasedVelocityScaling: 1
   m_UseMomentum: 1
   m_MomentumDecayScale: 1.25
   m_ZVelocityRampThreshold: 0.3
