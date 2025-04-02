@@ -20,6 +20,7 @@ namespace Assets.Scripts.Ingridence
         Shaked,
         Stirred,
         Muddled,
+        Garnished,
         None
     }
 }

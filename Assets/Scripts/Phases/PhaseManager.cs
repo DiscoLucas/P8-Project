@@ -35,8 +35,13 @@ public class PhaseManager : MonoBehaviour
         return phases[currentPhaseIndex].recipes;
     }
 
-    public void updatePhaseIndex(){
+    public bool updatePhaseIndex(){
         currentPhaseIndex++;
+        if(currentPhaseIndex >= phases.Length ){
+            currentPhaseIndex = phases.Length - 1;
+            return false; 
+        }
+        return true;
     }
 
 }

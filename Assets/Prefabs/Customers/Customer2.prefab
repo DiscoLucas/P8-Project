@@ -386,14 +386,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   navMeshAgent: {fileID: 7324230775301582768}
-  destionation: {fileID: 0}
-  minDistance: 0.2
-  reachedDistation:
+  destination: {fileID: 0}
+  minDistance: 2
+  reachedDestination:
     m_PersistentCalls:
       m_Calls: []
   hand: {fileID: 8998618867794758342}
   animator: {fileID: 0}
-  target: {fileID: 0}
+  model: {fileID: 0}
+  modelRoationSpeed: 10
 --- !u!95 &9173985350328718180
 Animator:
   serializedVersion: 7

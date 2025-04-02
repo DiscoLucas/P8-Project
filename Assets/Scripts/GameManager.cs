@@ -4,7 +4,8 @@ using UnityEngine;
 public class GameManager : SingletonPersistent<GameManager>
 {
     public Condition condition { get; private set; }
-
+    [Header("Game Settings")]
+    public bool neverEnd = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -35,7 +36,13 @@ public class GameManager : SingletonPersistent<GameManager>
         }
     }
 
+    public void endGame(){
+        Debug.Log("Game Over!");
+    }
+
 }
+
+
 
 public enum Condition
 {

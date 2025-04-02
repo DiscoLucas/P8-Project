@@ -413,11 +413,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   navMeshAgent: {fileID: 2333670235794293887}
-  destionation: {fileID: 0}
-  minDistance: 0.2
-  reachedDistation:
+  destination: {fileID: 0}
+  minDistance: 2
+  reachedDestination:
     m_PersistentCalls:
       m_Calls: []
   hand: {fileID: 2620692574038630882}
   animator: {fileID: 0}
-  target: {fileID: 0}
+  model: {fileID: 0}
+  modelRoationSpeed: 10
