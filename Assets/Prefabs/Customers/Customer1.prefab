@@ -694,9 +694,9 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 5973516197543299997}
   m_SourcePrefab: {fileID: 100100000, guid: b7c80acd732f5b141a7c78ca7ad0a0e9, type: 3}
---- !u!4 &5688647290930848208 stripped
+--- !u!4 &4611604684446385687 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: -8269195505564239483, guid: b7c80acd732f5b141a7c78ca7ad0a0e9, type: 3}
+  m_CorrespondingSourceObject: {fileID: -274580028412813758, guid: b7c80acd732f5b141a7c78ca7ad0a0e9, type: 3}
   m_PrefabInstance: {fileID: 4886345043989616725}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &5696667859098330372 stripped
@@ -739,14 +739,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   navMeshAgent: {fileID: 709738229241818858}
-  destionation: {fileID: 0}
-  minDistance: 0.2
-  reachedDistation:
+  destination: {fileID: 0}
+  minDistance: 2
+  reachedDestination:
     m_PersistentCalls:
       m_Calls: []
-  hand: {fileID: 5688647290930848208}
+  hand: {fileID: 4611604684446385687}
   animator: {fileID: 0}
-  target: {fileID: 0}
+  model: {fileID: 0}
+  modelRoationSpeed: 10
 --- !u!95 &5973516197543299997
 Animator:
   serializedVersion: 7

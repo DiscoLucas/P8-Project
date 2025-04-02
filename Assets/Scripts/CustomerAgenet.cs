@@ -20,7 +20,11 @@ public class CustomerAgent : MonoBehaviour
     Transform hand;
     [SerializeField]
     Animator animator; // Reference to the Animator component
-    public Transform target;
+    [SerializeField]
+    GameObject model;
+    [SerializeField]
+    float modelRoationSpeed = 10f;
+
     public void Start()
     {
         if (animator == null)
@@ -30,6 +34,11 @@ public class CustomerAgent : MonoBehaviour
             {
                 Debug.LogError("Animator component is missing on the customer!");
             }
+        }
+
+        if(model == null)
+        {
+            model = gameObject; 
         }
     }
 
@@ -43,24 +52,59 @@ public class CustomerAgent : MonoBehaviour
     {
         if (destination == null)
             return false;
-        else
-        return false;
-        //return (Vector3.Distance(destionation.position, transform.position) < minDistance);
+        return (Vector3.Distance(destination.position, transform.position) < minDistance);
     }
 
     private void FixedUpdate()
     {
         animator.SetFloat("WalkSpeed", navMeshAgent.velocity.magnitude/navMeshAgent.speed);
-        setDestination(target);
+        
         if (navMeshAgent.hasPath && nearDestination())
         {
+
+            Vector3 directionToDestination = (destination.position - transform.position).normalized;
+            StartCoroutine(RotateOverTime(directionToDestination));
+            Debug.Log("Reached destination: " + destination.name);
             reachedDestination.Invoke(this);
+        }
+        else if(navMeshAgent.hasPath)
+        {
+            if (navMeshAgent.velocity.sqrMagnitude > 0.01f)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(navMeshAgent.velocity.normalized);
+                model.transform.rotation = Quaternion.Slerp(model.transform.rotation, targetRotation, Time.deltaTime * modelRoationSpeed);
+            }
         }
     }
 
+    private IEnumerator RotateOverTime(Vector3 direction)
+    {
+        // Only get the Y rotation we want to face
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        float elapsedTime = 0f;
+        Quaternion startRotation = model.transform.rotation;
+        
+        while (elapsedTime < 1f)
+        {
+            elapsedTime += Time.deltaTime * modelRoationSpeed;
+            // Create new rotation that only affects Y axis
+            Quaternion newRotation = Quaternion.Slerp(startRotation, targetRotation, elapsedTime);
+            model.transform.rotation = Quaternion.Euler(0, newRotation.eulerAngles.y, 0);
+            yield return null;
+        }
+
+        // Final rotation - ensure we're exactly at target Y rotation
+        model.transform.rotation = Quaternion.Euler(0, targetRotation.eulerAngles.y, 0);
+    }
+    
 
     public void startOrder(string orderName, Order order)
     {
+    }
+
+    public void endOrder()
+    {
+        animator.SetBool("HoldingDrink", true);
     }
 
     public void AddObjectToHand(GameObject objectToHand)

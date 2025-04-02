@@ -22,6 +22,7 @@ public class DeliverOrderArea : MonoBehaviour
         if (other.gameObject.tag == glassTag) {
             LiquidContainerLimited container = other.GetComponent<LiquidContainerLimited>();
             order.containerLimited = container;
+            agent.endOrder();
             orderDeliverede.Invoke(order, agent);
             Destroy(gameObject);
         }
@@ -29,6 +30,8 @@ public class DeliverOrderArea : MonoBehaviour
 
     private void OnDestroy()
     {
-        Destroy(tex_feild);
+        if(tex_feild != null)
+            Destroy(tex_feild);
+        
     }
 }

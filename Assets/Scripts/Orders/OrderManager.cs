@@ -13,20 +13,32 @@ using System.Collections;
 /// </summary>
 public class OrderManager : MonoBehaviour
 {
+    [Header("Orders")]
     [SerializedDictionary("Id", "Order")]
     public SerializedDictionary<string, Order> currentOrderList;
-    public RecipeManager recipeManager;
-    public GameObject deliverArea_Prefab, Text_prefab, parent_to_text, Agent_prefab;
-    public Transform agentSpawnPoint, agentEndPoint;
-    public List<Transform> availableSpawnPoints = new List<Transform>();
-    public TMP_Text scoreCounter;
-    public float totalScore = 0;
 
-    [Header("Order Generation Settings")]
-    public Vector2 orderSpawnTimeRange = new Vector2(5f, 15f); // Min & Max time between orders
-    public float doubleOrderChance = 0.3f; 
+    [Header("Managers *Will be set in runtime*")]
+    public RecipeManager recipeManager;
     [SerializeField]
     PhaseManager phaseManager;
+
+    [Header("Order Prefabs")]
+    public GameObject deliverArea_Prefab;
+    public GameObject[] Agent_prefab;
+    [Header("Agent Settings")]
+    public Transform agentSpawnPoint, agentEndPoint;
+    public List<Transform> availableSpawnPoints = new List<Transform>();
+
+    [Header("UI debug ")]
+    public TMP_Text scoreCounter;
+    public GameObject Text_prefab, parent_to_text;
+
+    [Header("Order Generation Settings")]
+    public float totalScore = 0;
+    public Vector2 orderSpawnTimeRange = new Vector2(5f, 15f); // Min & Max time between orders
+    public float doubleOrderChance = 0.3f; 
+
+
     private void Start()
     {
         recipeManager = FindAnyObjectByType<RecipeManager>();
@@ -66,7 +78,9 @@ public class OrderManager : MonoBehaviour
         float score = recipeManager.compareTwoIngridienseList(ideal_List, order_List, order.recipieID,order.containerLimited.glassType, timeTaken, out int wrongIngreidentCount, out float totalDeviation, out float totalOverpour, out float totalUnderpour);
 
         totalScore += score;
-        scoreCounter.text = $"Score: {totalScore}";
+
+        if(scoreCounter != null)
+            scoreCounter.text = $"Score: {totalScore}";
 
         agent.AddObjectToHand(order.containerLimited.gameObject);
 
@@ -76,12 +90,20 @@ public class OrderManager : MonoBehaviour
 
         availableSpawnPoints.Add(order.location);
         currentOrderList.Remove(order.orderID);
-        StartCoroutine(GenerateOrders());
+        if(!phaseManager.updatePhaseIndex() && !GameManager.Instance.neverEnd)
+        {
+            GameManager.Instance.endGame();
+        }
+        else
+        {
+            StartCoroutine(GenerateOrders());
+        }    
     }
 
     /// <summary>
     /// Creates a new order if there are available spawn points.
     /// </summary>
+    [ContextMenu("Generate New Order")]
     public void createOrder()
     {
         if (availableSpawnPoints.Count <= 0)
@@ -90,7 +112,7 @@ public class OrderManager : MonoBehaviour
         Transform spawnPoint = availableSpawnPoints[0];
         availableSpawnPoints.RemoveAt(0);
 
-        GameObject agent = Instantiate(Agent_prefab, agentSpawnPoint.position, Quaternion.identity);
+        GameObject agent = Instantiate(Agent_prefab[(int)Random.Range(0,Agent_prefab.Length)], agentSpawnPoint.position, Quaternion.identity);
         CustomerAgent customerAgenet = agent.GetComponent<CustomerAgent>();
         customerAgenet.reachedDestination.AddListener(placeOrder);
         customerAgenet.setDestination(spawnPoint);
@@ -107,11 +129,15 @@ public class OrderManager : MonoBehaviour
         string orderName = recipe.Name +"#" +Mathf.FloorToInt((Time.timeSinceLevelLoad * 100));
 
         Order order = new Order(keyRecipe, orderName, spawnPoint);
-
-        GameObject textProbemt = Instantiate(Text_prefab, parent_to_text.transform);
-        textProbemt.SetActive(true);
-        textProbemt.GetComponent<TMP_Text>().text = $"{orderName} - {recipe.Name}: " +
+        GameObject textProbemt = null;
+        if(Text_prefab != null && parent_to_text != null)
+        {
+            textProbemt = Instantiate(Text_prefab, parent_to_text.transform);
+            textProbemt.SetActive(true);
+            textProbemt.GetComponent<TMP_Text>().text = $"{orderName} - {recipe.Name}: " +
             string.Join(" ", recipe.ingredients.Select(i => $"[{i.Name} {i.Amount}]"));
+        }
+
 
         GameObject deliverArea = Instantiate(deliverArea_Prefab, spawnPoint.position, Quaternion.identity);
         DeliverOrderArea deliverOrderArea = deliverArea.GetComponent<DeliverOrderArea>();
