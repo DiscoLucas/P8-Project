@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5020947985038872435}
   - component: {fileID: 9160130593708704413}
   - component: {fileID: 3122323495071190415}
+  - component: {fileID: -5783487221447661034}
   m_Layer: 0
   m_Name: Vintage_Bar_Bar_01
   m_TagString: Untagged
@@ -108,3 +109,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.8497907, y: 1.0514195, z: 0.970195}
   m_Center: {x: 0.028196529, y: 0.52825356, z: 0.48510733}
+--- !u!208 &-5783487221447661034
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1030981605}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.425, y: 0.526, z: 0.485}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.028, y: 0.528, z: 0.485}
+  m_TimeToStationary: 0.5
