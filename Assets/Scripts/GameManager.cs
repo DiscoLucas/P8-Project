@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityHFSM;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class GameManager : SingletonPersistent<GameManager>
 {
@@ -12,8 +13,12 @@ public class GameManager : SingletonPersistent<GameManager>
 
     [Header("Game Settings")]
     public bool neverEnd = false;
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    [Header("Cleaning")]
+    public List<GameObject> objectsToClean;
+    [SerializeField] int maxAllowedObjects = 100;
+
+
     void Start()
     {
         inputAction = new InputSystem_Actions();
@@ -27,7 +32,18 @@ public class GameManager : SingletonPersistent<GameManager>
 
         fsm = new StateMachine();
 
+
+#if UNITY_EDITOR // If the active scene isn't "MainMenu", set the start state to "Game" in the editor.
+        // Since the initial scene will always be main menu in builds, this doesn't need to be in the build.
+        if (SceneManager.GetActiveScene().name != "MainMenu")
+        {
+            fsm.SetStartState("Game");
+        }
+#endif
+
         fsm.AddState("Main Menu");
+        fsm.AddState("Load Game", 
+            onEnter => StartCoroutine(LoadScene("Mitchell"))); // hehe my scene is the main scene >:)
         fsm.AddState("Game");
         fsm.AddState("Paused");
         fsm.AddState("Game Over");
@@ -48,6 +64,16 @@ public class GameManager : SingletonPersistent<GameManager>
     {
         fsm.Trigger("Start Game");
     }
+
+    IEnumerator LoadScene(string sceneName)
+    {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
+    }
+
     /// <summary>
     /// Removes a GameObject after a specified delay.
     /// </summary>
