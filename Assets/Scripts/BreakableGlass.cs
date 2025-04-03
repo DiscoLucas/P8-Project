@@ -14,9 +14,6 @@ public class Glass : MonoBehaviour
     public GameObject glassShatter;
 
     [Header("Breaking Settings")]
-    [SerializeField] private int radialCuts = 5; // Number of vertical cuts around the glass
-    [SerializeField] private int heightCuts = 3; // Number of horizontal cuts along the glass height
-    [SerializeField] private float randomOffset = 0.1f; // Random offset for cut positions
     [SerializeField] private float explosionForce = 300f; // Force applied to pieces
     [SerializeField] private float explosionRadius = 1.5f; // Radius of explosion
     [SerializeField] private float upwardModifier = 0.4f; // Upward force bias
