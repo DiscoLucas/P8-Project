@@ -36,7 +36,6 @@ public class Glass : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Collision!: " + collision.gameObject.name + " with force: " + collision.impulse.magnitude);
         if (collision.impulse.magnitude > breakForce && canBreak)
         {
             GameObject brokenGlass = Instantiate(glassShatter, transform.position, transform.rotation);
@@ -69,7 +68,6 @@ public class Glass : MonoBehaviour
                 audioSource.pitch = Random.Range(beackSoundMinPitch, breakSoundMaxPitch);
                 audioSource.Play();
             }
-            Debug.Log("Glass broken! with force: " + collision.impulse.magnitude);
         }
     }
 

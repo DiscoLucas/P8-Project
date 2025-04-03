@@ -1,3 +1,4 @@
+using Assets.Scripts.Ingridence;
 using Assets.Scripts.Orders;
 using System.Collections;
 using UnityEngine;
@@ -10,6 +11,8 @@ public class CustomerAgent : MonoBehaviour
 {
     [SerializeField]
     NavMeshAgent navMeshAgent;
+    [SerializeField]
+    bool isMoving = false;
     [SerializeField]
     public Transform destination;
     [SerializeField]
@@ -45,7 +48,9 @@ public class CustomerAgent : MonoBehaviour
     public void setDestination(Transform destination)
     {
         this.destination = destination;
-        navMeshAgent.SetDestination(destination.position);
+        bool pointSet = navMeshAgent.SetDestination(destination.position);
+        navMeshAgent.isStopped = false;
+        isMoving = true;
     }
 
     public bool nearDestination()
@@ -59,21 +64,23 @@ public class CustomerAgent : MonoBehaviour
     {
         animator.SetFloat("WalkSpeed", navMeshAgent.velocity.magnitude/navMeshAgent.speed);
         
-        if (navMeshAgent.hasPath && nearDestination())
+        if (navMeshAgent.hasPath && nearDestination() &&isMoving)
         {
 
             Vector3 directionToDestination = (destination.position - transform.position).normalized;
             StartCoroutine(RotateOverTime(directionToDestination));
             Debug.Log("Reached destination: " + destination.name);
             reachedDestination.Invoke(this);
+            navMeshAgent.isStopped = true; 
+            isMoving = false;
         }
-        else if(navMeshAgent.hasPath)
+        else if(isMoving)
         {
             if (navMeshAgent.velocity.sqrMagnitude > 0.01f)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(navMeshAgent.velocity.normalized);
                 model.transform.rotation = Quaternion.Slerp(model.transform.rotation, targetRotation, Time.deltaTime * modelRoationSpeed);
-            }
+            }   
         }
     }
 

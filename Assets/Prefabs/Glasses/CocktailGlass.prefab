@@ -318,6 +318,7 @@ MonoBehaviour:
   glassType: 0
   garnish: {fileID: 0}
   garnishPoint: {fileID: 5590790977956005037}
+  hasGarnish: 0
 --- !u!54 &595639018323949352
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -513,7 +514,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 595639018323949352}
-  breakForce: 2.5
+  breakForce: 1.8
   canBreak: 0
   glassShatter: {fileID: 480192681678799797, guid: d576c4a0ae6a138408b90bc22bcd56ae, type: 3}
   radialCuts: 5

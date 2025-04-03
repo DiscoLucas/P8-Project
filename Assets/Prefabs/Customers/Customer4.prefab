@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &456279348466182338
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 221020550538450652}
+  m_Layer: 0
+  m_Name: Grabpoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &221020550538450652
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 456279348466182338}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.18096088, y: 0.07791387, z: 0.679105, w: 0.7071061}
+  m_LocalPosition: {x: 0.1199, y: -0.0107, z: 0.0332}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3584671974206308328}
+  m_LocalEulerAnglesHint: {x: -21.207, y: -8.363, z: 89.254}
 --- !u!1001 &5406673097626764616
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14,11 +45,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 90b0340ab6875434e8cbcb143fb2bb24, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 14.026
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 90b0340ab6875434e8cbcb143fb2bb24, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -1.941
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 90b0340ab6875434e8cbcb143fb2bb24, type: 3}
       propertyPath: m_LocalPosition.z
@@ -314,7 +345,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 8842550284672121504, guid: 90b0340ab6875434e8cbcb143fb2bb24, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 221020550538450652}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 90b0340ab6875434e8cbcb143fb2bb24, type: 3}
       insertIndex: -1
@@ -326,9 +360,9 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 320802000085798932}
   m_SourcePrefab: {fileID: 100100000, guid: 90b0340ab6875434e8cbcb143fb2bb24, type: 3}
---- !u!4 &4924179818085373015 stripped
+--- !u!4 &3584671974206308328 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 1107445694481043743, guid: 90b0340ab6875434e8cbcb143fb2bb24, type: 3}
+  m_CorrespondingSourceObject: {fileID: 8842550284672121504, guid: 90b0340ab6875434e8cbcb143fb2bb24, type: 3}
   m_PrefabInstance: {fileID: 5406673097626764616}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &5172724302251391001 stripped
@@ -354,7 +388,7 @@ MonoBehaviour:
   reachedDestination:
     m_PersistentCalls:
       m_Calls: []
-  hand: {fileID: 4924179818085373015}
+  hand: {fileID: 221020550538450652}
   animator: {fileID: 0}
   model: {fileID: 0}
   modelRoationSpeed: 10
