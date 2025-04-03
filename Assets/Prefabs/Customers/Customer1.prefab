@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2867390021302995263
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4461036370659083649}
+  m_Layer: 0
+  m_Name: Grabpoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4461036370659083649
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2867390021302995263}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.18096088, y: 0.07791387, z: 0.679105, w: 0.7071061}
+  m_LocalPosition: {x: 0.1199, y: -0.0107, z: 0.0332}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4611604684446385687}
+  m_LocalEulerAnglesHint: {x: -21.207, y: -8.363, z: 89.254}
 --- !u!1001 &4886345043989616725
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34,11 +65,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b7c80acd732f5b141a7c78ca7ad0a0e9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 8.93
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b7c80acd732f5b141a7c78ca7ad0a0e9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -1.941
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b7c80acd732f5b141a7c78ca7ad0a0e9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -682,7 +713,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -274580028412813758, guid: b7c80acd732f5b141a7c78ca7ad0a0e9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4461036370659083649}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b7c80acd732f5b141a7c78ca7ad0a0e9, type: 3}
       insertIndex: -1
@@ -744,7 +778,7 @@ MonoBehaviour:
   reachedDestination:
     m_PersistentCalls:
       m_Calls: []
-  hand: {fileID: 4611604684446385687}
+  hand: {fileID: 4461036370659083649}
   animator: {fileID: 0}
   model: {fileID: 0}
   modelRoationSpeed: 10

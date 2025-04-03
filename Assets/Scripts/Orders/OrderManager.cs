@@ -82,6 +82,7 @@ public class OrderManager : MonoBehaviour
         if(scoreCounter != null)
             scoreCounter.text = $"Score: {totalScore}";
 
+        Debug.Log($"Order {order.orderID} finished with score: {score}");
         agent.AddObjectToHand(order.containerLimited.gameObject);
 
         agent.reachedDestination.RemoveAllListeners();
@@ -96,7 +97,7 @@ public class OrderManager : MonoBehaviour
         }
         else
         {
-            StartCoroutine(GenerateOrders());
+            //StartCoroutine(GenerateOrders());
         }    
     }
 

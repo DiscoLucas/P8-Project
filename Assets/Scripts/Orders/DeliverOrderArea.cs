@@ -20,6 +20,7 @@ public class DeliverOrderArea : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == glassTag) {
+            Debug.Log("Delivering order: " + other.gameObject.name);
             LiquidContainerLimited container = other.GetComponent<LiquidContainerLimited>();
             order.containerLimited = container;
             agent.endOrder();

@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &40582173830559006
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4620188445606012293}
+  m_Layer: 0
+  m_Name: Grabpoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4620188445606012293
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 40582173830559006}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.18096088, y: 0.07791387, z: 0.679105, w: 0.7071061}
+  m_LocalPosition: {x: 0.1199, y: -0.0107, z: 0.0332}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1652594413235420453}
+  m_LocalEulerAnglesHint: {x: -21.207, y: -8.363, z: 89.254}
 --- !u!1001 &7587587901112098768
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18,11 +49,11 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 6115b51d655bab5409e470f190b4a68e, type: 2}
     - target: {fileID: -8679921383154817045, guid: c09f4330bfe4f4449997a8acaf4662e3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 10.321
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c09f4330bfe4f4449997a8acaf4662e3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -1.941
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c09f4330bfe4f4449997a8acaf4662e3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -334,7 +365,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 9197396221305004789, guid: c09f4330bfe4f4449997a8acaf4662e3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4620188445606012293}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c09f4330bfe4f4449997a8acaf4662e3, type: 3}
       insertIndex: -1
@@ -346,6 +380,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 9173985350328718180}
   m_SourcePrefab: {fileID: 100100000, guid: c09f4330bfe4f4449997a8acaf4662e3, type: 3}
+--- !u!4 &1652594413235420453 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9197396221305004789, guid: c09f4330bfe4f4449997a8acaf4662e3, type: 3}
+  m_PrefabInstance: {fileID: 7587587901112098768}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7317767955492348545 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c09f4330bfe4f4449997a8acaf4662e3, type: 3}
@@ -391,7 +430,7 @@ MonoBehaviour:
   reachedDestination:
     m_PersistentCalls:
       m_Calls: []
-  hand: {fileID: 8998618867794758342}
+  hand: {fileID: 4620188445606012293}
   animator: {fileID: 0}
   model: {fileID: 0}
   modelRoationSpeed: 10
@@ -417,8 +456,3 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!4 &8998618867794758342 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1561907739081200918, guid: c09f4330bfe4f4449997a8acaf4662e3, type: 3}
-  m_PrefabInstance: {fileID: 7587587901112098768}
-  m_PrefabAsset: {fileID: 0}

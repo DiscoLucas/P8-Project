@@ -124,6 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37a484a113ba6df2280c7b4d444679a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  neverEnd: 1
 --- !u!1 &6499091860321354864
 GameObject:
   m_ObjectHideFlags: 0
@@ -906,8 +907,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1106221283152014824, guid: be31316aed02bfe45bb7639f1ffb67d0, type: 3}
     - target: {fileID: 2447658782364286232, guid: 7c05c878172f62b4890684b9c42a8bd4, type: 3}
+      propertyPath: orderSpawnTimeRange.x
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2447658782364286232, guid: 7c05c878172f62b4890684b9c42a8bd4, type: 3}
+      propertyPath: orderSpawnTimeRange.y
+      value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 2447658782364286232, guid: 7c05c878172f62b4890684b9c42a8bd4, type: 3}
       propertyPath: Agent_prefab.Array.size
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2447658782364286232, guid: 7c05c878172f62b4890684b9c42a8bd4, type: 3}
       propertyPath: 'Agent_prefab.Array.data[0]'
