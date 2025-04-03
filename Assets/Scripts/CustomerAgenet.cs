@@ -47,9 +47,9 @@ public class CustomerAgent : MonoBehaviour
 
     public void setDestination(Transform destination)
     {
-        navMeshAgent.isStopped = false;
         this.destination = destination;
         bool pointSet = navMeshAgent.SetDestination(destination.position);
+        navMeshAgent.isStopped = false;
         isMoving = true;
     }
 
