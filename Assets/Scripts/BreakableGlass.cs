@@ -3,8 +3,6 @@ using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.Audio;
 
-//[RequireComponent(typeof(Rigidbody))]
-//[RequireComponent(typeof(MeshCollider))]
 public class Glass : MonoBehaviour
 {
     public Rigidbody rb;
@@ -41,8 +39,6 @@ public class Glass : MonoBehaviour
         Debug.Log("Collision!: " + collision.gameObject.name + " with force: " + collision.impulse.magnitude);
         if (collision.impulse.magnitude > breakForce && canBreak)
         {
-            //rb.AddForce(collision.impulse, ForceMode.Impulse);
-            //breakable.Break(collision.contacts[0].point, collision.impulse.magnitude);
             GameObject brokenGlass = Instantiate(glassShatter, transform.position, transform.rotation);
             float hitForce = (explosionForce * collision.impulse.magnitude)/brokenGlass.transform.childCount;
             float pieceMass = rb.mass / brokenGlass.transform.childCount;
@@ -61,6 +57,7 @@ public class Glass : MonoBehaviour
                     explosionRadius,
                     upwardModifier);
                 rb.AddTorque(Random.insideUnitSphere * hitForce);
+                GameManager.Instance.objectsToClean.Add(child.gameObject);
 
             }
             GameManager.Instance.RemoveAfterDelay(brokenGlass, deSpawnTime);
@@ -76,11 +73,6 @@ public class Glass : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        
-    }
 
     public void SetCanBreak(bool canBreak)
     {

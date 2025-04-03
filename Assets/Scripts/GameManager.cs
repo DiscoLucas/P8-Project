@@ -9,7 +9,7 @@ public class GameManager : SingletonPersistent<GameManager>
     public Condition condition { get; private set; }
     private StateMachine fsm;
     private InputSystem_Actions inputAction;
-    
+
 
     [Header("Game Settings")]
     public bool neverEnd = false;
@@ -42,7 +42,7 @@ public class GameManager : SingletonPersistent<GameManager>
 #endif
 
         fsm.AddState("Main Menu");
-        fsm.AddState("Load Game", 
+        fsm.AddState("Load Game",
             onEnter => StartCoroutine(LoadScene("Mitchell"))); // hehe my scene is the main scene >:)
         fsm.AddState("Game");
         fsm.AddState("Paused");
@@ -54,10 +54,10 @@ public class GameManager : SingletonPersistent<GameManager>
         fsm.Init();
     }
 
-    // Update is called once per frame
-    void Update()
+
+    void LateUpdate()
     {
-        
+        Janitor();
     }
 
     public void StartGame() // TODO: call this from button in the main menu
@@ -95,12 +95,21 @@ public class GameManager : SingletonPersistent<GameManager>
 
 
 
-    public void endGame(){
+    public void endGame()
+    {
         Debug.Log("Game Over!");
     }
 
-}
+    private void Janitor()
+    {
+        if (objectsToClean.Count > maxAllowedObjects)
+        {
+            GameObject objectToRemove = objectsToClean[0];
+            objectsToClean.RemoveAt(0);
+        }
 
+    }
+}
 
 
 public enum Condition
