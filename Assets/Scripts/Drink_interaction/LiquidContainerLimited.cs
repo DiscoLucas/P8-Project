@@ -239,6 +239,7 @@ namespace Assets.Scripts.Drink_interaction
         internal override void updateLiquidDisplay()
         {
             if (ingridentTextDisplay != null) {
+                Debug.Log("updateLiquidDisplay: " + ingridentTextDisplay.gameObject.activeSelf);
                 string infoScreenText = $"Ingriedents [{(FillPercentage()*100)}%]:\n";
                 foreach (IngredientBase ingBase in ingredients.Values) {
                     string name = ingBase.Name;
@@ -260,22 +261,38 @@ namespace Assets.Scripts.Drink_interaction
                 ingridentTextDisplay.gameObject.SetActive(false);
                 xrGrabInteractable.hoverEntered.AddListener(activateDrinkDisplay);
                 xrGrabInteractable.hoverExited.AddListener(deactivateDrinkDisplay);
-                xrGrabInteractable.focusEntered.AddListener(activateDrinkDisplay);
-                xrGrabInteractable.focusExited.AddListener(deactivateDrinkDisplay);
-                xrGrabInteractable.selectEntered.AddListener(deactivateDrinkDisplay);
-                xrGrabInteractable.selectExited.AddListener(activateDrinkDisplay);
+
+                xrGrabInteractable.selectEntered.AddListener(activateDrinkDisplayOnSelect);
+                xrGrabInteractable.selectExited.AddListener(deactivateDrinkDisplayOnSelect);
+                
                 
             }
         }
 
-        private void activateDrinkDisplay(SelectExitEventArgs arg0)
+        public void activateDrinkDisplayOnSelect(SelectEnterEventArgs arg0)
         {
-            setDrinkDisplay(true);
+            Debug.Log("activateDrinkDisplayOnSelect " + ingridentTextDisplay.gameObject.activeSelf);
+            ingridentTextDisplay.gameObject.SetActive(true);
+            updateLiquidDisplay();
+            displayNeedToUpdate = true;
+            
         }
 
-        private void deactivateDrinkDisplay(SelectEnterEventArgs arg0)
+        public void deactivateDrinkDisplayOnSelect(SelectExitEventArgs arg0)
         {
-            setDrinkDisplay(false);
+            updateLiquidDisplay();
+            ingridentTextDisplay.gameObject.SetActive(false);
+        }
+        bool displayNeedToUpdate = false;
+        public override void deactivateDrinkDisplay(HoverExitEventArgs arg0)
+        {
+            if(!displayNeedToUpdate){
+                base.deactivateDrinkDisplay(arg0);
+            }else{
+                displayNeedToUpdate = false;
+            }
+                
+
         }
     }
 }
