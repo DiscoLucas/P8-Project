@@ -14,8 +14,17 @@ namespace Assets.Scripts.Drink_interaction
         /// <summary>
         /// The ingerident that is poured in other glasses
         /// </summary>
-        [Header("**Ingerident that should be filled out**")]
+        [Header("**Ingerident that should be filled out OR SET THE SCRIBTLABLE OBJECT**")]
         public IngredientBase ingredient;
+        public IngredientScribtiableObject ingredientScribtiableObject;
+
+        void Start()
+        {
+            if(ingredientScribtiableObject != null){
+                ingredient = ingredientScribtiableObject.ingredientBase.copy();
+            }
+        }
+
 
         internal override void drinkOnStart()
         {

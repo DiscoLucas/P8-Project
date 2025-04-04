@@ -74,7 +74,7 @@ PrefabInstance:
       objectReference: {fileID: 4711208715938537054, guid: 78caa3e80d771eb499cc0e8fd63add4e, type: 3}
     - target: {fileID: 919132149155446097, guid: 7d2bb9663ac396a4d9771541a0806eaa, type: 3}
       propertyPath: m_Name
-      value: LemonSlice
+      value: LimeSlice
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 7d2bb9663ac396a4d9771541a0806eaa, type: 3}
       propertyPath: m_TagString
@@ -93,6 +93,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7d2bb9663ac396a4d9771541a0806eaa, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3647150755677753567}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7d2bb9663ac396a4d9771541a0806eaa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5257996127466093529}
   m_SourcePrefab: {fileID: 100100000, guid: 7d2bb9663ac396a4d9771541a0806eaa, type: 3}
 --- !u!1 &180441038538427401 stripped
 GameObject:
@@ -269,3 +272,16 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0013740193, y: 0.0014024302, z: 0.0002514943}
   m_Center: {x: 0.000012990291, y: -0.000026106305, z: 0.00012574714}
+--- !u!114 &5257996127466093529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 180441038538427401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 240ca2af2bf2246478e0a7310aab1c9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ingredientScribtiableObject: {fileID: 11400000, guid: c0a7939c3c4f11b44821eea6a7f92026, type: 2}

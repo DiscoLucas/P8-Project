@@ -1,11 +1,13 @@
 ﻿using Assets.Scripts.Ingridence;
 using AYellowpaper.SerializedCollections;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 namespace Assets.Scripts.Drink_interaction
@@ -30,9 +32,17 @@ namespace Assets.Scripts.Drink_interaction
 
         public void setGarnish(GameObject garnish)
         {
-            IngredientBase ib = new IngredientBase(garnish.name, 1, IngredientType.Garnish, Color.white);
+            GarnishContainer gc = garnish.GetComponent<GarnishContainer>();
+            IngredientBase ib;
+            if (gc != null)
+            {
+                ib = gc.ingredientScribtiableObject.ingredientBase.copy();
+            }else{
+                ib = new IngredientBase(garnish.name, 1, IngredientType.Garnish, Color.white);
+                Debug.Log("Garnish not found, using default: " + ib.Name);
+            }
             ib.solid = true;
-            AddIngredient(ib, 1); //This is white for now, change later
+            AddIngredient(ib, 1);
 
             Debug.Log("Garnish set: " + garnish.name);
             this.garnish = garnish;
@@ -240,6 +250,33 @@ namespace Assets.Scripts.Drink_interaction
             }
         }
 
+        internal override void drinkOnStart()
+        {
+            if (xrGrabInteractable == null)
+                xrGrabInteractable = gameObject.GetComponent<XRGrabInteractable>();
+
+            if (ingridentTextDisplay != null)
+            {
+                ingridentTextDisplay.gameObject.SetActive(false);
+                xrGrabInteractable.hoverEntered.AddListener(activateDrinkDisplay);
+                xrGrabInteractable.hoverExited.AddListener(deactivateDrinkDisplay);
+                xrGrabInteractable.focusEntered.AddListener(activateDrinkDisplay);
+                xrGrabInteractable.focusExited.AddListener(deactivateDrinkDisplay);
+                xrGrabInteractable.selectEntered.AddListener(deactivateDrinkDisplay);
+                xrGrabInteractable.selectExited.AddListener(activateDrinkDisplay);
+                
+            }
+        }
+
+        private void activateDrinkDisplay(SelectExitEventArgs arg0)
+        {
+            setDrinkDisplay(true);
+        }
+
+        private void deactivateDrinkDisplay(SelectEnterEventArgs arg0)
+        {
+            setDrinkDisplay(false);
+        }
     }
 }
 
