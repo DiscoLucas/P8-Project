@@ -10,5 +10,6 @@ public enum IngredientType
     Mixer,
     Garnish,
     Sirup,
-    MixedLiquid
+    MixedLiquid,
+    Other
 }
