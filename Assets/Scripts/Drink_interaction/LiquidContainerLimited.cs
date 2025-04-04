@@ -30,9 +30,17 @@ namespace Assets.Scripts.Drink_interaction
 
         public void setGarnish(GameObject garnish)
         {
-            IngredientBase ib = new IngredientBase(garnish.name, 1, IngredientType.Garnish, Color.white);
+            GarnishContainer gc = garnish.GetComponent<GarnishContainer>();
+            IngredientBase ib;
+            if (gc != null)
+            {
+                ib = gc.ingredientScribtiableObject.ingredientBase.copy();
+            }else{
+                ib = new IngredientBase(garnish.name, 1, IngredientType.Garnish, Color.white);
+                Debug.Log("Garnish not found, using default: " + ib.Name);
+            }
             ib.solid = true;
-            AddIngredient(ib, 1); //This is white for now, change later
+            AddIngredient(ib, 1);
 
             Debug.Log("Garnish set: " + garnish.name);
             this.garnish = garnish;
