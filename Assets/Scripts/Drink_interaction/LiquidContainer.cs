@@ -38,19 +38,34 @@ public class LiquidContainer : MonoBehaviour
             ingridentTextDisplay.gameObject.SetActive(false);
             xrGrabInteractable.hoverEntered.AddListener(activateDrinkDisplay);
             xrGrabInteractable.hoverExited.AddListener(deactivateDrinkDisplay);
+            xrGrabInteractable.focusEntered.AddListener(activateDrinkDisplay);
+            xrGrabInteractable.focusExited.AddListener(deactivateDrinkDisplay);
         }
+    }
+
+    public void deactivateDrinkDisplay(FocusExitEventArgs arg0)
+    {
+        setDrinkDisplay(false);
+    }
+
+    public void activateDrinkDisplay(FocusEnterEventArgs arg0)
+    {
+        setDrinkDisplay(true);
     }
 
     public virtual void deactivateDrinkDisplay(HoverExitEventArgs arg0)
     {
-        ingridentTextDisplay.gameObject.SetActive(false);
+        setDrinkDisplay(false);
     }
 
     public virtual void activateDrinkDisplay(HoverEnterEventArgs arg0)
     {
-        ingridentTextDisplay.gameObject.SetActive(true);
+        setDrinkDisplay(true);
     }
 
+    public void setDrinkDisplay(bool set){
+        ingridentTextDisplay.gameObject.SetActive(set);
+    }
 
     /// <summary>
     /// Adds liquid to the glass up to the max fill level.
