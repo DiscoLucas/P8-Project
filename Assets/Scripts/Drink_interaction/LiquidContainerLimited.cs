@@ -282,14 +282,13 @@ namespace Assets.Scripts.Drink_interaction
         {
             updateLiquidDisplay();
             ingridentTextDisplay.gameObject.SetActive(false);
+            displayNeedToUpdate = false;
         }
         bool displayNeedToUpdate = false;
         public override void deactivateDrinkDisplay(HoverExitEventArgs arg0)
         {
             if(!displayNeedToUpdate){
                 base.deactivateDrinkDisplay(arg0);
-            }else{
-                displayNeedToUpdate = false;
             }
                 
 

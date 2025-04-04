@@ -360,6 +360,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Highball
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 10758165fbbe8f045adfa8848d37a5be, type: 3}
+      propertyPath: m_TagString
+      value: Glass
+      objectReference: {fileID: 0}
     - target: {fileID: 8029106800918022278, guid: 10758165fbbe8f045adfa8848d37a5be, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -585,8 +589,8 @@ MonoBehaviour:
   ingredients:
     _serializedList: []
   materialHaveBeenChange: 1
-  xrGrabInteractable: {fileID: 0}
-  ingridentTextDisplay: {fileID: 0}
+  xrGrabInteractable: {fileID: 3767556790771056542}
+  ingridentTextDisplay: {fileID: 3034259725798974847}
   outputColor: {r: 1, g: 1, b: 1, a: 1}
   glassType: 0
   garnish: {fileID: 0}

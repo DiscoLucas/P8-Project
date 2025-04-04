@@ -15,14 +15,16 @@ public class GameMenuUIController : MonoBehaviour
     [Tooltip("This can be found under the world canvas")]
     public GameObject statBlockPrefab;
 
-    [SerializedDictionary("Key", "Cocktail Recipe")]
-    public SerializedDictionary<int, string> infomations;
+    [Header("Infomations")]
+    [SerializeField]
+    string scoreText = "Score: ";
     void Start()
     {
         finishMenuUI.SetActive(false);
         startMenuUI.SetActive(true);    
     }
 
+    [ContextMenu("Start Game")]
     public void startGame()
     {
         GameManager.Instance.StartGame();
@@ -34,9 +36,9 @@ public class GameMenuUIController : MonoBehaviour
         GameObject obj = Instantiate(statBlockPrefab, statBlockParent);
         obj.SetActive(true);
         Text text = obj.GetComponentInChildren<Text>();
-        text.text = infomations[0] + GameManager.Instance.orderManager.totalScore.ToString();        
+        text.text = scoreText + GameManager.Instance.orderManager.totalScore.ToString();        
     }
-
+    [ContextMenu("Restart Game")]
     public void closeEndGameMenu(){
         GameManager.Instance.loadCurrentScene();
     }
