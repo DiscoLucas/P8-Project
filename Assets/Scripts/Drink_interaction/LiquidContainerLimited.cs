@@ -1,11 +1,13 @@
 ﻿using Assets.Scripts.Ingridence;
 using AYellowpaper.SerializedCollections;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 namespace Assets.Scripts.Drink_interaction
@@ -248,6 +250,33 @@ namespace Assets.Scripts.Drink_interaction
             }
         }
 
+        internal override void drinkOnStart()
+        {
+            if (xrGrabInteractable == null)
+                xrGrabInteractable = gameObject.GetComponent<XRGrabInteractable>();
+
+            if (ingridentTextDisplay != null)
+            {
+                ingridentTextDisplay.gameObject.SetActive(false);
+                xrGrabInteractable.hoverEntered.AddListener(activateDrinkDisplay);
+                xrGrabInteractable.hoverExited.AddListener(deactivateDrinkDisplay);
+                xrGrabInteractable.focusEntered.AddListener(activateDrinkDisplay);
+                xrGrabInteractable.focusExited.AddListener(deactivateDrinkDisplay);
+                xrGrabInteractable.selectEntered.AddListener(deactivateDrinkDisplay);
+                xrGrabInteractable.selectExited.AddListener(activateDrinkDisplay);
+                
+            }
+        }
+
+        private void activateDrinkDisplay(SelectExitEventArgs arg0)
+        {
+            setDrinkDisplay(true);
+        }
+
+        private void deactivateDrinkDisplay(SelectEnterEventArgs arg0)
+        {
+            setDrinkDisplay(false);
+        }
     }
 }
 
