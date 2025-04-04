@@ -43,7 +43,19 @@ public class OrderManager : MonoBehaviour
     {
         recipeManager = FindAnyObjectByType<RecipeManager>();
         phaseManager = FindAnyObjectByType<PhaseManager>();
+        GameManager.Instance.orderManager = this;
     }
+
+    private void OnEnable()
+    {
+        GameManager.Instance.onGameStart.AddListener(createOrder);
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.onGameStart.RemoveListener(createOrder);
+    }
+
 
     /// <summary>
     /// Repeatedly generates orders at random time intervals.
@@ -97,7 +109,7 @@ public class OrderManager : MonoBehaviour
         }
         else
         {
-            //StartCoroutine(GenerateOrders());
+            StartCoroutine(GenerateOrders());
         }    
     }
 

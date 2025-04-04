@@ -8,6 +8,10 @@ public class PhaseManager : MonoBehaviour
     [SerializeField]
     int currentPhaseIndex = 0;
 
+    void Start()
+    {
+        GameManager.Instance.phaseManager = this;
+    }
 
     public CocktailRecipe getRecipe(string RecipeId, int phaseIndex){
         if (phaseIndex < 0 || phaseIndex >= phases.Length)
@@ -37,6 +41,7 @@ public class PhaseManager : MonoBehaviour
 
     public bool updatePhaseIndex(){
         currentPhaseIndex++;
+        GameManager.Instance.onGamePhaseChange.Invoke();
         if(currentPhaseIndex >= phases.Length ){
             currentPhaseIndex = phases.Length - 1;
             return false; 

@@ -33,6 +33,7 @@ public class RecipeManager : MonoBehaviour
     void Start()
     {
         phaseManager = FindAnyObjectByType<PhaseManager>();
+        GameManager.Instance.recipeManager = this;
     }
 
     public CocktailRecipe getCocktailRecipe(out string recipeKey){

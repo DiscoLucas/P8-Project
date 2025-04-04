@@ -3,13 +3,19 @@ using UnityEngine;
 using UnityHFSM;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
-
+using UnityEngine.Events;
 public class GameManager : SingletonPersistent<GameManager>
 {
     public Condition condition { get; private set; }
     private StateMachine fsm;
     private InputSystem_Actions inputAction;
-
+    [Header("Events")]
+    [Tooltip("Called when the game starts.")]
+    public UnityEvent onGameStart;
+    [Tooltip("Called when the game ends.")]
+    public UnityEvent onFinnishGame;
+    [Tooltip("Called when the game change from one phase to anthor.")]
+    public UnityEvent onGamePhaseChange;
 
     [Header("Game Settings")]
     public bool neverEnd = false;
@@ -18,7 +24,10 @@ public class GameManager : SingletonPersistent<GameManager>
     public List<GameObject> objectsToClean;
     [SerializeField] int maxAllowedObjects = 100;
 
-
+    [Header("Managers")]
+    public OrderManager orderManager;
+    public PhaseManager phaseManager;
+    public RecipeManager recipeManager;
     void Start()
     {
         inputAction = new InputSystem_Actions();
@@ -63,6 +72,7 @@ public class GameManager : SingletonPersistent<GameManager>
     public void StartGame() // TODO: call this from button in the main menu
     {
         fsm.Trigger("Start Game");
+        onGameStart.Invoke();
     }
 
     IEnumerator LoadScene(string sceneName)
@@ -73,6 +83,13 @@ public class GameManager : SingletonPersistent<GameManager>
             yield return null;
         }
     }
+
+    public void loadCurrentScene()
+    {
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        StartCoroutine(LoadScene(currentSceneName));
+    }
+
 
     /// <summary>
     /// Removes a GameObject after a specified delay.
@@ -97,7 +114,8 @@ public class GameManager : SingletonPersistent<GameManager>
 
     public void endGame()
     {
-        Debug.Log("Game Over!");
+        Debug.Log("Game finnished!");
+        onFinnishGame.Invoke();
     }
 
     private void Janitor()
