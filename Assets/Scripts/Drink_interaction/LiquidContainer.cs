@@ -38,19 +38,8 @@ public class LiquidContainer : MonoBehaviour
             ingridentTextDisplay.gameObject.SetActive(false);
             xrGrabInteractable.hoverEntered.AddListener(activateDrinkDisplay);
             xrGrabInteractable.hoverExited.AddListener(deactivateDrinkDisplay);
-            xrGrabInteractable.focusEntered.AddListener(activateDrinkDisplay);
-            xrGrabInteractable.focusExited.AddListener(deactivateDrinkDisplay);
+
         }
-    }
-
-    public void deactivateDrinkDisplay(FocusExitEventArgs arg0)
-    {
-        setDrinkDisplay(false);
-    }
-
-    public void activateDrinkDisplay(FocusEnterEventArgs arg0)
-    {
-        setDrinkDisplay(true);
     }
 
     public virtual void deactivateDrinkDisplay(HoverExitEventArgs arg0)
