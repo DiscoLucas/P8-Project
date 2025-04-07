@@ -30,7 +30,6 @@ public class AudioManager : MonoBehaviour
         foreach (Sound s in soundsArray)
         {
             s.source = gameObject.AddComponent<AudioSource>();
-            s.MetaXRAudioSource = gameObject.AddComponent<MetaXRAudioSource>();
             s.source.clip = s.clip;
 
             s.source.volume = s.volume;
@@ -48,7 +47,7 @@ public class AudioManager : MonoBehaviour
         foreach (Voice v in voiceArray)
         {
             v.source = gameObject.AddComponent<AudioSource>();
-            v.MetaXRAudioSource = gameObject.AddComponent<MetaXRAudioSource>();
+            //v.MetaXRAudioSource = gameObject.AddComponent<MetaXRAudioSource>();
             v.source.clip = v.clip;
             v.source.spatialBlend = v.spatialBlend;
             v.source.volume = v.volume;
@@ -64,7 +63,7 @@ public class AudioManager : MonoBehaviour
         foreach (Music m in musicArray)
         {
             m.source = gameObject.AddComponent<AudioSource>();
-            m.MetaXRAudioSource = gameObject.AddComponent<MetaXRAudioSource>();
+            //m.MetaXRAudioSource = gameObject.AddComponent<MetaXRAudioSource>();
             m.source.clip = m.clip;
 
             m.source.volume = m.volume;
@@ -108,7 +107,7 @@ public class AudioManager : MonoBehaviour
             audioSource = caller.AddComponent<AudioSource>();
         }
         // Add an AudioSource to the caller GameObject if it doesn't have one
-        MetaXRAudioSource metaXRAudioSource = caller.GetComponent<MetaXRAudioSource>();
+        /*MetaXRAudioSource metaXRAudioSource = caller.GetComponent<MetaXRAudioSource>();
         if (metaXRAudioSource == null)
         {
             metaXRAudioSource = caller.AddComponent<MetaXRAudioSource>();
@@ -118,7 +117,7 @@ public class AudioManager : MonoBehaviour
         {
             Debug.LogWarning(name + " kinda cringe, check spelling you dylexic ass");
             return;
-        }
+        }*/
         s.source.Play();
     }
 
