@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2985825033635898047}
   - component: {fileID: 413379707923451540}
   - component: {fileID: 4115266701927399187}
+  - component: {fileID: -7483977254458152068}
   m_Layer: 0
   m_Name: Vintage_Bar_Bar_00
   m_TagString: Untagged
@@ -125,3 +126,18 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0.028, y: 0.528, z: 0.45900002}
   m_TimeToStationary: 0.5
+--- !u!114 &-7483977254458152068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1030981596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e829c87dc2a2ed2419c5f67848317fe4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: {fileID: 11400000, guid: 5272c55b882edd34a9d80b11bd6f240c, type: 2}
+  exportAllChildren: 0
+  terrainSimplificationLevel: 0

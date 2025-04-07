@@ -2716,6 +2716,7 @@ GameObject:
   - component: {fileID: 2279222798855033258}
   - component: {fileID: 28016483048521008}
   - component: {fileID: 6029116849908090506}
+  - component: {fileID: 6715640445525730970}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2943,6 +2944,35 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &6715640445525730970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3552692641413624101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fd9ebf1401392e4bbd47fea32f47642, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentBakedListener: {fileID: 0}
+  applyReverb: 1
+  reverbType: 0
+  useAllProbeBatches: 0
+  probeBatches: []
+  mTotalDataSize: 0
+  mProbeDataSizes: 
+  mIdentifier:
+    type: 0
+    variation: 0
+    endpointInfluence:
+      center:
+        x: 0
+        y: 0
+        z: 0
+      radius: 0
+  mProbeBatchesUsed: []
 --- !u!1 &3651774388721480514
 GameObject:
   m_ObjectHideFlags: 0

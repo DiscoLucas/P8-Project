@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4040159641428039705}
   - component: {fileID: 6569002578397151638}
   - component: {fileID: 4322775848652577577}
+  - component: {fileID: -2851342351770852774}
   m_Layer: 0
   m_Name: Vintage_Bar_Shelf_00
   m_TagString: Untagged
@@ -134,6 +135,21 @@ CapsuleCollider:
   m_Height: 0.4470843
   m_Direction: 1
   m_Center: {x: -0.0016624741, y: 0.21784362, z: -0.001061352}
+--- !u!114 &-2851342351770852774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1030981889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e829c87dc2a2ed2419c5f67848317fe4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: {fileID: 11400000, guid: 08bf73ad12cb44944875b02ce7f9d694, type: 2}
+  exportAllChildren: 0
+  terrainSimplificationLevel: 0
 --- !u!1 &1030981892
 GameObject:
   m_ObjectHideFlags: 0

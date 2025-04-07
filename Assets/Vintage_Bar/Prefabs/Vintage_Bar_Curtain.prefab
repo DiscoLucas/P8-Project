@@ -10,6 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1030982007}
   - component: {fileID: 1030982008}
+  - component: {fileID: 7018949260091862600}
+  - component: {fileID: 5741111549260943748}
+  - component: {fileID: 7986491952390667745}
   m_Layer: 0
   m_Name: Vintage_Bar_Curtain
   m_TagString: Untagged
@@ -29,8 +32,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1030982010}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &1030982008
@@ -54,47 +56,22 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 4300004, guid: abc00000000006227144969757906121, type: 3}
---- !u!1 &1030982009
-GameObject:
+  m_Mesh: {fileID: 4300000, guid: abc00000000006227144969757906121, type: 3}
+--- !u!33 &7018949260091862600
+MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1030982010}
-  - component: {fileID: 1030982011}
-  - component: {fileID: 1030982012}
-  m_Layer: 0
-  m_Name: SM_Vintage_Bar_Curtain
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
---- !u!4 &1030982010
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1030982009}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1030982007}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &1030982011
+  m_GameObject: {fileID: 1030982006}
+  m_Mesh: {fileID: 4300000, guid: abc00000000006227144969757906121, type: 3}
+--- !u!23 &5741111549260943748
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1030982009}
+  m_GameObject: {fileID: 1030982006}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -133,11 +110,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &1030982012
-MeshFilter:
+--- !u!114 &7986491952390667745
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1030982009}
-  m_Mesh: {fileID: 4300000, guid: abc00000000006227144969757906121, type: 3}
+  m_GameObject: {fileID: 1030982006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e829c87dc2a2ed2419c5f67848317fe4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: {fileID: 11400000, guid: 4ef433d5b2fa5ad4a9e19a415c6ab619, type: 2}
+  exportAllChildren: 0
+  terrainSimplificationLevel: 0
