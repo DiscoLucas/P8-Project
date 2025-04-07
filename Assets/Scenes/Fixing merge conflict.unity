@@ -4041,25 +4041,13 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 52761515150700276, guid: 77f5c39f5c691674a99596fd35d6f22a, type: 3}
-      propertyPath: m_PokeSelectWidth
-      value: 0.03
-      objectReference: {fileID: 0}
-    - target: {fileID: 52761515150700276, guid: 77f5c39f5c691674a99596fd35d6f22a, type: 3}
       propertyPath: m_InteractionManager
       value: 
       objectReference: {fileID: 1585137381}
-    - target: {fileID: 52761515150700276, guid: 77f5c39f5c691674a99596fd35d6f22a, type: 3}
-      propertyPath: m_InteractionLayers.m_Bits
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1434895443145272220, guid: 77f5c39f5c691674a99596fd35d6f22a, type: 3}
       propertyPath: m_InteractionManager
       value: 
       objectReference: {fileID: 1585137381}
-    - target: {fileID: 1719490152672942201, guid: 77f5c39f5c691674a99596fd35d6f22a, type: 3}
-      propertyPath: m_GazeInteractor
-      value: 
-      objectReference: {fileID: 583020970}
     - target: {fileID: 2518137102168777551, guid: 77f5c39f5c691674a99596fd35d6f22a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 6.72
@@ -4117,33 +4105,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1585137381}
     - target: {fileID: 8648934738532197692, guid: 77f5c39f5c691674a99596fd35d6f22a, type: 3}
-      propertyPath: m_PokeSelectWidth
-      value: 0.03
-      objectReference: {fileID: 0}
-    - target: {fileID: 8648934738532197692, guid: 77f5c39f5c691674a99596fd35d6f22a, type: 3}
       propertyPath: m_InteractionManager
       value: 
       objectReference: {fileID: 1585137381}
-    - target: {fileID: 8648934738532197692, guid: 77f5c39f5c691674a99596fd35d6f22a, type: 3}
-      propertyPath: m_InteractionLayers.m_Bits
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 77f5c39f5c691674a99596fd35d6f22a, type: 3}
---- !u!114 &583020970 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4482154878185224317, guid: 77f5c39f5c691674a99596fd35d6f22a, type: 3}
-  m_PrefabInstance: {fileID: 583020969}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c416f1a5c494e224fb5564fd1362b50d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!20 &583020971 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 3877471226887194444, guid: 77f5c39f5c691674a99596fd35d6f22a, type: 3}
@@ -18611,10 +18580,6 @@ PrefabInstance:
     - target: {fileID: 3000579039696714676, guid: 184f69e52f9fc0c4f9cc2285a52f40bd, type: 3}
       propertyPath: m_Name
       value: WorldCanvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 6195756896334356929, guid: 184f69e52f9fc0c4f9cc2285a52f40bd, type: 3}
-      propertyPath: m_PresetInfoIsWorld
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6294717267192469801, guid: 184f69e52f9fc0c4f9cc2285a52f40bd, type: 3}
       propertyPath: m_AnchorMax.y
