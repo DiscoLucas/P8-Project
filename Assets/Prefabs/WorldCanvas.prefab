@@ -218,6 +218,7 @@ GameObject:
   - component: {fileID: 5331902419246430295}
   - component: {fileID: 4647915738083652269}
   - component: {fileID: 8425641279635728533}
+  - component: {fileID: 8086376062358340805}
   m_Layer: 0
   m_Name: WorldCanvas
   m_TagString: Untagged
@@ -351,10 +352,7 @@ MonoBehaviour:
   finishMenuUI: {fileID: 5683639537711504120}
   statBlockParent: {fileID: 799258333149918043}
   statBlockPrefab: {fileID: 7689239702200401379}
-  infomations:
-    _serializedList:
-    - Key: 0
-      Value: 'Finale Score: '
+  scoreText: 'Score: '
 --- !u!114 &8425641279635728533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -374,6 +372,24 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RaycastTriggerInteraction: 1
+--- !u!114 &8086376062358340805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3000579039696714676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6df61a9a13528fd4f9365c233cb23bfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RaycastTriggerInteraction: 2
+  m_EventMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_MaxRayIntersections: 10
+  m_EventCamera: {fileID: 0}
 --- !u!1 &4694373176246356353
 GameObject:
   m_ObjectHideFlags: 0
@@ -652,7 +668,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6127164623224726196}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4647915738083652269}
+        m_TargetAssemblyTypeName: GameMenuUIController, Assembly-CSharp
+        m_MethodName: closeEndGameMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &687676049683938814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1562,10 +1590,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 799258333149918043}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 247.75, y: -74.29666}
-  m_SizeDelta: {x: 495.5, y: 148.59332}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4315624825042541651
 CanvasRenderer:
