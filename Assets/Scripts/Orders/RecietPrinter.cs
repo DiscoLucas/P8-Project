@@ -10,13 +10,9 @@ public class ReceiptPrinter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        PrintReceipt("Order: Pizza", "Order Number: 123", "Time: 12:00 PM", null);
+        
     }
 
-    void Update()
-    {
-            PrintReceipt("Order: Pizza", "Order Number: 123", "Time: 12:00 PM", null);
-    }
 
     // Method to spawn a receipt panel with provided info
     [ContextMenu("Spawn Receipt")]
