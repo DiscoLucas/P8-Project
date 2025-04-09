@@ -288,6 +288,7 @@ GameObject:
   - component: {fileID: 5469271320597105283}
   - component: {fileID: 4542050823204589682}
   - component: {fileID: 5868225697843777681}
+  - component: {fileID: 166642463986563798}
   m_Layer: 0
   m_Name: Fill
   m_TagString: Untagged
@@ -363,6 +364,35 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &166642463986563798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2823636109295803917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0302473a32daf143bc72398668f43bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  updateMode: 0
+  MaxWobble: 0.03
+  WobbleSpeedMove: 1
+  DrinkColor: {r: 1, g: 1, b: 1, a: 1}
+  liquidProperty: {fileID: 7563367612892129188}
+  fillAmount: 0
+  fillOffset: 2
+  fillAmountLerpMax: 1
+  fillAmountLerpMin: 0
+  Recovery: 1
+  Thickness: 1
+  CompensateShapeAmount: 0
+  mesh: {fileID: -8844902805097090840, guid: 60781db57c76fd65c9a8c18fd7206d56, type: 3}
+  rend: {fileID: 5868225697843777681}
+  isCone: 0
+  coneFillPower: 1.5
+  scaleRatios: {x: 0.046273444, y: 0.04627344, z: 0.08339059}
 --- !u!1 &2853250740630544744
 GameObject:
   m_ObjectHideFlags: 0
@@ -772,6 +802,7 @@ GameObject:
   - component: {fileID: 9215800819504759599}
   - component: {fileID: 7353834537397046883}
   - component: {fileID: 9038394651326491701}
+  - component: {fileID: 6130314568842227865}
   m_Layer: 0
   m_Name: Fill
   m_TagString: Untagged
@@ -847,6 +878,35 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6130314568842227865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3043151471431583155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0302473a32daf143bc72398668f43bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  updateMode: 0
+  MaxWobble: 0.03
+  WobbleSpeedMove: 1
+  DrinkColor: {r: 1, g: 1, b: 1, a: 1}
+  liquidProperty: {fileID: 1249688224099607516}
+  fillAmount: 0
+  fillOffset: 2
+  fillAmountLerpMax: 1
+  fillAmountLerpMin: 0
+  Recovery: 1
+  Thickness: 1
+  CompensateShapeAmount: 0
+  mesh: {fileID: 2135144412298118135, guid: 60781db57c76fd65c9a8c18fd7206d56, type: 3}
+  rend: {fileID: 9038394651326491701}
+  isCone: 0
+  coneFillPower: 1.5
+  scaleRatios: {x: 0.039518345, y: 0.03951835, z: 0.06733687}
 --- !u!1 &3299970144906003397
 GameObject:
   m_ObjectHideFlags: 0
@@ -994,6 +1054,7 @@ GameObject:
   - component: {fileID: 6378090824407600342}
   - component: {fileID: 8286756881108756256}
   - component: {fileID: 3097254714379393461}
+  - component: {fileID: 6069431407313199644}
   m_Layer: 0
   m_Name: Fill
   m_TagString: Untagged
@@ -1069,6 +1130,35 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6069431407313199644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3343378308445419429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0302473a32daf143bc72398668f43bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  updateMode: 0
+  MaxWobble: 0.03
+  WobbleSpeedMove: 1
+  DrinkColor: {r: 1, g: 1, b: 1, a: 1}
+  liquidProperty: {fileID: 1465377853838738084}
+  fillAmount: 0
+  fillOffset: 2
+  fillAmountLerpMax: 1
+  fillAmountLerpMin: 0
+  Recovery: 1
+  Thickness: 1
+  CompensateShapeAmount: 0
+  mesh: {fileID: 1124426533854662644, guid: 60781db57c76fd65c9a8c18fd7206d56, type: 3}
+  rend: {fileID: 3097254714379393461}
+  isCone: 0
+  coneFillPower: 1.5
+  scaleRatios: {x: 0.04691758, y: 0.046917576, z: 0.08764035}
 --- !u!1 &3555663979549443501
 GameObject:
   m_ObjectHideFlags: 0
@@ -1080,6 +1170,7 @@ GameObject:
   - component: {fileID: 956135486803739978}
   - component: {fileID: 2536207075311537155}
   - component: {fileID: 7073238098123839177}
+  - component: {fileID: 6592979720634511662}
   m_Layer: 0
   m_Name: Fill
   m_TagString: Untagged
@@ -1155,6 +1246,35 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6592979720634511662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3555663979549443501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0302473a32daf143bc72398668f43bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  updateMode: 0
+  MaxWobble: 0.03
+  WobbleSpeedMove: 1
+  DrinkColor: {r: 1, g: 1, b: 1, a: 1}
+  liquidProperty: {fileID: 1287970182960478195}
+  fillAmount: 0
+  fillOffset: 2
+  fillAmountLerpMax: 1
+  fillAmountLerpMin: 0
+  Recovery: 1
+  Thickness: 1
+  CompensateShapeAmount: 0
+  mesh: {fileID: -7121433009800864280, guid: 60781db57c76fd65c9a8c18fd7206d56, type: 3}
+  rend: {fileID: 7073238098123839177}
+  isCone: 0
+  coneFillPower: 1.5
+  scaleRatios: {x: 0.033224557, y: 0.033224557, z: 0.068868704}
 --- !u!1 &4004209177146355038
 GameObject:
   m_ObjectHideFlags: 0
@@ -1750,6 +1870,7 @@ GameObject:
   - component: {fileID: 5426814865378190067}
   - component: {fileID: 6988722175551692986}
   - component: {fileID: 5153912974599874610}
+  - component: {fileID: 3391558329499787242}
   m_Layer: 0
   m_Name: Fill
   m_TagString: Untagged
@@ -1825,6 +1946,35 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3391558329499787242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4992149791778929062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0302473a32daf143bc72398668f43bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  updateMode: 0
+  MaxWobble: 0.03
+  WobbleSpeedMove: 1
+  DrinkColor: {r: 1, g: 1, b: 1, a: 1}
+  liquidProperty: {fileID: 4373888910093590783}
+  fillAmount: 0
+  fillOffset: 2
+  fillAmountLerpMax: 1
+  fillAmountLerpMin: 0
+  Recovery: 1
+  Thickness: 1
+  CompensateShapeAmount: 0
+  mesh: {fileID: -478676896181422592, guid: 60781db57c76fd65c9a8c18fd7206d56, type: 3}
+  rend: {fileID: 5153912974599874610}
+  isCone: 0
+  coneFillPower: 1.5
+  scaleRatios: {x: 0.03344123, y: 0.03344123, z: 0.07730586}
 --- !u!1 &5562973819615751841
 GameObject:
   m_ObjectHideFlags: 0
