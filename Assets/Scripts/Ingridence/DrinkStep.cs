@@ -21,6 +21,8 @@ namespace Assets.Scripts.Ingridence
         Stirred,
         Muddled,
         Garnished,
+        Chilled,
+        Strained,
         None
     }
 }

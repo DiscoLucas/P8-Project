@@ -4,9 +4,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
@@ -27,7 +29,23 @@ namespace Assets.Scripts.Drink_interaction
         [Header("Garnishing")]
         public GameObject garnish = null;
         public Transform garnishPoint;
+        public IngredientBase garnishIngredient = null;
         public bool hasGarnish = false;
+
+        [Header("Solid glass")]
+        [SerializeField]
+        bool iceIn = false;
+        [SerializeField]
+        string iceInTextString = "Ice", noIceTextString = "No Ice";
+
+        [Header("Liquid Display")]
+        [SerializeField]
+        Slider drinkSlider;
+        [SerializeField]
+        TMP_Text glassTypeText,IceInText,alcoholTypeText, softDrinkText, garnishText;
+        [Header("object state")]
+        [SerializeField]
+        Transform stirredStateObject,ShakenStateObject,StrainedStateObject;
 
 
         public void setGarnish(GameObject garnish)
@@ -42,6 +60,7 @@ namespace Assets.Scripts.Drink_interaction
                 Debug.Log("Garnish not found, using default: " + ib.Name);
             }
             ib.solid = true;
+            garnishIngredient = ib;
             AddIngredient(ib, 1);
 
             Debug.Log("Garnish set: " + garnish.name);
@@ -66,6 +85,33 @@ namespace Assets.Scripts.Drink_interaction
             }
         }
 
+        string softDrinkContain = "", alcoholDrinkContain = "";
+        void updateTheIngredientDisplay(){
+            softDrinkContain = "";
+            alcoholDrinkContain = ": ";
+            foreach (var kvp in ingredients)
+            {
+                StrainedStateObject.gameObject.SetActive(false);
+                ShakenStateObject.gameObject.SetActive(false);
+                stirredStateObject.gameObject.SetActive(false);
+                IngredientBase ingredient = kvp.Value;
+                if (ingredient.Type == IngredientType.Mixer || ingredient.Type == IngredientType.Sirup )
+                {
+                    softDrinkContain += $"\n[{ingredient.Amount}]{ingredient.Name},";
+                }
+                else if (ingredient.Type == IngredientType.Spirit)
+                {
+                    alcoholDrinkContain += $"\n[{ingredient.Amount}]{ingredient.Name},";
+                }else if(ingredient.step.action == DrinkAction.Stirred){
+                    stirredStateObject.gameObject.SetActive(true);
+                }else if(ingredient.step.action == DrinkAction.Shaked){
+                    ShakenStateObject.gameObject.SetActive(true);
+                }else if(ingredient.step.action == DrinkAction.Strained){
+                    StrainedStateObject.gameObject.SetActive(true);
+                }
+                
+            }
+        }
         void OnCollisionEnter(Collision collision)
         {
             if(collision.gameObject.tag == "Garnish" && !hasGarnish)
@@ -104,14 +150,8 @@ namespace Assets.Scripts.Drink_interaction
                     ingredients[ingredient.Name] = ingredient.copy(orderCounter);
                     orderCounter++;
                 }
-
                 updateLiquidDisplay();
-
-            }
-
-           
-
-            
+            }     
         }
 
         public override IngredientBase createPouredMixture(float pourAmount)
@@ -155,16 +195,20 @@ namespace Assets.Scripts.Drink_interaction
                     IngredientBase ind = ingredient.copy();
                     ingredientsList.Add(ind.Name,ind);
                 }
-
-                ingredientNames.Add(ingredient.Name);
                 ingredient.Amount -= amountToPour;
-                ingredient.ingredients = ingredientsList;
+                if(ingredient.Amount <= 0)
+                {
+                    ingredients.Remove(kvp.Key);
+                }else{
+                    ingredientNames.Add(ingredient.Name);
+                    ingredient.ingredients = ingredientsList;
                     Debug.Log( " color : "+ kvp.Value.Color + " of " + kvp.Value.Name);
-                sum = new Vector4(sum.x + ingredient.Color.r*(kvp.Value.Amount/fillAmount)
-                , sum.y + ingredient.Color.g*(kvp.Value.Amount/fillAmount)
-                , sum.z + ingredient.Color.b*(kvp.Value.Amount/fillAmount)
-                , sum.w + ingredient.Color.a*(kvp.Value.Amount/fillAmount)
-                );
+                    sum = new Vector4(sum.x + ingredient.Color.r*(kvp.Value.Amount/fillAmount)
+                    , sum.y + ingredient.Color.g*(kvp.Value.Amount/fillAmount)
+                    , sum.z + ingredient.Color.b*(kvp.Value.Amount/fillAmount)
+                    , sum.w + ingredient.Color.a*(kvp.Value.Amount/fillAmount)
+                    );
+                }
                
             }
             Debug.Log(sum);
@@ -174,7 +218,8 @@ namespace Assets.Scripts.Drink_interaction
             pouredMixture.Name = string.Join(", ", ingredientNames.Take(3));
             if (ingredientNames.Count > 3)
                 pouredMixture.Name += " & more";
-
+            
+            updateTheIngredientDisplay();
             updateLiquidDisplay();
 
             return pouredMixture;
@@ -239,15 +284,14 @@ namespace Assets.Scripts.Drink_interaction
         internal override void updateLiquidDisplay()
         {
             if (ingridentTextDisplay != null) {
-                Debug.Log("updateLiquidDisplay: " + ingridentTextDisplay.gameObject.activeSelf);
-                string infoScreenText = $"Ingriedents [{(FillPercentage()*100)}%]:\n";
-                foreach (IngredientBase ingBase in ingredients.Values) {
-                    string name = ingBase.Name;
-                    string amount = (ingBase.Amount).ToString();
-                    infoScreenText += $"[{name}]:{amount}/{maxFill}\n";
-                }
+                drinkSlider.value = FillPercentage();
 
-                ingridentTextDisplay.text = infoScreenText;
+                glassTypeText.text = glassType.ToString();
+                IceInText.text = iceIn ? iceInTextString : noIceTextString;
+                alcoholTypeText.text = alcoholDrinkContain;
+                softDrinkText.text = softDrinkContain;
+                garnishText.text = garnishIngredient != null ? garnishIngredient.Name : "No Garnish";
+                
             }
         }
 
