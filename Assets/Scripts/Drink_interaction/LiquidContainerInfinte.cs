@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 namespace Assets.Scripts.Drink_interaction
@@ -31,8 +32,12 @@ namespace Assets.Scripts.Drink_interaction
         internal override void drinkOnStart()
         {
             base.drinkOnStart();
-            if(ingridentTextDisplay != null)
-                ingridentTextDisplay.text = ingredient.Name;
+            if(ingridentTextDisplay != null){
+                TMP_Text text = ingridentTextDisplay.GetComponent<TMP_Text>();
+                if(text != null)
+                    text.text = ingredient.Name;
+
+            }
         }
 
         public override void AddIngredient(IngredientBase ingredient, float inputAmount)
