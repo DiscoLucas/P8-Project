@@ -13,4 +13,10 @@ public class PerformanceRecorder : MonoBehaviour
     {
         
     }
+
+    // Write XML file
+    public void WriteXML(string filePath, string content)
+    {
+        System.IO.File.WriteAllText(filePath, content);
+    }
 }

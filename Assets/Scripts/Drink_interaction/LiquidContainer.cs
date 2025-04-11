@@ -21,7 +21,7 @@ public class LiquidContainer : MonoBehaviour
     internal XRGrabInteractable xrGrabInteractable;
 
     [Header("Display")]
-    public TMP_Text ingridentTextDisplay;
+    public GameObject ingridentTextDisplay;
 
     private void Start()
     {
