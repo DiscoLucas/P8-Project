@@ -2338,7 +2338,7 @@ PrefabInstance:
       objectReference: {fileID: 296294743}
     - target: {fileID: 61838154376731251, guid: 9e8c8c81a1d48bcbdb45294748447191, type: 3}
       propertyPath: m_VersionIndex
-      value: 4448
+      value: 4451
       objectReference: {fileID: 0}
     - target: {fileID: 157718288131853162, guid: 9e8c8c81a1d48bcbdb45294748447191, type: 3}
       propertyPath: m_Mesh
@@ -2346,7 +2346,7 @@ PrefabInstance:
       objectReference: {fileID: 502907706}
     - target: {fileID: 157718288131853162, guid: 9e8c8c81a1d48bcbdb45294748447191, type: 3}
       propertyPath: m_VersionIndex
-      value: 4972
+      value: 4975
       objectReference: {fileID: 0}
     - target: {fileID: 502515538589837306, guid: 9e8c8c81a1d48bcbdb45294748447191, type: 3}
       propertyPath: m_Mesh
@@ -2514,7 +2514,7 @@ PrefabInstance:
       objectReference: {fileID: 760371643}
     - target: {fileID: 2556507546709706920, guid: 9e8c8c81a1d48bcbdb45294748447191, type: 3}
       propertyPath: m_VersionIndex
-      value: 3040
+      value: 3043
       objectReference: {fileID: 0}
     - target: {fileID: 2856623658169441968, guid: 9e8c8c81a1d48bcbdb45294748447191, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2658,7 +2658,7 @@ PrefabInstance:
       objectReference: {fileID: 1339187583}
     - target: {fileID: 3738529470261180242, guid: 9e8c8c81a1d48bcbdb45294748447191, type: 3}
       propertyPath: m_VersionIndex
-      value: 4765
+      value: 4768
       objectReference: {fileID: 0}
     - target: {fileID: 3883075002023827272, guid: 9e8c8c81a1d48bcbdb45294748447191, type: 3}
       propertyPath: m_Mesh
@@ -2742,7 +2742,7 @@ PrefabInstance:
       objectReference: {fileID: 1996287208}
     - target: {fileID: 4931396294346014221, guid: 9e8c8c81a1d48bcbdb45294748447191, type: 3}
       propertyPath: m_VersionIndex
-      value: 2091
+      value: 2094
       objectReference: {fileID: 0}
     - target: {fileID: 4975140316306188952, guid: 9e8c8c81a1d48bcbdb45294748447191, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3070,7 +3070,7 @@ PrefabInstance:
       objectReference: {fileID: 2059446236}
     - target: {fileID: 8943503254707215407, guid: 9e8c8c81a1d48bcbdb45294748447191, type: 3}
       propertyPath: m_VersionIndex
-      value: 7309
+      value: 7312
       objectReference: {fileID: 0}
     - target: {fileID: 8968542736277196019, guid: 9e8c8c81a1d48bcbdb45294748447191, type: 3}
       propertyPath: m_AnchorMax.y
@@ -15135,7 +15135,31 @@ MonoBehaviour:
   glassType: 0
   garnish: {fileID: 0}
   garnishPoint: {fileID: 3669873177561276114}
+  garnishIngredient:
+    Name: 
+    Amount: 0
+    solid: 0
+    Type: 0
+    Color: {r: 0, g: 0, b: 0, a: 0}
+    AlcoholContent: 0
+    step:
+      order: 0
+      action: 0
+    ingredients:
+      _serializedList: []
   hasGarnish: 0
+  iceIn: 0
+  iceInTextString: Ice
+  noIceTextString: No Ice
+  drinkSlider: {fileID: 0}
+  glassTypeText: {fileID: 0}
+  IceInText: {fileID: 0}
+  alcoholTypeText: {fileID: 0}
+  softDrinkText: {fileID: 0}
+  garnishText: {fileID: 0}
+  stirredStateObject: {fileID: 0}
+  ShakenStateObject: {fileID: 0}
+  StrainedStateObject: {fileID: 0}
 --- !u!33 &6397467124843048720
 MeshFilter:
   m_ObjectHideFlags: 0

@@ -16,6 +16,7 @@ public class RecipeManager : MonoBehaviour
 {
     [SerializeField]
     PhaseManager phaseManager;
+    PerformanceRecorder performanceRecorder;
     [SerializeField]
     float score = 100f;
     [SerializeField]
@@ -33,6 +34,14 @@ public class RecipeManager : MonoBehaviour
     void Start()
     {
         phaseManager = FindAnyObjectByType<PhaseManager>();
+        performanceRecorder = FindAnyObjectByType<PerformanceRecorder>();
+        if (phaseManager == null)
+        {
+            Debug.LogError("PhaseManager not found in the scene.");
+            return;
+        }
+        if (performanceRecorder == null)
+            Debug.LogWarning("PerformanceRecorder not found in the scene.");
         GameManager.Instance.recipeManager = this;
     }
 
