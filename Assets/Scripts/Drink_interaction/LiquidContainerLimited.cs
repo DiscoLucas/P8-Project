@@ -103,21 +103,21 @@ namespace Assets.Scripts.Drink_interaction
                 }
                 if(ingredientBase.step.action == DrinkAction.Stirred){
                     stirredStateObject.gameObject.SetActive(true);
-                    Debug.Log("Drink has been Stirred");
+                    //Debug.Log("Drink has been Stirred");
                 }
                 if(ingredientBase.step.action == DrinkAction.Shaked){
                     ShakenStateObject.gameObject.SetActive(true);
-                    Debug.Log("Drink has been Shacken");
+                    //Debug.Log("Drink has been Shacken");
                 }
                 if(ingredientBase.step.action == DrinkAction.Strained){
                     StrainedStateObject.gameObject.SetActive(true);
-                    Debug.Log("Drink has been Strained");
+                    //Debug.Log("Drink has been Strained");
                 }
                 
             }
-            Debug.Log("Soft drink: " + softDrinkContain);
-            Debug.Log("Alcohol drink: " + alcoholDrinkContain);
-            Debug.Log("Garnish: " + garnishIngredient?.Name);
+            //Debug.Log("Soft drink: " + softDrinkContain);
+            //Debug.Log("Alcohol drink: " + alcoholDrinkContain);
+            //Debug.Log("Garnish: " + garnishIngredient?.Name);
         }
         void OnCollisionEnter(Collision collision)
         {
