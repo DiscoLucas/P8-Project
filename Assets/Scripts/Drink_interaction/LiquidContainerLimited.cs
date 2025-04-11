@@ -92,9 +92,6 @@ namespace Assets.Scripts.Drink_interaction
             Debug.Log(" Looping through ingredients: " + ingredients.Count);
             foreach (IngredientBase ingredientBase in ingredients.Values)
             {
-                StrainedStateObject.gameObject.SetActive(false);
-                ShakenStateObject.gameObject.SetActive(false);
-                stirredStateObject.gameObject.SetActive(false);
                 Debug.Log("Drink step: " + ingredientBase.step.action);
                 if (ingredientBase.Type == IngredientType.Mixer || ingredientBase.Type == IngredientType.Sirup )
                 {
@@ -103,17 +100,24 @@ namespace Assets.Scripts.Drink_interaction
                 else if (ingredientBase.Type == IngredientType.Spirit)
                 {
                     alcoholDrinkContain += $"\n[{ingredientBase.Amount}]{ingredientBase.Name},";
-                }else if(ingredientBase.step.action == DrinkAction.Stirred){
+                }
+                if(ingredientBase.step.action == DrinkAction.Stirred){
                     stirredStateObject.gameObject.SetActive(true);
-                }else if(ingredientBase.step.action == DrinkAction.Shaked){
+                    //Debug.Log("Drink has been Stirred");
+                }
+                if(ingredientBase.step.action == DrinkAction.Shaked){
                     ShakenStateObject.gameObject.SetActive(true);
-                }else if(ingredientBase.step.action == DrinkAction.Strained){
+                    //Debug.Log("Drink has been Shacken");
+                }
+                if(ingredientBase.step.action == DrinkAction.Strained){
                     StrainedStateObject.gameObject.SetActive(true);
+                    //Debug.Log("Drink has been Strained");
                 }
                 
             }
-            Debug.Log("Soft drink: " + softDrinkContain);
-            Debug.Log("Alcohol drink: " + alcoholDrinkContain);
+            //Debug.Log("Soft drink: " + softDrinkContain);
+            //Debug.Log("Alcohol drink: " + alcoholDrinkContain);
+            //Debug.Log("Garnish: " + garnishIngredient?.Name);
         }
         void OnCollisionEnter(Collision collision)
         {
@@ -302,6 +306,9 @@ namespace Assets.Scripts.Drink_interaction
             if (ingridentTextDisplay != null)
             {
                 ingridentTextDisplay.gameObject.SetActive(false);
+                StrainedStateObject.gameObject.SetActive(false);
+                ShakenStateObject.gameObject.SetActive(false);
+                stirredStateObject.gameObject.SetActive(false);
                 xrGrabInteractable.hoverEntered.AddListener(activateDrinkDisplay);
                 xrGrabInteractable.hoverExited.AddListener(deactivateDrinkDisplay);
 
