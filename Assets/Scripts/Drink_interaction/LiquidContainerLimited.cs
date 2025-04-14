@@ -121,8 +121,11 @@ namespace Assets.Scripts.Drink_interaction
         }
         void OnCollisionEnter(Collision collision)
         {
-            if(collision.gameObject.tag == "Garnish" && !hasGarnish)
-            setGarnish(collision.gameObject); hasGarnish = true;
+            if(collision.gameObject.tag == "Garnish" && !hasGarnish){
+                setGarnish(collision.gameObject); 
+                hasGarnish = true;
+            }
+                
         }
 
         public override void AddIngredient(IngredientBase ingredient, float inputAmount)
