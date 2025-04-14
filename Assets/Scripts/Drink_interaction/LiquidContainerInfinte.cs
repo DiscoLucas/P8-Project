@@ -23,6 +23,7 @@ namespace Assets.Scripts.Drink_interaction
         {
             if(ingredientScribtiableObject != null){
                 ingredient = ingredientScribtiableObject.ingredientBase.copy();
+                ingredient.step = new DrinkStep(0);
             }
 
             drinkOnStart();
