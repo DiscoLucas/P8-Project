@@ -29,6 +29,8 @@ public class OrderManager : MonoBehaviour
     public Transform agentSpawnPoint, agentEndPoint;
     public List<Transform> availableSpawnPoints = new List<Transform>();
 
+    bool agentPoitionSet = false;
+
     [Header("UI debug ")]
     public TMP_Text scoreCounter;
     public GameObject Text_prefab, parent_to_text;
@@ -124,7 +126,12 @@ public class OrderManager : MonoBehaviour
 
         Transform spawnPoint = availableSpawnPoints[0];
         availableSpawnPoints.RemoveAt(0);
-
+        NavMeshHit hit;
+        if (!agentPoitionSet && NavMesh.SamplePosition(agentSpawnPoint.position, out hit, 5.0f, NavMesh.AllAreas))
+        {
+            agentPoitionSet = true;
+            agentSpawnPoint.position = hit.position;
+        }
         GameObject agent = Instantiate(Agent_prefab[(int)Random.Range(0,Agent_prefab.Length)], agentSpawnPoint.position, Quaternion.identity);
         CustomerAgent customerAgenet = agent.GetComponent<CustomerAgent>();
         customerAgenet.reachedDestination.AddListener(placeOrder);
