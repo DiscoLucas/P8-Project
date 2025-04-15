@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class MainMenuUIController : MonoBehaviour
+public class MainMenuUIController : Singleton<MainMenuUIController>
 {
     [Header("UI References")]
     [SerializeField] private TMP_InputField participantIdField;
