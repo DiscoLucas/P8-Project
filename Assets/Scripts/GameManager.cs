@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 public class GameManager : SingletonPersistent<GameManager>
 {
-    public Condition condition { get; private set; }
+    public Condition currentCondition;
     private StateMachine fsm;
     private InputSystem_Actions inputAction;
     [Header("Events")]
@@ -28,8 +28,15 @@ public class GameManager : SingletonPersistent<GameManager>
     public OrderManager orderManager;
     public PhaseManager phaseManager;
     public RecipeManager recipeManager;
+    public PerformanceRecorder performanceRecorder;
     void Start()
     {
+        // get managers
+        orderManager = FindAnyObjectByType<OrderManager>();
+        phaseManager = FindAnyObjectByType<PhaseManager>();
+        recipeManager = FindAnyObjectByType<RecipeManager>();
+        performanceRecorder = FindAnyObjectByType<PerformanceRecorder>();
+
         inputAction = new InputSystem_Actions();
         inputAction.Enable();
         bool isPaused = false;
@@ -50,10 +57,25 @@ public class GameManager : SingletonPersistent<GameManager>
         }
 #endif
 
-        fsm.AddState("Main Menu");
+        fsm.AddState("Main Menu",
+            onEnter => 
+            {
+                orderManager.gameObject.SetActive(false); 
+                phaseManager.gameObject.SetActive(false); 
+                recipeManager.gameObject.SetActive(false); 
+            }
+        );
         fsm.AddState("Load Game",
             onEnter => StartCoroutine(LoadScene("Mitchell"))); // hehe my scene is the main scene >:)
-        fsm.AddState("Game");
+        
+        fsm.AddState("Game",
+            onEnter =>
+            {
+                orderManager.gameObject.SetActive(true);
+                phaseManager.gameObject.SetActive(true);
+                recipeManager.gameObject.SetActive(true);
+            }
+        );
         fsm.AddState("Paused");
         fsm.AddState("Game Over");
 
@@ -75,10 +97,9 @@ public class GameManager : SingletonPersistent<GameManager>
         onGameStart.Invoke();
     }
 
-    public void LoadSceneTest(Condition condition)
+    public void LoadBaselineScene()
     {
-        // im angrey
-        // delet this
+        StartCoroutine(LoadScene("Baseline"));
     }
 
     IEnumerator LoadScene(string sceneName)
@@ -94,6 +115,11 @@ public class GameManager : SingletonPersistent<GameManager>
     {
         string currentSceneName = SceneManager.GetActiveScene().name;
         StartCoroutine(LoadScene(currentSceneName));
+    }
+
+    public void StartBaseline()
+    {
+        throw new System.NotImplementedException();
     }
 
 
@@ -133,12 +159,27 @@ public class GameManager : SingletonPersistent<GameManager>
         }
 
     }
+
+    private string GetSceneForCondition(Condition condition)
+    {
+        switch (condition)
+        {
+            case Condition.LowFi:
+                return "LowFiScene";
+            case Condition.MediumFi:
+                return "MediumFiScene";
+            case Condition.HighFi:
+                return "Main";
+            default:
+                return "DefaultScene";
+        }
+    }
 }
 
 
 public enum Condition
 {
-    LOW,
-    MEDIUM,
-    HIGH,
+    LowFi,
+    MediumFi,
+    HighFi,
 }
