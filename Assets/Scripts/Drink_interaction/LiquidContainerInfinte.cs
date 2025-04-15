@@ -34,10 +34,9 @@ namespace Assets.Scripts.Drink_interaction
         {
             base.drinkOnStart();
             if(ingridentTextDisplay != null){
-                TMP_Text text = ingridentTextDisplay.GetComponent<TMP_Text>();
+                TextMeshProUGUI text = ingridentTextDisplay.GetComponentInChildren<TextMeshProUGUI>();
                 if(text != null)
                     text.text = ingredient.Name;
-
             }
         }
 
