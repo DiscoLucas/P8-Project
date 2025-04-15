@@ -42,7 +42,6 @@ public class BookBehaviour : MonoBehaviour
         if (leftPoke != null)
         {
             leftPoke.selectEntered.AddListener(OnLeftPoke);
-            Debug.Log("Left poke listener added.");
         }
         else
         {
@@ -52,7 +51,6 @@ public class BookBehaviour : MonoBehaviour
         if (rightPoke != null)
         {
             rightPoke.selectEntered.AddListener(OnRightPoke);
-            Debug.Log("Right poke listener added.");
         }
         else
         {
