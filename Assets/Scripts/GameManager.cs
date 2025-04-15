@@ -75,6 +75,12 @@ public class GameManager : SingletonPersistent<GameManager>
         onGameStart.Invoke();
     }
 
+    public void LoadSceneTest(Condition condition)
+    {
+        // im angrey
+        // delet this
+    }
+
     IEnumerator LoadScene(string sceneName)
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
@@ -132,4 +138,7 @@ public class GameManager : SingletonPersistent<GameManager>
 
 public enum Condition
 {
+    LOW,
+    MEDIUM,
+    HIGH,
 }
