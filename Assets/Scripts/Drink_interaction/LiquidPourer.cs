@@ -22,6 +22,7 @@ public class LiquidPourer : MonoBehaviour
     [SerializeField] protected float pourAmount = 0.01f;
     [Tooltip("Defines how strictly the liquid must hit the top of the glass to be considered valid. A value closer to 1 means only near-perfect top hits count, while lower values allow slight angles.")]
     [SerializeField] protected float hitThreashold = 0.5f;
+    [SerializeField]
     protected float pourSpeed;
     protected Vector3 lastHitPoint;
 
@@ -81,17 +82,18 @@ public class LiquidPourer : MonoBehaviour
         main.startLifetime = 2f;
         main.startSpeed = 0;
 
-        Color liquidColor = liquidContainer.getLiquidColor();
+        Color liquidColor = getLiquidColor();
 
-        var renderer = particles.GetComponent<ParticleSystemRenderer>();
+        ParticleSystemRenderer renderer = particles.GetComponent<ParticleSystemRenderer>();
 
-        if (renderer != null && liquidContainer.materialHaveBeenChange)
+        if (renderer != null && liquidHaveBeenChange())
         {
             renderer.material = new Material(renderer.material);
             renderer.trailMaterial = new Material(renderer.trailMaterial);
             renderer.material.color = liquidColor;
             renderer.trailMaterial.color = liquidColor;
-            liquidContainer.materialHaveBeenChange = false; 
+            changeMaterialFlag();
+            
         }
 
         if (!particles.isPlaying)
@@ -105,7 +107,9 @@ public class LiquidPourer : MonoBehaviour
         particles.Emit(emitParams, 1);
     }
 
-
+    internal virtual void changeMaterialFlag(){
+        liquidContainer.materialHaveBeenChange = false; 
+    }
 
 
     /// <summary>
@@ -135,7 +139,8 @@ public class LiquidPourer : MonoBehaviour
                     // Compare hit normal to the glass's up direction
                     if (Vector3.Dot(hit.normal, glassUp) > hitThreashold) // Adjust threshold as needed
                     {
-                        IngredientBase pouredMixture = liquidContainer.createPouredMixture(pourAmount);
+                        IngredientBase pouredMixture = getIngredientBase();
+                        Debug.Log("Pouring " + pouredMixture.Name + " into " + glass.name);
                         if (pouredMixture != null)
                         {
                             glass.AddIngredient(pouredMixture, pourAmount);
@@ -146,7 +151,21 @@ public class LiquidPourer : MonoBehaviour
             }
 
             point = newPoint;
-        }
+        }    
+    }
+
+    internal virtual bool liquidHaveBeenChange()
+    {
+        return liquidContainer.materialHaveBeenChange;
+    }
+
+    internal virtual Color getLiquidColor()
+    {
+        return liquidContainer.getLiquidColor();
+    }
+    internal virtual IngredientBase getIngredientBase()
+    {
+        return liquidContainer.createPouredMixture(pourAmount);
     }
 
 
