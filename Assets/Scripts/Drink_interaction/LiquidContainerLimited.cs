@@ -29,24 +29,15 @@ namespace Assets.Scripts.Drink_interaction
         [Header("Garnishing")]
         public GameObject garnish = null;
         public Transform garnishPoint;
-        IngredientBase garnishIngredient = null;
+        public IngredientBase garnishIngredient = null;
         public bool hasGarnish = false;
 
         [Header("Solid glass")]
         [SerializeField]
-        bool iceIn = false;
-        [SerializeField]
-        string iceInTextString = "Ice", noIceTextString = "No Ice";
+        public bool iceIn = false;
 
-        [Header("Liquid Display")]
-        [SerializeField]
-        Slider drinkSlider;
-        [SerializeField]
-        TMP_Text glassTypeText,IceInText,alcoholTypeText, softDrinkText, garnishText;
-        [Header("object state")]
-        [SerializeField]
-        Transform stirredStateObject,ShakenStateObject,StrainedStateObject;
-
+        [Header("Debug liquid display")]
+        public DebugClassMenu debugGlassMenu;
 
         public void setGarnish(GameObject garnish)
         {
@@ -85,40 +76,6 @@ namespace Assets.Scripts.Drink_interaction
             }
         }
 
-        string softDrinkContain = "", alcoholDrinkContain = "";
-        void updateTheIngredientDisplay(){
-            softDrinkContain = "";
-            alcoholDrinkContain = "";
-            Debug.Log(" Looping through ingredients: " + ingredients.Count);
-            foreach (IngredientBase ingredientBase in ingredients.Values)
-            {
-                Debug.Log("Drink step: " + ingredientBase.step.action);
-                if (ingredientBase.Type == IngredientType.Mixer || ingredientBase.Type == IngredientType.Sirup )
-                {
-                    softDrinkContain += $"\n[{ingredientBase.Amount}]{ingredientBase.Name},";
-                }
-                else if (ingredientBase.Type == IngredientType.Spirit)
-                {
-                    alcoholDrinkContain += $"\n[{ingredientBase.Amount}]{ingredientBase.Name},";
-                }
-                if(ingredientBase.step.action == DrinkAction.Stirred){
-                    stirredStateObject.gameObject.SetActive(true);
-                    //Debug.Log("Drink has been Stirred");
-                }
-                if(ingredientBase.step.action == DrinkAction.Shaked){
-                    ShakenStateObject.gameObject.SetActive(true);
-                    //Debug.Log("Drink has been Shacken");
-                }
-                if(ingredientBase.step.action == DrinkAction.Strained){
-                    StrainedStateObject.gameObject.SetActive(true);
-                    //Debug.Log("Drink has been Strained");
-                }
-                
-            }
-            //Debug.Log("Soft drink: " + softDrinkContain);
-            //Debug.Log("Alcohol drink: " + alcoholDrinkContain);
-            //Debug.Log("Garnish: " + garnishIngredient?.Name);
-        }
         void OnCollisionEnter(Collision collision)
         {
             if(collision.gameObject.tag == "Garnish" && !hasGarnish){
@@ -226,8 +183,6 @@ namespace Assets.Scripts.Drink_interaction
             pouredMixture.Name = string.Join(", ", ingredientNames.Take(3));
             if (ingredientNames.Count > 3)
                 pouredMixture.Name += " & more";
-            
-            updateTheIngredientDisplay();
             updateLiquidDisplay();
 
             return pouredMixture;
@@ -286,19 +241,16 @@ namespace Assets.Scripts.Drink_interaction
         }
 
         public float FillPercentage(){
-            return(fillAmount / maxFill); 
+            float fill = fillAmount / maxFill;
+            return fill; 
         }
 
         internal override void updateLiquidDisplay()
         {
-            updateTheIngredientDisplay();
-            drinkSlider.value = FillPercentage();
-            glassTypeText.text = glassType.ToString();
-            IceInText.text = iceIn ? iceInTextString : noIceTextString;
-            alcoholTypeText.text = alcoholDrinkContain;
-            softDrinkText.text = softDrinkContain;
-            garnishText.text = garnishIngredient != null ? garnishIngredient.Name : "No Garnish";
-
+            if(debugGlassMenu != null)
+            {
+                debugGlassMenu.updateLiquidDisplay();
+            }
         }
 
         internal override void drinkOnStart()
@@ -308,16 +260,6 @@ namespace Assets.Scripts.Drink_interaction
 
             if (ingridentTextDisplay != null)
             {
-                ingridentTextDisplay.gameObject.SetActive(false);
-                StrainedStateObject.gameObject.SetActive(false);
-                ShakenStateObject.gameObject.SetActive(false);
-                stirredStateObject.gameObject.SetActive(false);
-                xrGrabInteractable.hoverEntered.AddListener(activateDrinkDisplay);
-                xrGrabInteractable.hoverExited.AddListener(deactivateDrinkDisplay);
-
-                xrGrabInteractable.selectEntered.AddListener(activateDrinkDisplayOnSelect);
-                xrGrabInteractable.selectExited.AddListener(deactivateDrinkDisplayOnSelect);
-                updateTheIngredientDisplay();
                 updateLiquidDisplay();
                 
             }
