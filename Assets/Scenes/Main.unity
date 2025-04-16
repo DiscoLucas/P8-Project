@@ -3503,6 +3503,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4030617304270596124, guid: 9e8c8c81a1d48bcbdb45294748447191, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4043973694124263752, guid: 9e8c8c81a1d48bcbdb45294748447191, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.1145039
@@ -3510,6 +3514,10 @@ PrefabInstance:
     - target: {fileID: 4043973694124263752, guid: 9e8c8c81a1d48bcbdb45294748447191, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.6150694
+      objectReference: {fileID: 0}
+    - target: {fileID: 4253995667340812600, guid: 9e8c8c81a1d48bcbdb45294748447191, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4464916746332444110, guid: 9e8c8c81a1d48bcbdb45294748447191, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3821,8 +3829,12 @@ PrefabInstance:
       objectReference: {fileID: 504689090}
     - target: {fileID: 7172023719172371848, guid: 77705cb06725786679698ea7dd247353, type: 3}
       propertyPath: Agent_prefab.Array.size
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7172023719172371848, guid: 77705cb06725786679698ea7dd247353, type: 3}
+      propertyPath: 'Agent_prefab.Array.data[0]'
+      value: 
+      objectReference: {fileID: 5172724302251391001, guid: 0d611ca39971fe741af6ead9ede5711a, type: 3}
     - target: {fileID: 7172023719172371848, guid: 77705cb06725786679698ea7dd247353, type: 3}
       propertyPath: 'Agent_prefab.Array.data[1]'
       value: 
@@ -3834,7 +3846,11 @@ PrefabInstance:
     - target: {fileID: 7172023719172371848, guid: 77705cb06725786679698ea7dd247353, type: 3}
       propertyPath: 'Agent_prefab.Array.data[3]'
       value: 
-      objectReference: {fileID: 5172724302251391001, guid: 81ca6da094590814a8fcbfcd98c4eed9, type: 3}
+      objectReference: {fileID: 3542739823787074427, guid: a0f5e23892fcde04f805acff3592e03a, type: 3}
+    - target: {fileID: 7172023719172371848, guid: 77705cb06725786679698ea7dd247353, type: 3}
+      propertyPath: 'Agent_prefab.Array.data[4]'
+      value: 
+      objectReference: {fileID: 5172724302251391001, guid: 0d611ca39971fe741af6ead9ede5711a, type: 3}
     - target: {fileID: 7172023719172371848, guid: 77705cb06725786679698ea7dd247353, type: 3}
       propertyPath: 'availableSpawnPoints.Array.data[0]'
       value: 
