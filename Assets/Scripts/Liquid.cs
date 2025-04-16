@@ -16,7 +16,8 @@ public class Liquid : MonoBehaviour
     [SerializeField] public Color DrinkColor; // Color of the liquid
     [SerializeField] public LiquidContainerLimited liquidProperty; // Reference to the liquid container
     public float fillAmount = 0.5f; // Current fill amount (0 to 1)
-
+    [Header("ALWAYS 4 TIMES BIGGER THEN MAX FILL")]
+    [Tooltip("Offset for the fill amount SHOULD ALWAYS BE FOR TIMES BIGGER THEN MAX FILL !!! DO NOT ASK WHY!!!")]
     public float fillOffset = 2; // Offset for fill amount
     public float fillAmountLerpMax = 1; // Maximum fill amount for lerping
     public float fillAmountLerpMin = 0; // Minimum fill amount for lerping
@@ -54,7 +55,6 @@ public class Liquid : MonoBehaviour
         GetMeshAndRend(); // Initialize mesh and renderer
         liquidProperty = GetComponentInParent<LiquidContainerLimited>(); // Get reference to the parent liquid container
         propBlock = new MaterialPropertyBlock(); // Initialize material property block
-
         // Get the extents of the mesh bounds and scale them by the transform's local scale
         scaleRatios = Vector3.Scale(mesh.bounds.extents, transform.localScale);
 
