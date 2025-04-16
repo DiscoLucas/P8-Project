@@ -194,7 +194,13 @@ namespace Assets.Scripts.Drink_interaction
                 materialHaveBeenChange = true;
                 lastCheckColorCount = ingredients.Count;
                 IngredientBase mix = createPouredMixture(0);
-                outputColor = mix.Color;
+                if(mix == null){
+                    outputColor = Color.magenta;
+                }else if(mix.Color == null){
+                    outputColor = Color.magenta;
+                }else{
+                    outputColor = mix.Color;
+                }
                 Debug.Log(outputColor.ToString());
             }
             return outputColor;
