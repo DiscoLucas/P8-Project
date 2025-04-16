@@ -88,51 +88,59 @@ public class Liquid : MonoBehaviour
 
     // Called once per frame
     void Update()
+{
+    // Be invisible if no liquid in liquid container
+    bool shouldBeVisible = liquidProperty.FillPercentage() > 0;
+    if (rend.enabled != shouldBeVisible)
     {
-        // Scale the fill amount based on lerp values
-        fillAmountScaled = Mathf.Lerp(fillAmountLerpMin, fillAmountLerpMax, fillAmount);
-        
-
-        // Update liquid properties if a liquid container is present
-        if (liquidProperty != null)
-        {
-            DrinkColor = liquidProperty.getLiquidColor(); // Get the liquid color
-            fillAmount = liquidProperty.FillPercentage(); // Get the fill percentage
-        }
-
-        // Determine delta time based on the update mode
-        float deltaTime = updateMode == UpdateMode.Normal ? Time.deltaTime : Time.unscaledDeltaTime;
-        time += deltaTime; // Increment time
-
-        // Calculate velocity and angular velocity
-        if (deltaTime > 0)
-        {
-            velocity = (lastPos - transform.position) / deltaTime;
-            angularVelocity = GetAngularVelocity(lastRot, transform.rotation);
-        }
-        else
-        {
-            velocity = Vector3.zero;
-            angularVelocity = Vector3.zero;
-        }
-
-        // Update material properties for the wobble effect
-        try{
-            rend.GetPropertyBlock(propBlock);
-            propBlock.SetFloat("_WobbleX", wobbleAmountX);
-            propBlock.SetFloat("_WobbleZ", wobbleAmountZ);
-
-        }catch(System.Exception e){
-        }
-        
-        UpdatePos(deltaTime); // Update the position of the liquid
-        UpdateMat(propBlock); // Update the material properties
-        rend.SetPropertyBlock(propBlock);
-
-        // Store the current position and rotation for the next frame
-        lastPos = transform.position;
-        lastRot = transform.rotation;
+        rend.enabled = shouldBeVisible;
     }
+
+    // Scale the fill amount based on lerp values
+    fillAmountScaled = Mathf.Lerp(fillAmountLerpMin, fillAmountLerpMax, fillAmount);
+
+    // Update liquid properties if a liquid container is present
+    if (liquidProperty != null)
+    {
+        DrinkColor = liquidProperty.getLiquidColor(); // Get the liquid color
+        fillAmount = liquidProperty.FillPercentage(); // Get the fill percentage
+    }
+
+    // Determine delta time based on the update mode
+    float deltaTime = updateMode == UpdateMode.Normal ? Time.deltaTime : Time.unscaledDeltaTime;
+    time += deltaTime; // Increment time
+
+    // Calculate velocity and angular velocity
+    if (deltaTime > 0)
+    {
+        velocity = (lastPos - transform.position) / deltaTime;
+        angularVelocity = GetAngularVelocity(lastRot, transform.rotation);
+    }
+    else
+    {
+        velocity = Vector3.zero;
+        angularVelocity = Vector3.zero;
+    }
+
+    // Update material properties for the wobble effect
+    try
+    {
+        rend.GetPropertyBlock(propBlock);
+        propBlock.SetFloat("_WobbleX", wobbleAmountX);
+        propBlock.SetFloat("_WobbleZ", wobbleAmountZ);
+    }
+    catch (System.Exception)
+    {
+    }
+
+    UpdatePos(deltaTime); // Update the position of the liquid
+    UpdateMat(propBlock); // Update the material properties
+    rend.SetPropertyBlock(propBlock);
+
+    // Store the current position and rotation for the next frame
+    lastPos = transform.position;
+    lastRot = transform.rotation;
+}
 
     // Updates the position of the liquid based on wobble and fill amount
     void UpdatePos(float deltaTime)
