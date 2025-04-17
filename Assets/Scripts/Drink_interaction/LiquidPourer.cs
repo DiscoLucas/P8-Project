@@ -50,7 +50,7 @@ public class LiquidPourer : MonoBehaviour
     /// <summary>
     /// Check if the bottle is tilted enough to pour.
     /// </summary>
-    protected bool isPouring()
+    internal virtual bool isPouring()
     {
         bool isPouring = Vector3.Dot(transform.up, Vector3.down) > Mathf.Cos(pourThreshold * Mathf.Deg2Rad);
         bool haveEnoughtLiqquid = false;
