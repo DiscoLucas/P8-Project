@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 5171437789061155944}
   - component: {fileID: 887134041756629579}
   - component: {fileID: 1275417977867635062}
+  - component: {fileID: 5359575866141807179}
   m_Layer: 0
   m_Name: AmerettoGameObject
   m_TagString: Untagged
@@ -124,7 +125,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &5171437789061155944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -280,6 +281,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a68d6fc5fa2e63d4e834cfdb849a502f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5359575866141807179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 94789427539513280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00dc3af3ec0fed14b97d5e447acb1162, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameSettings: {fileID: 0}
+  spawnPoint: {fileID: 0}
+  middelpoint: {fileID: 0}
 --- !u!1 &411863572458989266
 GameObject:
   m_ObjectHideFlags: 0

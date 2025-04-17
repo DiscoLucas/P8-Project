@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 public class GameManager : SingletonPersistent<GameManager>
 {
+    [Header("Game settings")]
+    public GameSettings gameSettings;
     public Condition currentCondition;
     private StateMachine fsm;
     private InputSystem_Actions inputAction;
