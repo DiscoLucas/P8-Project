@@ -11,7 +11,7 @@ using System;
 public class LiquidContainer : MonoBehaviour
 {
     [SerializeField]
-    protected float maxFill = 1.0f;
+    internal float maxFill = 1.0f;
     [SerializeField]
     protected float fillAmount = 0f;
     [SerializedDictionary("Name","Ingredient")]
@@ -54,6 +54,10 @@ public class LiquidContainer : MonoBehaviour
 
     public void setDrinkDisplay(bool set){
         ingridentTextDisplay.gameObject.SetActive(set);
+    }
+
+    public float getMaxFill(){
+        return maxFill;
     }
 
     /// <summary>
