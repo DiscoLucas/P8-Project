@@ -8,6 +8,7 @@ using TMPro;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit;
 using System;
+using Meta.XR.MultiplayerBlocks.Fusion.Editor;
 public class LiquidContainer : MonoBehaviour
 {
     [SerializeField]
@@ -71,22 +72,29 @@ public class LiquidContainer : MonoBehaviour
         updateLiquidVisual();
     }
 
+    public virtual void AddIngredient(IngredientBase ingredient, float inputAmount)
+    {
+        float actualAddedAmount = 0f;
+        AddIngredient(ingredient, inputAmount, out actualAddedAmount);
+    }
+
     /// <summary>
     /// Add ingreident to the container
     /// </summary>
     /// <param name="ingredient">What you add</param>
     /// <param name="inputAmount">The amount you add</param>
-    public virtual void AddIngredient(IngredientBase ingredient, float inputAmount)
+    public virtual void AddIngredient(IngredientBase ingredient, float inputAmount, out float actualAddedAmount)
     {
+        actualAddedAmount = 0f;
         if (ingredient.solid == false)
         {
             float availableSpace = maxFill - fillAmount;
-            float actualAddedAmount = Mathf.Min(inputAmount, availableSpace);
+            actualAddedAmount = Mathf.Min(inputAmount, availableSpace);
 
             if (actualAddedAmount <= 0)
             {
                 Debug.Log($"Glass is full! Cannot add more {ingredient.Name}.");
-                return;
+                return ;
             }
 
             fillAmount += actualAddedAmount;

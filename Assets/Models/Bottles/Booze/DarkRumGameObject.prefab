@@ -55,7 +55,7 @@ MonoBehaviour:
     _serializedList: []
   materialHaveBeenChange: 1
   xrGrabInteractable: {fileID: 7528780820853370382}
-  ingridentTextDisplay: {fileID: 978662061723623272}
+  ingridentTextDisplay: {fileID: 0}
   ingredient:
     Name: Dark Rum
     Amount: 0
@@ -68,6 +68,7 @@ MonoBehaviour:
       action: 0
     ingredients:
       _serializedList: []
+  ingredientScribtiableObject: {fileID: 0}
 --- !u!114 &4760002040860982589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,6 +94,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   pourAmount: 0.01
   hitThreashold: 0.5
+  pourSpeed: 0
 --- !u!54 &1760808967287941361
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5553,7 +5555,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: d27cd5b340a203a41b04d1a46395d672, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: 87b1582d926f10b4db73368920b738e1, type: 2}
+      objectReference: {fileID: 2100000, guid: 6ff6600c9961e3b4aaf9aa7f418e05a9, type: 2}
     - target: {fileID: -7511558181221131132, guid: d27cd5b340a203a41b04d1a46395d672, type: 3}
       propertyPath: 'm_Materials.Array.data[2]'
       value: 
