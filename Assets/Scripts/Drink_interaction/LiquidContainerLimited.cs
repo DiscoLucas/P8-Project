@@ -85,12 +85,13 @@ namespace Assets.Scripts.Drink_interaction
                 
         }
 
-        public override void AddIngredient(IngredientBase ingredient, float inputAmount)
+        public override void AddIngredient(IngredientBase ingredient, float inputAmount, out float actualAddedAmount)
         {
+            actualAddedAmount= 0;
             if (ingredient.solid == false)
             {
                 float availableSpace = maxFill - fillAmount;
-                float actualAddedAmount = Mathf.Min(inputAmount, availableSpace);
+                actualAddedAmount = Mathf.Min(inputAmount, availableSpace);
 
                 if (actualAddedAmount <= 0)
                 {
@@ -134,7 +135,10 @@ namespace Assets.Scripts.Drink_interaction
                 float amountToPour = Mathf.Min(singleIngredient.Amount, actualPouredAmount);
                 singleIngredient.Amount -= amountToPour;
                 fillAmount -= amountToPour;
-
+                if (singleIngredient.Amount <= 0)
+                {
+                    ingredients.Remove(singleIngredient.Name);
+                }
                 return new IngredientBase(singleIngredient.Name, amountToPour, singleIngredient.Type, singleIngredient.Color, singleIngredient.AlcoholContent);
             }
 

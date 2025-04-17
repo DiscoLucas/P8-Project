@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using static UnityEngine.ParticleSystem;
 using UnityEngine.UIElements;
 using Assets.Scripts.Ingridence;
-
+using TMPro;
+using System.Collections;
 public class LiquidPourer : MonoBehaviour
 {
     [Header("Drink")]
@@ -26,10 +27,47 @@ public class LiquidPourer : MonoBehaviour
     protected float pourSpeed;
     protected Vector3 lastHitPoint;
 
-    void Start()
+    [SerializeField]
+    TMP_Text fillamountText;
+    [SerializeField]
+    private float disableTextDelay = 5f; // Time in seconds before disabling the text
+
+    private Coroutine disableTextCoroutine;
+
+    private void Start()
     {
         if (particles == null) Debug.LogError("Particale effect have not been assigned");
 
+        if (fillamountText != null)
+        {
+            fillamountText.gameObject.SetActive(false); // Ensure the text is initially disabled
+        }
+    }
+
+    private void ShowFillAmountText(string text)
+    {
+        if (fillamountText != null)
+        {
+            fillamountText.text = text;
+            fillamountText.gameObject.SetActive(true);
+
+            // Restart the coroutine to disable the text after the delay
+            if (disableTextCoroutine != null)
+            {
+                StopCoroutine(disableTextCoroutine);
+            }
+            disableTextCoroutine = StartCoroutine(DisableFillAmountTextAfterDelay());
+        }
+    }
+
+    private IEnumerator DisableFillAmountTextAfterDelay()
+    {
+        yield return new WaitForSeconds(disableTextDelay);
+
+        if (fillamountText != null)
+        {
+            fillamountText.gameObject.SetActive(false);
+        }
     }
 
     void FixedUpdate()
@@ -42,6 +80,7 @@ public class LiquidPourer : MonoBehaviour
         }
         else
         {
+            currentPourSessionAmout = 0f;
             if(particles != null)
                 particles.Stop();
         }
@@ -50,7 +89,7 @@ public class LiquidPourer : MonoBehaviour
     /// <summary>
     /// Check if the bottle is tilted enough to pour.
     /// </summary>
-    protected bool isPouring()
+    internal virtual bool isPouring()
     {
         bool isPouring = Vector3.Dot(transform.up, Vector3.down) > Mathf.Cos(pourThreshold * Mathf.Deg2Rad);
         bool haveEnoughtLiqquid = false;
@@ -102,8 +141,8 @@ public class LiquidPourer : MonoBehaviour
         }
 
         ParticleSystem.EmitParams emitParams = new ParticleSystem.EmitParams();
-        emitParams.position = pourPoint.position;
-        emitParams.velocity = pourPoint.up * pourSpeed;
+        emitParams.position = getPourPoint().position;
+        emitParams.velocity = getPourPoint().up * pourSpeed;
         particles.Emit(emitParams, 1);
     }
 
@@ -111,14 +150,19 @@ public class LiquidPourer : MonoBehaviour
         liquidContainer.materialHaveBeenChange = false; 
     }
 
+    internal virtual Transform getPourPoint()
+    {
+        return pourPoint;
+    }
 
+    float currentPourSessionAmout = 0f;
     /// <summary>
     /// Detect where the liquid lands.
     /// </summary>
     protected virtual void detectCollision()
     {
-        Vector3 start = pourPoint.position;
-        Vector3 velocity = pourPoint.up * pourSpeed;
+        Vector3 start = getPourPoint().position;
+        Vector3 velocity = getPourPoint().up * pourSpeed;
         Vector3 point = start;
 
         for (int i = 0; i < arcResolution; i++)
@@ -143,7 +187,11 @@ public class LiquidPourer : MonoBehaviour
                         Debug.Log("Pouring " + pouredMixture.Name + " into " + glass.name);
                         if (pouredMixture != null)
                         {
-                            glass.AddIngredient(pouredMixture, pourAmount);
+                            glass.AddIngredient(pouredMixture, pourAmount, out pourAmount);
+                            currentPourSessionAmout += pourAmount;
+                            if(fillamountText != null){
+                                ShowFillAmountText("Pouring: " + currentPourSessionAmout.ToString("F2") + "ml");
+                            }
                         }
                     }
                 }

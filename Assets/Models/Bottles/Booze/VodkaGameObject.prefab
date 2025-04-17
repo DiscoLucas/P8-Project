@@ -184,7 +184,7 @@ MonoBehaviour:
     _serializedList: []
   materialHaveBeenChange: 1
   xrGrabInteractable: {fileID: 6100645818343860550}
-  ingridentTextDisplay: {fileID: 4729948137135323777}
+  ingridentTextDisplay: {fileID: 0}
   ingredient:
     Name: Vodka
     Amount: 0
@@ -197,6 +197,7 @@ MonoBehaviour:
       action: 0
     ingredients:
       _serializedList: []
+  ingredientScribtiableObject: {fileID: 0}
 --- !u!114 &4760002040860982589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,6 +223,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   pourAmount: 0.01
   hitThreashold: 0.5
+  pourSpeed: 0
 --- !u!54 &3173663133086424289
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5553,7 +5555,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 8e57dd5cd66c90349a97648949295110, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: 87b1582d926f10b4db73368920b738e1, type: 2}
+      objectReference: {fileID: 2100000, guid: cc09f9ba710ad994d9b2ff9c602d3871, type: 2}
     - target: {fileID: -7511558181221131132, guid: 8e57dd5cd66c90349a97648949295110, type: 3}
       propertyPath: 'm_Materials.Array.data[2]'
       value: 

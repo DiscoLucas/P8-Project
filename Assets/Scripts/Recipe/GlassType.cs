@@ -3,5 +3,6 @@ using UnityEngine;
 public enum GlassType
 {
    Highball,
-   Cocktail
+   Cocktail,
+   Lowball
 }

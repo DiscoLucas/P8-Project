@@ -4,6 +4,7 @@ using Assets.Scripts.Drink_interaction;
 
 public class ShakerLiquidContiner : LiquidContainerLimited
 {
+    public ShakerLiquidPourer shakerLiquidPourer;
     bool newIngredientsNeedShaking = false;
     [SerializeField]
     int amountOfShakes = 6;
@@ -14,6 +15,8 @@ public class ShakerLiquidContiner : LiquidContainerLimited
     private Vector3 lastPosition;
     private Vector3 lastDirection;
 
+
+
     public override void AddIngredient(IngredientBase ingredient, float inputAmount)
     {
         base.AddIngredient(ingredient, inputAmount);
@@ -23,9 +26,20 @@ public class ShakerLiquidContiner : LiquidContainerLimited
         lastDirection = Vector3.zero;
     }
 
+
+
     private void FixedUpdate()
     {
-        if (newIngredientsNeedShaking)
+        if (newIngredientsNeedShaking && shakerLiquidPourer != null && shakerLiquidPourer.canShake())
+        {
+            // Check if the shaker is being shaken
+            if (Vector3.Dot(transform.up, Vector3.down) > Mathf.Cos(minShakeForce * Mathf.Deg2Rad))
+            {
+                // Call the shaking detection method
+                DetectShaking();
+            }
+        }
+        else if (newIngredientsNeedShaking)
         {
             DetectShaking();
         }
