@@ -102,8 +102,8 @@ public class LiquidPourer : MonoBehaviour
         }
 
         ParticleSystem.EmitParams emitParams = new ParticleSystem.EmitParams();
-        emitParams.position = pourPoint.position;
-        emitParams.velocity = pourPoint.up * pourSpeed;
+        emitParams.position = getPourPoint().position;
+        emitParams.velocity = getPourPoint().up * pourSpeed;
         particles.Emit(emitParams, 1);
     }
 
@@ -111,14 +111,18 @@ public class LiquidPourer : MonoBehaviour
         liquidContainer.materialHaveBeenChange = false; 
     }
 
+    internal virtual Transform getPourPoint()
+    {
+        return pourPoint;
+    }
 
     /// <summary>
     /// Detect where the liquid lands.
     /// </summary>
     protected virtual void detectCollision()
     {
-        Vector3 start = pourPoint.position;
-        Vector3 velocity = pourPoint.up * pourSpeed;
+        Vector3 start = getPourPoint().position;
+        Vector3 velocity = getPourPoint().up * pourSpeed;
         Vector3 point = start;
 
         for (int i = 0; i < arcResolution; i++)

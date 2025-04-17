@@ -134,7 +134,10 @@ namespace Assets.Scripts.Drink_interaction
                 float amountToPour = Mathf.Min(singleIngredient.Amount, actualPouredAmount);
                 singleIngredient.Amount -= amountToPour;
                 fillAmount -= amountToPour;
-
+                if (singleIngredient.Amount <= 0)
+                {
+                    ingredients.Remove(singleIngredient.Name);
+                }
                 return new IngredientBase(singleIngredient.Name, amountToPour, singleIngredient.Type, singleIngredient.Color, singleIngredient.AlcoholContent);
             }
 
