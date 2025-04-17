@@ -55,7 +55,7 @@ MonoBehaviour:
     _serializedList: []
   materialHaveBeenChange: 1
   xrGrabInteractable: {fileID: 2938493166965001087}
-  ingridentTextDisplay: {fileID: 8114262571659096774}
+  ingridentTextDisplay: {fileID: 0}
   ingredient:
     Name: Gin
     Amount: 0
@@ -68,6 +68,7 @@ MonoBehaviour:
       action: 0
     ingredients:
       _serializedList: []
+  ingredientScribtiableObject: {fileID: 0}
 --- !u!114 &4760002040860982589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,6 +94,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   pourAmount: 0.01
   hitThreashold: 0.5
+  pourSpeed: 0
 --- !u!54 &1667132138031764101
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5561,7 +5563,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: e6b72a2e639e4484291fdadc3cca17a0, type: 3}
       propertyPath: 'm_Materials.Array.data[3]'
       value: 
-      objectReference: {fileID: 2100000, guid: 87b1582d926f10b4db73368920b738e1, type: 2}
+      objectReference: {fileID: 2100000, guid: e533b0ceff9862b439857dfc9e161968, type: 2}
     - target: {fileID: 919132149155446097, guid: e6b72a2e639e4484291fdadc3cca17a0, type: 3}
       propertyPath: m_Name
       value: gin
