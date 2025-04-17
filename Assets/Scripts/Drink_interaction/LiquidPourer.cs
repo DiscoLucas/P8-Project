@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using static UnityEngine.ParticleSystem;
 using UnityEngine.UIElements;
 using Assets.Scripts.Ingridence;
-
+using TMPro;
+using System.Collections;
 public class LiquidPourer : MonoBehaviour
 {
     [Header("Drink")]
@@ -26,10 +27,47 @@ public class LiquidPourer : MonoBehaviour
     protected float pourSpeed;
     protected Vector3 lastHitPoint;
 
-    void Start()
+    [SerializeField]
+    TMP_Text fillamountText;
+    [SerializeField]
+    private float disableTextDelay = 5f; // Time in seconds before disabling the text
+
+    private Coroutine disableTextCoroutine;
+
+    private void Start()
     {
         if (particles == null) Debug.LogError("Particale effect have not been assigned");
 
+        if (fillamountText != null)
+        {
+            fillamountText.gameObject.SetActive(false); // Ensure the text is initially disabled
+        }
+    }
+
+    private void ShowFillAmountText(string text)
+    {
+        if (fillamountText != null)
+        {
+            fillamountText.text = text;
+            fillamountText.gameObject.SetActive(true);
+
+            // Restart the coroutine to disable the text after the delay
+            if (disableTextCoroutine != null)
+            {
+                StopCoroutine(disableTextCoroutine);
+            }
+            disableTextCoroutine = StartCoroutine(DisableFillAmountTextAfterDelay());
+        }
+    }
+
+    private IEnumerator DisableFillAmountTextAfterDelay()
+    {
+        yield return new WaitForSeconds(disableTextDelay);
+
+        if (fillamountText != null)
+        {
+            fillamountText.gameObject.SetActive(false);
+        }
     }
 
     void FixedUpdate()
@@ -42,6 +80,7 @@ public class LiquidPourer : MonoBehaviour
         }
         else
         {
+            currentPourSessionAmout = 0f;
             if(particles != null)
                 particles.Stop();
         }
@@ -116,6 +155,7 @@ public class LiquidPourer : MonoBehaviour
         return pourPoint;
     }
 
+    float currentPourSessionAmout = 0f;
     /// <summary>
     /// Detect where the liquid lands.
     /// </summary>
@@ -147,7 +187,11 @@ public class LiquidPourer : MonoBehaviour
                         Debug.Log("Pouring " + pouredMixture.Name + " into " + glass.name);
                         if (pouredMixture != null)
                         {
-                            glass.AddIngredient(pouredMixture, pourAmount);
+                            glass.AddIngredient(pouredMixture, pourAmount, out pourAmount);
+                            currentPourSessionAmout += pourAmount;
+                            if(fillamountText != null){
+                                ShowFillAmountText("Pouring: " + currentPourSessionAmout.ToString("F2") + "ml");
+                            }
                         }
                     }
                 }
