@@ -22,6 +22,16 @@ public class DeliverOrderArea : MonoBehaviour
         if (other.gameObject.tag == glassTag) {
             Debug.Log("Delivering order: " + other.gameObject.name);
             LiquidContainerLimited container = other.GetComponent<LiquidContainerLimited>();
+            if (container == null)
+            {
+                Debug.LogError("LiquidContainerLimited component not found on the object.");
+                return;
+            }
+            if (container.FillPercentage()<= 0)
+            {
+                Debug.Log("Not enough liquid in the container to deliver the order.");
+                return;
+            }
             order.containerLimited = container;
             agent.endOrder();
             orderDeliverede.Invoke(order, agent);
