@@ -3216,7 +3216,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 5608182384693385612, guid: c11f044c1a705e53b829b62ef4f19f5d, type: 2}
-  m_audioClip: {fileID: 8300000, guid: bbe9c35a4749fe61ea52e5ea56f6ebe7, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: bbe9c35a4749fe61ea52e5ea56f6ebe7, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -5481,63 +5481,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1001 &1016469005
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1116691678891745133, guid: d1dd248a6ac09654fbc30c8da712ffe5, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 9.806187
-      objectReference: {fileID: 0}
-    - target: {fileID: 1116691678891745133, guid: d1dd248a6ac09654fbc30c8da712ffe5, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1116691678891745133, guid: d1dd248a6ac09654fbc30c8da712ffe5, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 8.964312
-      objectReference: {fileID: 0}
-    - target: {fileID: 1116691678891745133, guid: d1dd248a6ac09654fbc30c8da712ffe5, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1116691678891745133, guid: d1dd248a6ac09654fbc30c8da712ffe5, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1116691678891745133, guid: d1dd248a6ac09654fbc30c8da712ffe5, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1116691678891745133, guid: d1dd248a6ac09654fbc30c8da712ffe5, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.00013837684
-      objectReference: {fileID: 0}
-    - target: {fileID: 1116691678891745133, guid: d1dd248a6ac09654fbc30c8da712ffe5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1116691678891745133, guid: d1dd248a6ac09654fbc30c8da712ffe5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1116691678891745133, guid: d1dd248a6ac09654fbc30c8da712ffe5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0.016
-      objectReference: {fileID: 0}
-    - target: {fileID: 8834076904419247233, guid: d1dd248a6ac09654fbc30c8da712ffe5, type: 3}
-      propertyPath: m_Name
-      value: Cocktail Dispensor
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: d1dd248a6ac09654fbc30c8da712ffe5, type: 3}
 --- !u!1 &1036795896
 GameObject:
   m_ObjectHideFlags: 0
@@ -11915,72 +11858,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1001 &1623456088
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1499108041157155157, guid: 349f6ea2a06ebc04b88e2ad21f1f8f9e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 10.722994
-      objectReference: {fileID: 0}
-    - target: {fileID: 1499108041157155157, guid: 349f6ea2a06ebc04b88e2ad21f1f8f9e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1499108041157155157, guid: 349f6ea2a06ebc04b88e2ad21f1f8f9e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 8.878447
-      objectReference: {fileID: 0}
-    - target: {fileID: 1499108041157155157, guid: 349f6ea2a06ebc04b88e2ad21f1f8f9e, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1499108041157155157, guid: 349f6ea2a06ebc04b88e2ad21f1f8f9e, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1499108041157155157, guid: 349f6ea2a06ebc04b88e2ad21f1f8f9e, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1499108041157155157, guid: 349f6ea2a06ebc04b88e2ad21f1f8f9e, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.00013837684
-      objectReference: {fileID: 0}
-    - target: {fileID: 1499108041157155157, guid: 349f6ea2a06ebc04b88e2ad21f1f8f9e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1499108041157155157, guid: 349f6ea2a06ebc04b88e2ad21f1f8f9e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1499108041157155157, guid: 349f6ea2a06ebc04b88e2ad21f1f8f9e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0.016
-      objectReference: {fileID: 0}
-    - target: {fileID: 2340785803107277620, guid: 349f6ea2a06ebc04b88e2ad21f1f8f9e, type: 3}
-      propertyPath: m_Name
-      value: Highball Dispensor
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 6219721366937845857, guid: 349f6ea2a06ebc04b88e2ad21f1f8f9e, type: 3}
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 1499108041157155157, guid: 349f6ea2a06ebc04b88e2ad21f1f8f9e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2093626351}
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 349f6ea2a06ebc04b88e2ad21f1f8f9e, type: 3}
---- !u!4 &1623456089 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1499108041157155157, guid: 349f6ea2a06ebc04b88e2ad21f1f8f9e, type: 3}
-  m_PrefabInstance: {fileID: 1623456088}
-  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1628751301
 Mesh:
   m_ObjectHideFlags: 0
@@ -13830,81 +13707,6 @@ Transform:
   - {fileID: 1525814723}
   m_Father: {fileID: 926154788}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &2093626350
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1623456089}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 10758165fbbe8f045adfa8848d37a5be, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.5646145
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 10758165fbbe8f045adfa8848d37a5be, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.5646145
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 10758165fbbe8f045adfa8848d37a5be, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.5646145
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 10758165fbbe8f045adfa8848d37a5be, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 10758165fbbe8f045adfa8848d37a5be, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 10758165fbbe8f045adfa8848d37a5be, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 10758165fbbe8f045adfa8848d37a5be, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 10758165fbbe8f045adfa8848d37a5be, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 10758165fbbe8f045adfa8848d37a5be, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 10758165fbbe8f045adfa8848d37a5be, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.00013837684
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 10758165fbbe8f045adfa8848d37a5be, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 10758165fbbe8f045adfa8848d37a5be, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 10758165fbbe8f045adfa8848d37a5be, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 10758165fbbe8f045adfa8848d37a5be, type: 3}
-      propertyPath: m_Name
-      value: Highball
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: -6475698432325073768, guid: 10758165fbbe8f045adfa8848d37a5be, type: 3}
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 10758165fbbe8f045adfa8848d37a5be, type: 3}
---- !u!4 &2093626351 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 10758165fbbe8f045adfa8848d37a5be, type: 3}
-  m_PrefabInstance: {fileID: 2093626350}
-  m_PrefabAsset: {fileID: 0}
 --- !u!43 &2101972606
 Mesh:
   m_ObjectHideFlags: 0
@@ -15130,7 +14932,7 @@ MonoBehaviour:
     _serializedList: []
   materialHaveBeenChange: 1
   xrGrabInteractable: {fileID: 5250938600222015542}
-  ingridentTextDisplay: {fileID: 7595485668450655198}
+  ingridentTextDisplay: {fileID: 0}
   outputColor: {r: 1, g: 1, b: 1, a: 1}
   glassType: 0
   garnish: {fileID: 0}
@@ -15149,17 +14951,7 @@ MonoBehaviour:
       _serializedList: []
   hasGarnish: 0
   iceIn: 0
-  iceInTextString: Ice
-  noIceTextString: No Ice
-  drinkSlider: {fileID: 0}
-  glassTypeText: {fileID: 0}
-  IceInText: {fileID: 0}
-  alcoholTypeText: {fileID: 0}
-  softDrinkText: {fileID: 0}
-  garnishText: {fileID: 0}
-  stirredStateObject: {fileID: 0}
-  ShakenStateObject: {fileID: 0}
-  StrainedStateObject: {fileID: 0}
+  debugGlassMenu: {fileID: 0}
 --- !u!33 &6397467124843048720
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -15731,9 +15523,7 @@ SceneRoots:
   - {fileID: 413775852}
   - {fileID: 5553303567279283845}
   - {fileID: 1753396584}
-  - {fileID: 1016469005}
   - {fileID: 504910375}
-  - {fileID: 1623456088}
   - {fileID: 568085173}
   - {fileID: 41924666}
   - {fileID: 583020969}
