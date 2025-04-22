@@ -8,6 +8,7 @@ public class GameManager : SingletonPersistent<GameManager>
 {
     [Header("Game settings")]
     public GameSettings gameSettings;
+    [Tooltip("Stores the selected condition selected in the main menu")]
     public Condition currentCondition;
     private StateMachine fsm;
     private InputSystem_Actions inputAction;
@@ -78,6 +79,12 @@ public class GameManager : SingletonPersistent<GameManager>
                 recipeManager.gameObject.SetActive(true);
             }
         );
+        fsm.AddState("Baseline",
+            onEnter =>
+            {
+                
+            }
+        );
         fsm.AddState("Paused");
         fsm.AddState("Game Over");
 
@@ -101,7 +108,7 @@ public class GameManager : SingletonPersistent<GameManager>
 
     public void LoadBaselineScene()
     {
-        StartCoroutine(LoadScene("Baseline"));
+        StartCoroutine(LoadScene("baselineTest"));
     }
 
     IEnumerator LoadScene(string sceneName)

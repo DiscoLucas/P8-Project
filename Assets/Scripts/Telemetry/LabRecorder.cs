@@ -84,7 +84,7 @@ public class LabRecorder : SingletonPersistent<LabRecorder>
     /// Configure the LabRecorder filename and starts recording.
     /// </summary>
     /// <param name="participantID">Participant ID (for %p).</param>
-    /// <param name="sessionNumber">ession number (for %s).</param>
+    /// <param name="sessionNumber">Session number (for %s).</param>
     /// <param name="taskName">Task or condition name (for %b).</param>
     /// <returns></returns>
     public async Task<bool> ConfigureAndStartRecordingAsync(string participantID, string sessionNumber, string taskName)
@@ -97,7 +97,7 @@ public class LabRecorder : SingletonPersistent<LabRecorder>
 
         if (!isConnected)
         {
-            Debug.LogError("Not connected yet fam, let's see if you pass the vibe check first...");
+            Debug.Log("Not connected yet fam, let's see if you pass the vibe check first...");
             if (!await ConnectAsync())
             {
                 Debug.LogError("Bruh, you really thought you could just slide into LabRecorder's DMs without a connection?");
