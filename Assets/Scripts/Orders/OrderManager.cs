@@ -40,6 +40,7 @@ public class OrderManager : MonoBehaviour
     public Vector2 orderSpawnTimeRange = new Vector2(5f, 15f); // Min & Max time between orders
     public float doubleOrderChance = 0.3f; 
 
+    public Transform customerOrderDistination;
 
     private void Start()
     {
@@ -135,7 +136,7 @@ public class OrderManager : MonoBehaviour
         GameObject agent = Instantiate(Agent_prefab[(int)Random.Range(0,Agent_prefab.Length)], agentSpawnPoint.position, Quaternion.identity);
         CustomerAgent customerAgenet = agent.GetComponent<CustomerAgent>();
         customerAgenet.reachedDestination.AddListener(placeOrder);
-        customerAgenet.setDestination(spawnPoint);
+        customerAgenet.setDestination(customerOrderDistination);
     }
 
     /// <summary>
@@ -143,7 +144,7 @@ public class OrderManager : MonoBehaviour
     /// </summary>
     public void placeOrder(CustomerAgent agent)
     {
-        Transform spawnPoint = agent.destination;
+        Transform spawnPoint = agent.orderDestination;
         string keyRecipe;
         CocktailRecipe recipe = recipeManager.getCocktailRecipe(out keyRecipe);
         string orderName = recipe.Name +"#" +Mathf.FloorToInt((Time.timeSinceLevelLoad * 100));
