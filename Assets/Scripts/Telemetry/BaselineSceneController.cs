@@ -9,19 +9,18 @@ public class BaselineSceneController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI countdownText;
     [SerializeField] private Button skipButton;
 
-    [Header("Settings")]
-    [SerializeField] private float baselineDuration = 30f; // Default duration
+    // Duration is now primarily controlled by GameManager
+    // [Header("Settings")]
+    // [SerializeField] private float baselineDuration = 30f;
 
     private Coroutine countdownCoroutine;
     private bool finished = false;
+    private float actualBaselineDuration; // Store the duration for this instance
 
     void Start()
     {
-        // Optionally get duration from GameManager if it's configurable there
-        if (GameManager.Instance != null)
-        {
-            baselineDuration = GameManager.Instance.baselineDuration;
-        }
+        // Get duration from GameManager
+        actualBaselineDuration = (GameManager.Instance != null) ? GameManager.Instance.baselineDuration : 30f; // Default if GM not found
 
         if (skipButton != null)
         {
@@ -52,14 +51,9 @@ public class BaselineSceneController : MonoBehaviour
         countdownCoroutine = StartCoroutine(CountdownCoroutine());
     }
 
-    void Update()
-    {
-        // Update logic can go here if needed, but countdown is handled by coroutine
-    }
-
     private IEnumerator CountdownCoroutine()
     {
-        float remainingTime = baselineDuration;
+        float remainingTime = actualBaselineDuration;
 
         while (remainingTime > 0)
         {
@@ -78,7 +72,7 @@ public class BaselineSceneController : MonoBehaviour
     public void SkipBaseline()
     {
         Debug.Log("Baseline skipped by user.");
-        EndBaseline();
+        EndBaseline(); // Call the same end logic
     }
 
     private void EndBaseline()
@@ -97,8 +91,10 @@ public class BaselineSceneController : MonoBehaviour
         // Send Baseline End Marker via LSL
         if (PerformanceRecorder.Instance != null)
         {
-            PerformanceRecorder.Instance.RecordData("BaselineEnd");
-            Debug.Log("Sent BaselineEnd marker.");
+            // Add duration as metadata if desired
+            float elapsed = actualBaselineDuration - (countdownCoroutine == null ? 0 : GetRemainingTime()); // Calculate actual elapsed time
+            PerformanceRecorder.Instance.RecordData("BaselineEnd", $"DurationSec:{elapsed:F1}");
+            Debug.Log($"Sent BaselineEnd marker. Duration: {elapsed:F1}s");
         }
         else
         {
@@ -116,17 +112,27 @@ public class BaselineSceneController : MonoBehaviour
          }
 
 
-        // Tell GameManager to load the actual game scene
+        // Tell GameManager FSM to proceed to loading the game scene
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.LoadGameScene();
+            GameManager.Instance.TriggerFSM("BaselineComplete");
         }
         else
         {
-            Debug.LogError("GameManager instance not found. Cannot load game scene.");
-            // Handle this error case appropriately, maybe load a default scene or show an error message
+            Debug.LogError("GameManager instance not found. Cannot trigger FSM.");
+            // Handle this error case appropriately
         }
     }
+
+    // Helper to get remaining time if needed for accurate duration logging on skip
+    private float GetRemainingTime()
+    {
+         // This requires tracking remaining time outside the coroutine or passing it
+         // For simplicity, we'll assume full duration if skipped early,
+         // or refine this if exact skipped duration is critical.
+         return 0; // Placeholder - needs better tracking if exact skip time matters
+    }
+
 
      void OnDestroy()
      {

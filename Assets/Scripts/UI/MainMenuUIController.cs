@@ -69,21 +69,22 @@ public class MainMenuUIController : MonoBehaviour
     {
         // Setup the condition dropdown
         conditionDropdown.ClearOptions();
-        conditionDropdown.AddOptions(new System.Collections.Generic.List<string> 
+        conditionDropdown.AddOptions(new System.Collections.Generic.List<string>
         {   // Obscured condition names as to not affect the experiment
-            "Condition 0", 
+            "Condition 0",
             "Condition 1",
             "Condition 2"
         });
 
         errorText.gameObject.SetActive(false);
-        startButton.onClick.AddListener(HandleStartExperiment); // Changed listener name
+        startButton.onClick.AddListener(HandleStartExperiment);
         if (loadingOverlay) loadingOverlay.SetActive(false);
     }
 
     // Wrapper to handle async logic for the button click
     private void HandleStartExperiment()
     {
+        Debug.Log("start button clicked");
         // Disable button to prevent multiple clicks
         startButton.interactable = false;
         if (loadingOverlay) loadingOverlay.SetActive(true);
@@ -94,6 +95,7 @@ public class MainMenuUIController : MonoBehaviour
 
     private async Task StartExperimentAsync() // Make the method async
     {
+        Debug.Log("Starting experiment...");
         string participantId = participantIdField.text; // TODO: automate this
         errorText.gameObject.SetActive(false);
 
@@ -108,7 +110,7 @@ public class MainMenuUIController : MonoBehaviour
         // Get the selected condition
         int conditionIndex = conditionDropdown.value;
         string conditionNameForTask = conditionDropdown.options[conditionIndex].text.Replace(" ", ""); // Remove spaces for filename
-        Condition selectedCondition = (Condition)conditionIndex; // Assuming enum matches dropdown order
+        Condition selectedConditionEnum = (Condition)conditionIndex; // Assuming enum matches dropdown order
 
         // --- LSL and LabRecorder Initialization ---
         // 1. Initialize your LSL stream via PerformanceRecorder
@@ -142,14 +144,13 @@ public class MainMenuUIController : MonoBehaviour
         }
         // --- End LSL/LabRecorder ---
 
-
-        // Proceed with loading game scenes
-        // Initialize GameManager settings if needed
+        // Proceed by triggering the FSM in GameManager
         if (GameManager.Instance != null)
         {
-            // store selected condition in GameManager
-            GameManager.Instance.currentCondition = selectedCondition; // Pass condition to GameManager
-            GameManager.Instance.LoadBaselineScene(); // Or directly to the game scene
+            // Store the selected condition Enum in GameManager for later use
+            GameManager.Instance.currentCondition = selectedConditionEnum;
+            // Trigger the FSM to start the process (loading baseline)
+            GameManager.Instance.TriggerFSM("StartExperiment");
         }
         else
         {
