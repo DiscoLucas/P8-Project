@@ -442,7 +442,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   navMeshAgent: {fileID: 2333670235794293887}
+  animationSpeedMultipliere: 1.5
+  isMoving: 0
   destination: {fileID: 0}
+  orderDestination: {fileID: 0}
   minDistance: 2
   reachedDestination:
     m_PersistentCalls:
@@ -450,7 +453,7 @@ MonoBehaviour:
   hand: {fileID: 3610455071569032490}
   animator: {fileID: 0}
   model: {fileID: 0}
-  modelRoationSpeed: 10
+  modelRoationSpeed: 1.5
 --- !u!4 &5534474684154353804 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -1070350730909333850, guid: 085c0130078117145879893a61073f8f, type: 3}

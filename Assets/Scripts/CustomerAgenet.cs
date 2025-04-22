@@ -1,6 +1,7 @@
 using Assets.Scripts.Ingridence;
 using Assets.Scripts.Orders;
 using System.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
@@ -12,9 +13,11 @@ public class CustomerAgent : MonoBehaviour
     [SerializeField]
     NavMeshAgent navMeshAgent;
     [SerializeField]
+    float animationSpeedMultipliere = 0.5f;
+    [SerializeField]
     bool isMoving = false;
     [SerializeField]
-    public Transform destination;
+    public Transform destination, orderDestination;
     [SerializeField]
     float minDistance = 0.2f;
     [SerializeField]
@@ -62,32 +65,22 @@ public class CustomerAgent : MonoBehaviour
 
     private void FixedUpdate()
     {
-        animator.SetFloat("WalkSpeed", navMeshAgent.velocity.magnitude/navMeshAgent.speed);
+        animator.SetFloat("WalkSpeed", (navMeshAgent.velocity.magnitude/navMeshAgent.speed)*animationSpeedMultipliere);
         
         if (navMeshAgent.hasPath && nearDestination() &&isMoving)
         {
 
             Vector3 directionToDestination = (destination.position - transform.position).normalized;
-            StartCoroutine(RotateOverTime(directionToDestination));
+            StartCoroutine(RotateOverTime(destination.rotation));
             Debug.Log("Reached destination: " + destination.name);
             reachedDestination.Invoke(this);
             navMeshAgent.isStopped = true; 
             isMoving = false;
         }
-        else if(isMoving)
-        {
-            if (navMeshAgent.velocity.sqrMagnitude > 0.01f)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(navMeshAgent.velocity.normalized);
-                model.transform.rotation = Quaternion.Slerp(model.transform.rotation, targetRotation, Time.deltaTime * modelRoationSpeed);
-            }   
-        }
     }
 
-    private IEnumerator RotateOverTime(Vector3 direction)
+    private IEnumerator RotateOverTime(Quaternion targetRotation)
     {
-        // Only get the Y rotation we want to face
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
         float elapsedTime = 0f;
         Quaternion startRotation = model.transform.rotation;
         
@@ -101,7 +94,7 @@ public class CustomerAgent : MonoBehaviour
         }
 
         // Final rotation - ensure we're exactly at target Y rotation
-        model.transform.rotation = Quaternion.Euler(0, targetRotation.eulerAngles.y, 0);
+       // model.transform.rotation = Quaternion.Euler(0, targetRotation.eulerAngles.y, 0);
     }
     
 

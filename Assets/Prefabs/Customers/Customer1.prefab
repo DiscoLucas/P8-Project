@@ -773,7 +773,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   navMeshAgent: {fileID: 709738229241818858}
+  animationSpeedMultipliere: 1.5
+  isMoving: 0
   destination: {fileID: 0}
+  orderDestination: {fileID: 0}
   minDistance: 2
   reachedDestination:
     m_PersistentCalls:
@@ -781,7 +784,7 @@ MonoBehaviour:
   hand: {fileID: 4461036370659083649}
   animator: {fileID: 0}
   model: {fileID: 0}
-  modelRoationSpeed: 10
+  modelRoationSpeed: 1.5
 --- !u!95 &5973516197543299997
 Animator:
   serializedVersion: 7
