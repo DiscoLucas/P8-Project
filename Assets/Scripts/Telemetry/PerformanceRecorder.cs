@@ -103,7 +103,11 @@ public class PerformanceRecorder : Singleton<PerformanceRecorder>
     }
 
     
-
+    /// <summary>
+    /// Records data to the LSL stream.
+    /// </summary>
+    /// <param name="eventType"></param>
+    /// <param name="values"></param>
     public void RecordData(string eventType, params object[] values)
     {
         if (outlet == null)
@@ -137,43 +141,10 @@ public class PerformanceRecorder : Singleton<PerformanceRecorder>
         catch (Exception e)
         {
             Debug.LogError($"Error pushing LSL sample: {e.Message}");
-            // Consider attempting to re-initialize the outlet or logging the error persistently
         }
 
     }
     
-    /*
-    /// <summary>
-    /// Records telemetry data to csv file.
-    /// <see cref="InitializeParticpantID">InitializeParticpantID</see>
-    /// Needs to be called first.
-    /// </summary>
-    /// <param name="milliseconds"></param>
-    /// <param name="eventType"></param>
-    /// <param name="values"></param>
-    public void RecordData(double milliseconds, string eventType, params object[] values)
-    {
-        if (string.IsNullOrEmpty(currentFilePath)) return;
-
-        StringBuilder sb = new StringBuilder();
-        sb.Append(milliseconds.ToString("F2")); // i dont really like this, it depends on the function calling it not fucking up time
-        sb.Append(";");
-        sb.Append(eventType);
-
-        foreach (var value in values)
-        {
-            sb.Append(";");
-            sb.Append(value);
-        }
-
-        // Add the data to the buffer
-        dataBuffer.Add(sb.ToString());
-        // save the buffer if it exceeds a certain size
-        if (dataBuffer.Count >= 100)
-        {
-            SaveBufferedData();
-        }
-    }*/
 
 
 
