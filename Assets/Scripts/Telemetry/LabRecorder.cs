@@ -105,6 +105,10 @@ public class LabRecorder : SingletonPersistent<LabRecorder>
             }
         }
 
+        // Update stream selection to include all streams
+        if (!await SendCommandAsync("update")) return false;
+        await Task.Delay(2000); // According to the documentation, it takes about 2 seconds to update the list 🙄
+
         // 1. Select streams (optional, "select all" is usually fine)
         if (!await SendCommandAsync("select all")) return false;
         await Task.Delay(100); // Give it a moment to process
@@ -145,8 +149,6 @@ public class LabRecorder : SingletonPersistent<LabRecorder>
 
         isRecording = false;
         Debug.Log("LabRecorder recording stopped. You did it, fam! 🎉");
-        // Optionally disconnect after stopping
-        // Disconnect();
         return true;
     }
 

@@ -84,7 +84,6 @@ public class MainMenuUIController : MonoBehaviour
     // Wrapper to handle async logic for the button click
     private void HandleStartExperiment()
     {
-        Debug.Log("start button clicked");
         // Disable button to prevent multiple clicks
         startButton.interactable = false;
         if (loadingOverlay) loadingOverlay.SetActive(true);
@@ -93,9 +92,16 @@ public class MainMenuUIController : MonoBehaviour
         _ = StartExperimentAsync(); // Discard Task with _
     }
 
+    /// <summary>
+    /// Used after baseline to start the main experiment.
+    /// </summary>
+    public void StartMainBlock()
+    {
+        _ = StartExperimentAsync();
+    }
+
     private async Task StartExperimentAsync() // Make the method async
     {
-        Debug.Log("Starting experiment...");
         string participantId = participantIdField.text; // TODO: automate this
         errorText.gameObject.SetActive(false);
 

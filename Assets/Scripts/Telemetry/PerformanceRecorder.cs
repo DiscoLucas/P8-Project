@@ -1,10 +1,12 @@
 using UnityEngine;
-using System.IO;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using LSL;
 
+/// <summary>
+/// This class is responsible for initializing the participant, recording performance data and sending it to <see cref="LabRecorder">LabRecorder.cs</see>.
+/// </summary>
 public class PerformanceRecorder : Singleton<PerformanceRecorder>
 {
     

@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using System.Threading.Tasks;
+using System;
 
 public class BaselineSceneController : MonoBehaviour
 {
@@ -66,6 +68,7 @@ public class BaselineSceneController : MonoBehaviour
         }
 
         // Timer finished
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         EndBaseline();
     }
 
@@ -74,8 +77,10 @@ public class BaselineSceneController : MonoBehaviour
         Debug.Log("Baseline skipped by user.");
         EndBaseline(); // Call the same end logic
     }
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
-    private void EndBaseline()
+
+    private async Task EndBaseline()
     {
         // Prevent running multiple times
         if (finished) return;
@@ -95,6 +100,17 @@ public class BaselineSceneController : MonoBehaviour
             float elapsed = actualBaselineDuration - (countdownCoroutine == null ? 0 : GetRemainingTime()); // Calculate actual elapsed time
             PerformanceRecorder.Instance.RecordData("BaselineEnd", $"DurationSec:{elapsed:F1}");
             Debug.Log($"Sent BaselineEnd marker. Duration: {elapsed:F1}s");
+
+            // Stop recording asynchronously, robot said this was better practice to avoid race conditions.
+            try
+            {
+                bool stopped = await LabRecorder.Instance.StopRecordingAsync();
+                if (!stopped) Debug.LogWarning("I don't think the recording stopped properly 🤔.");
+            }
+            catch (Exception e) 
+            {
+                Debug.LogError($"AAAAAAAA I COULD NOT STOP THE RECORDING! {e.Message}");
+            }
         }
         else
         {
@@ -127,6 +143,7 @@ public class BaselineSceneController : MonoBehaviour
     // Helper to get remaining time if needed for accurate duration logging on skip
     private float GetRemainingTime()
     {
+        // TODO: Implement a way to track remaining time accurately
          // This requires tracking remaining time outside the coroutine or passing it
          // For simplicity, we'll assume full duration if skipped early,
          // or refine this if exact skipped duration is critical.
