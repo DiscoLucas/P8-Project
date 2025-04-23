@@ -11,10 +11,6 @@ public class BaselineSceneController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI countdownText;
     [SerializeField] private Button skipButton;
 
-    // Duration is now primarily controlled by GameManager
-    // [Header("Settings")]
-    // [SerializeField] private float baselineDuration = 30f;
-
     private Coroutine countdownCoroutine;
     private bool finished = false;
     private float actualBaselineDuration; // Store the duration for this instance

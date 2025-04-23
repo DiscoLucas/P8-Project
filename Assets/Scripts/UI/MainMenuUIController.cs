@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Threading.Tasks;
 
+// TODO: remove LabRecorder start logic and make it only initialize the stream and trigger the FSM
 /// <summary>
 /// Ensure LabRecorder is ready and configure the LabRecorderController in your Unity scene.
 /// </summary>
@@ -92,13 +93,7 @@ public class MainMenuUIController : MonoBehaviour
         _ = StartExperimentAsync(); // Discard Task with _
     }
 
-    /// <summary>
-    /// Used after baseline to start the main experiment.
-    /// </summary>
-    public void StartMainBlock()
-    {
-        _ = StartExperimentAsync();
-    }
+    
 
     private async Task StartExperimentAsync() // Make the method async
     {
