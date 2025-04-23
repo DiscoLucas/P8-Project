@@ -16,8 +16,6 @@ GameObject:
   - component: {fileID: 6410755140413070997}
   - component: {fileID: 1417416859832869957}
   - component: {fileID: 7713761904855266876}
-  - component: {fileID: 8732924108004225561}
-  - component: {fileID: 4136018604330767383}
   m_Layer: 0
   m_Name: Stirring Spoon
   m_TagString: Untagged
@@ -72,7 +70,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 08f789c45b240374987dfed3e423ab38, type: 2}
+  - {fileID: 2100000, guid: 0cf2b2594edf21d4792fcbd8aaf128e0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -288,33 +286,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a68d6fc5fa2e63d4e834cfdb849a502f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8732924108004225561
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3346479498654514216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a68d6fc5fa2e63d4e834cfdb849a502f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &4136018604330767383
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3346479498654514216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00dc3af3ec0fed14b97d5e447acb1162, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameSettings: {fileID: 0}
-  spawnPoint: {fileID: 0}
-  middelpoint: {fileID: 0}
 --- !u!1 &7268439855043682715
 GameObject:
   m_ObjectHideFlags: 0
