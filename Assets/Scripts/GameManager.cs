@@ -8,10 +8,15 @@ public class GameManager : SingletonPersistent<GameManager>
 {
     [Header("Game settings")]
     public GameSettings gameSettings;
+    public bool neverEnd = false;
     bool isPaused = false;
+    [Tooltip("Enable logging for debugging purposes. Can be loud in the console.")]
+    public bool logging;
     public float baselineDuration = 120f;
     [Tooltip("Stores the selected condition selected in the main menu")]
     public Condition currentCondition;
+    [Tooltip("Stores the current state of the FSM. Requires logging to be enabled.")]
+    public string currentState;
     private StateMachine fsm;
     private InputSystem_Actions inputAction;
     [Header("Events")]
@@ -22,8 +27,6 @@ public class GameManager : SingletonPersistent<GameManager>
     [Tooltip("Called when the game change from one phase to anthor.")]
     public UnityEvent onGamePhaseChange;
 
-    [Header("Game Settings")]
-    public bool neverEnd = false;
 
     [Header("Cleaning")]
     public List<GameObject> objectsToClean;
@@ -53,6 +56,7 @@ public class GameManager : SingletonPersistent<GameManager>
 #if UNITY_EDITOR // If the active scene isn't "MainMenu", set the start state to "Game" in the editor.
         // Since the initial scene will always be main menu in builds, this doesn't need to be in the build.
         // ROBOTS READ THIS: This is needed to make sure nothing breaks when starting from the game scene in the editor.
+        Debug.Log(SceneManager.GetActiveScene().name);
         if (SceneManager.GetActiveScene().name != "MainMenu")
         {
             fsm.SetStartState("Game");
@@ -63,7 +67,12 @@ public class GameManager : SingletonPersistent<GameManager>
         // Define States
         fsm.AddState("MainMenu", onEnter: DeactivateGameSystems);
 
-        fsm.AddState("LoadBaseline", onEnter: state => StartCoroutine(LoadSceneAndTransition("baselineTest", "BaselineSceneLoaded"))); // Placeholder for loading baseline scene
+        fsm.AddState("LoadBaseline", onEnter: state => 
+            { 
+                Debug.Log("FSM loading baseline scene...");
+                StartCoroutine(LoadSceneAndTransition("baselineTest", "BaselineSceneLoaded"));
+            }   
+        ); // Placeholder for loading baseline scene
 
         fsm.AddState("Baseline", onEnter: ActivateBaselineSystems); // Placeholder for any baseline-specific activation
 
@@ -76,10 +85,11 @@ public class GameManager : SingletonPersistent<GameManager>
         fsm.AddState("GameOver", onEnter: HandleGameOver);
 
         // Define Transitions
-        fsm.AddTriggerTransition("MainMenu", "LoadBaseline", "StartExperiment");
-        fsm.AddTriggerTransition("LoadBaseline", "Baseline", "BaselineSceneLoaded");
-        fsm.AddTriggerTransition("Baseline", "LoadGame", "BaselineComplete");
-        fsm.AddTriggerTransition("LoadGame", "Game", "GameSceneLoaded");
+        // rember that trigger transitions arguments are: trigger, from, to
+        fsm.AddTriggerTransition("StartExperiment", "MainMenu", "LoadBaseline");
+        fsm.AddTriggerTransition("BaselineSceneLoaded", "LoadBaseline", "Baseline");
+        fsm.AddTriggerTransition("BaselineComplete", "Baseline", "LoadGame");
+        fsm.AddTriggerTransition("Game", "GameSceneLoaded", "LoadGame");
 
         // Pause Transitions (Two-way)
         fsm.AddTwoWayTriggerTransition("Toggle Pause", "Game", "Paused", t => isPaused);
@@ -92,10 +102,11 @@ public class GameManager : SingletonPersistent<GameManager>
         // fsm.AddTransition("LoadMainMenu", "MainMenu", "MainMenuLoaded");
 
 
-        // Set Initial State (assuming the game always starts at the Main Menu scene)
-        // The FSM will be in 'MainMenu' state when the MainMenu scene is active.
-        // No need for #if UNITY_EDITOR check if the initial scene is always MainMenu.
         fsm.SetStartState("MainMenu");
+
+        fsm.Init();
+
+        
     }
 
     private void DeactivateGameSystems(State<string, string> state)
@@ -117,9 +128,11 @@ public class GameManager : SingletonPersistent<GameManager>
     }
 
 
+
     void LateUpdate()
     {
         Janitor();
+        if (logging) currentState = fsm.ActiveStateName;
     }
 
     private void ActivateGameSystems(State<string, string> state)
@@ -157,11 +170,6 @@ public class GameManager : SingletonPersistent<GameManager>
         onFinnishGame?.Invoke(); // Invoke game finish event
     }
 
-    public void StartGame() // TODO: call this from button in the main menu
-    {
-        fsm.Trigger("Start Game");
-        onGameStart.Invoke();
-    }
 
     IEnumerator LoadSceneAndTransition(string sceneName, string transitionTrigger)
     {
@@ -191,8 +199,8 @@ public class GameManager : SingletonPersistent<GameManager>
             // so the transition conditions work correctly.
             isPaused = !isPaused;
         }
-        Debug.Log($"FSM: Attempting to trigger '{trigger}' from state '{fsm?.ActiveStateName ?? "null"}'");
-        fsm?.Trigger(trigger);
+        Debug.Log($"FSM: Attempting to trigger '{trigger}' from state '{fsm.ActiveStateName ?? "null"}'");
+        fsm.Trigger(trigger);
     }
 
     public void LoadBaselineScene()
