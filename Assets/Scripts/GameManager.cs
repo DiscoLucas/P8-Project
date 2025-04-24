@@ -4,6 +4,9 @@ using UnityHFSM;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using UnityEngine.Events;
+using System.Threading.Tasks;
+using System;
+
 public class GameManager : SingletonPersistent<GameManager>
 {
     [Header("Game settings")]
@@ -12,21 +15,22 @@ public class GameManager : SingletonPersistent<GameManager>
     bool isPaused = false;
     [Tooltip("Enable logging for debugging purposes. Can be loud in the console.")]
     public bool logging;
-    public float baselineDuration = 120f;
-    [Tooltip("Stores the selected condition selected in the main menu")]
-    public Condition currentCondition;
+    
+    
+    
     [Tooltip("Stores the current state of the FSM. Requires logging to be enabled.")]
     public string currentState;
     private StateMachine fsm;
     private InputSystem_Actions inputAction;
-    [Header("Events")]
-    [Tooltip("Called when the game starts.")]
-    public UnityEvent onGameStart;
-    [Tooltip("Called when the game ends.")]
-    public UnityEvent onFinnishGame;
-    [Tooltip("Called when the game change from one phase to anthor.")]
-    public UnityEvent onGamePhaseChange;
 
+    [Header("Experiment")]
+    public float baselineDuration = 120f; [Tooltip("How long the baseline recording session should be.")]
+    public Condition currentCondition; [Tooltip("Stores the selected condition selected in the main menu")]
+    public string participantID; [Tooltip("Stores the participant ID selected in the main menu")]
+    [Header("Events")]
+    public UnityEvent onGameStart; [Tooltip("Called when the game starts.")]
+    public UnityEvent onFinnishGame; [Tooltip("Called when the game ends.")]
+    public UnityEvent onGamePhaseChange; [Tooltip("Called when the game change from one phase to anthor.")]
 
     [Header("Cleaning")]
     public List<GameObject> objectsToClean;
@@ -64,51 +68,101 @@ public class GameManager : SingletonPersistent<GameManager>
 #endif
 
 
-        // Define States
+        #region State Definitions
         fsm.AddState("MainMenu", onEnter: DeactivateGameSystems);
 
-        fsm.AddState("LoadBaseline", onEnter: state => 
+        fsm.AddState("LoadBaseline", onEnter: async state => 
             { 
-                Debug.Log("FSM loading baseline scene...");
                 StartCoroutine(LoadSceneAndTransition("baselineTest", "BaselineSceneLoaded"));
+                bool started = await StartLabRecordingAsync("Baseline");
+                if (started)
+                {
+                    if (logging) Debug.Log("Loading baseline scene");
+                    StartCoroutine(LoadSceneAndTransition("baselineTest", "BaselineSceneLoaded"));
+                }
+                else
+                {
+                    Debug.LogError("Failed to start baseline recording.");
+                }
             }   
-        ); // Placeholder for loading baseline scene
+        );
 
         fsm.AddState("Baseline", onEnter: ActivateBaselineSystems); // Placeholder for any baseline-specific activation
 
-        fsm.AddState("LoadGame", onEnter: state => StartCoroutine(LoadSceneAndTransition(GetSceneForCondition(currentCondition), "GameSceneLoaded")));
+        fsm.AddState("LoadGame", onEnter: async state =>
+            {
+                if (logging) Debug.Log("Starting main task recording");
+                string taskName = GetConditionNameForTask(currentCondition);
+                bool started = await StartLabRecordingAsync(taskName);
+                if (started)
+                {
+                    if (logging) Debug.Log("Loading game scene");
+                    StartCoroutine(LoadSceneAndTransition(GetSceneForCondition(currentCondition), "GameSceneLoaded"));
+                }
+                else
+                {
+                    Debug.LogError("Failed to start main task recording.");
+                }
+            }
+        );
 
         fsm.AddState("Game", onEnter: ActivateGameSystems);
-
         fsm.AddState("Paused", onEnter: PauseGame, onExit: ResumeGame);
-
         fsm.AddState("GameOver", onEnter: HandleGameOver);
+        #endregion
 
-        // Define Transitions
-        // rember that trigger transitions arguments are: trigger, from, to
+        #region State transitions
+        // rember that trigger transitions arguments are: trigger name, from, to
         fsm.AddTriggerTransition("StartExperiment", "MainMenu", "LoadBaseline");
         fsm.AddTriggerTransition("BaselineSceneLoaded", "LoadBaseline", "Baseline");
         fsm.AddTriggerTransition("BaselineComplete", "Baseline", "LoadGame");
-        fsm.AddTriggerTransition("Game", "GameSceneLoaded", "LoadGame");
+        fsm.AddTriggerTransition("GameSceneLoaded", "LoadGame", "Game");
 
         // Pause Transitions (Two-way)
         fsm.AddTwoWayTriggerTransition("Toggle Pause", "Game", "Paused", t => isPaused);
 
-        fsm.AddTriggerTransition("Game", "GameOver", "EndGame");
-        fsm.AddTriggerTransition("GameOver", "LoadGame", "RestartGame"); // Transition back to loading the game scene
-        // Optional: Add transition back to Main Menu from GameOver
-        // fsm.AddTransition("GameOver", "LoadMainMenu", "QuitToMenu");
-        // fsm.AddState("LoadMainMenu", onEnter: state => StartCoroutine(LoadSceneAndTransition("MainMenu", "MainMenuLoaded")));
-        // fsm.AddTransition("LoadMainMenu", "MainMenu", "MainMenuLoaded");
-
+        //fsm.AddTriggerTransition("Game", "GameOver", "EndGame");
+        //fsm.AddTriggerTransition("GameOver", "LoadGame", "RestartGame"); // TODO: Implement game over behavior
+        #endregion
 
         fsm.SetStartState("MainMenu");
 
         fsm.Init();
-
-        
     }
 
+    private async Task<bool> StartLabRecordingAsync(string taskName)
+    {
+        if (LabRecorder.Instance == null)
+        {
+            Debug.LogError("Couldn't find my homie LabRecorder. Cannot start recording.");
+            return false;
+        }
+        if (string.IsNullOrEmpty(participantID))
+        {
+            Debug.LogError("You forgot to assign the Participant ID you bozo.");
+            return false;
+        }
+
+        // hehe funni magic number
+        string sessionNumber = "1";
+
+        Debug.Log($"Attempting to start LabRecorder for P={participantID}, S={sessionNumber}, Task={taskName}");
+        bool started = await LabRecorder.Instance.ConfigureAndStartRecordingAsync(participantID, sessionNumber, taskName);
+        return started;
+    }
+
+    private string GetSceneForCondition(Condition condition)
+    {
+        switch (condition)
+        {
+            case Condition.LowFi: return "LowFiScene";
+            case Condition.MediumFi: return "MediumFiScene";
+            case Condition.HighFi: return "Main";
+            default:
+                Debug.LogError($"Unknown condition: {condition}. Going back home.");
+                return "MainMenu"; // Fallback scene
+        }
+    }
     private void DeactivateGameSystems(State<string, string> state)
     {
         Debug.Log("FSM: Entering MainMenu state");
@@ -203,10 +257,6 @@ public class GameManager : SingletonPersistent<GameManager>
         fsm.Trigger(trigger);
     }
 
-    public void LoadBaselineScene()
-    {
-        StartCoroutine(LoadScene("baselineTest"));
-    }
 
     IEnumerator LoadScene(string sceneName)
     {
@@ -217,19 +267,9 @@ public class GameManager : SingletonPersistent<GameManager>
         }
     }
 
-    public void loadCurrentScene()
-    {
-        Debug.Log("Reloading current scene...");
-        string currentSceneName = SceneManager.GetActiveScene().name;
-        StartCoroutine(LoadScene(currentSceneName));
-    }
 
-    public void StartBaseline()
-    {
-        throw new System.NotImplementedException();
-    }
     #endregion
-
+    [Obsolete("RemoveAfterDelay() is deprecated. Use Janitor() instead.")]
     /// <summary>
     /// Removes a GameObject after a specified delay.
     /// </summary>
@@ -267,20 +307,9 @@ public class GameManager : SingletonPersistent<GameManager>
 
     }
 
-    private string GetSceneForCondition(Condition condition)
+    private string GetConditionNameForTask(Condition condition)
     {
-        switch (condition)
-        {
-            case Condition.LowFi:
-                return "LowFiScene";
-            case Condition.MediumFi:
-                return "MediumFiScene";
-            case Condition.HighFi:
-                return "Main";
-            default:
-                Debug.LogError($"Unknown condition: {condition}. Loading default scene.");
-                return "Mitchell"; // Fallback scene
-        }
+        return condition.ToString();
     }
 }
 

@@ -89,13 +89,12 @@ public class MainMenuUIController : MonoBehaviour
         startButton.interactable = false;
         if (loadingOverlay) loadingOverlay.SetActive(true);
 
-        // Run the async part without blocking the main thread
-        _ = StartExperimentAsync(); // Discard Task with _
+        _ = StartExperimentSetupAsync(); // Discard Task with _
     }
 
     
 
-    private async Task StartExperimentAsync() // Make the method async
+    private async Task StartExperimentSetupAsync() // Make the method async
     {
         string participantId = participantIdField.text; // TODO: automate this
         errorText.gameObject.SetActive(false);
@@ -110,11 +109,10 @@ public class MainMenuUIController : MonoBehaviour
 
         // Get the selected condition
         int conditionIndex = conditionDropdown.value;
-        string conditionNameForTask = conditionDropdown.options[conditionIndex].text.Replace(" ", ""); // Remove spaces for filename
         Condition selectedConditionEnum = (Condition)conditionIndex; // Assuming enum matches dropdown order
 
-        // --- LSL and LabRecorder Initialization ---
-        // 1. Initialize your LSL stream via PerformanceRecorder
+        // --- LSL Initialization ---
+        // 1. Initialize LSL stream so its ready for LabRecorder
         if (PerformanceRecorder.Instance == null)
         {
              ShowError("PerformanceRecorder not found!");
@@ -124,44 +122,22 @@ public class MainMenuUIController : MonoBehaviour
         PerformanceRecorder.Instance.InitializeParticipantID(participantId, conditionIndex);
         await Task.Delay(200); // Give LSL stream a moment to register on the network
 
-        // 2. Configure and Start LabRecorder
-        if (LabRecorder.Instance == null)
-        {
-             ShowError("LabRecorderController not found!");
-             ResetUIState();
-             return;
-        }
-
-        // Define session number (e.g., always "1" for this setup, or get from elsewhere)
-        string sessionNumber = "1"; // TODO: make this smarter
-
-        bool started = await LabRecorder.Instance.ConfigureAndStartRecordingAsync(participantId, sessionNumber, conditionNameForTask);
-
-        if (!started)
-        {
-            ShowError("Failed to start LabRecorder. Check connection and settings.");
-            ResetUIState();
-            return;
-        }
-        // --- End LSL/LabRecorder ---
-
-        // Proceed by triggering the FSM in GameManager
         if (GameManager.Instance != null)
         {
-            // Store the selected condition Enum in GameManager for later use
+            // store the selected condition enum and participant ID in GameManager
+            GameManager.Instance.participantID = participantId;
             GameManager.Instance.currentCondition = selectedConditionEnum;
-            // Trigger the FSM to start the process (loading baseline)
             GameManager.Instance.TriggerFSM("StartExperiment");
         }
         else
         {
-             ShowError("GameManager not found!");
-             await LabRecorder.Instance.StopRecordingAsync(); // Stop recording if game can't start
-             ResetUIState();
-             return;
+            ShowError("GameManager not found!");
+            ResetUIState();
+            return;
         }
 
-        // Optionally hide the main menu UI here if loading happens immediately
+
+        // might also want to hide the main menu UI here if loading happens immediately
         // gameObject.SetActive(false);
         if (loadingOverlay) loadingOverlay.SetActive(false); // Hide overlay once loading starts
     }

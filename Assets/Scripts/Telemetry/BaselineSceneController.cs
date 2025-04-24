@@ -65,17 +65,67 @@ public class BaselineSceneController : MonoBehaviour
 
         // Timer finished
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-        EndBaseline();
+        _ = EndBaselineAsync();
     }
+
 
     public void SkipBaseline()
     {
         Debug.Log("Baseline skipped by user.");
-        EndBaseline(); // Call the same end logic
+        _ = EndBaselineAsync();
     }
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
+    private async Task EndBaselineAsync()
+    {
+        if (finished) return;
+        finished = true;
 
+        if (countdownCoroutine != null)
+        {
+            StopCoroutine(countdownCoroutine);
+            countdownCoroutine = null;
+        }
+        // Stop LabRecorder recording first
+        if (LabRecorder.Instance != null)
+        {
+            try
+            {
+                bool stopped = await LabRecorder.Instance.StopRecordingAsync();
+                if (!stopped) Debug.LogWarning("I don't think the recording stopped properly 🤔.");
+                else Debug.Log("Recording stopped successfully.");
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"AAAAAAAA I COULD NOT STOP THE RECORDING! {e.Message}");
+            }
+        }
+        else
+        {
+            Debug.LogError("Where tf did the labrecorder go? Can't stop recording without it.");
+        }
+
+        if (countdownText != null)
+        {
+            countdownText.text = "Baseline Complete. Loading Game...";
+        }
+        if (skipButton != null)
+        {
+            skipButton.interactable = false; // Disable skip button
+        }
+
+
+        // Tell GameManager FSM to proceed to loading the game scene
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.TriggerFSM("BaselineComplete");
+        }
+        else
+        {
+            Debug.LogError("GameManager instance not found. Cannot trigger FSM.");
+        }
+
+    }
     private async Task EndBaseline()
     {
         // Prevent running multiple times
