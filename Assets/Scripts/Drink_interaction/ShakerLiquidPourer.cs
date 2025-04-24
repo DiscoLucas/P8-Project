@@ -1,3 +1,4 @@
+using Assets.Scripts.Ingridence;
 using UnityEngine;
 
 public class ShakerLiquidPourer : LiquidPourer
@@ -7,6 +8,8 @@ public class ShakerLiquidPourer : LiquidPourer
     bool lower_cap = false;
     [SerializeField]
     bool upper_cap = false;
+    [SerializeField]
+    bool strainer = false;
     [SerializeField] protected Transform pourPointClosed;
     public void set_lower_cap(bool value)
     {
@@ -16,6 +19,11 @@ public class ShakerLiquidPourer : LiquidPourer
     public void set_upper_cap(bool value)
     {
         upper_cap = value;
+    }
+
+        public void set_strainer(bool value)
+    {
+        strainer = value;
     }
 
     public bool canShake()
@@ -31,6 +39,16 @@ public class ShakerLiquidPourer : LiquidPourer
             return pourPointClosed;
     }
 
+    internal override IngredientBase getIngredientBase()
+    {
+        if (strainer){
+
+            IngredientBase ingredientBase = base.getIngredientBase();
+            ingredientBase.step.action = DrinkAction.Strained;
+            return ingredientBase;
+        }
+        return base.getIngredientBase();
+    }
 
     override internal bool isPouring()
     {
