@@ -35,6 +35,7 @@ namespace Assets.Scripts.Drink_interaction
 
         [Header("Solid glass")]
         [SerializeField]
+        public bool iceIn = false;
 
         [Header("Debug liquid display")]
         public DebugClassMenu debugGlassMenu;
