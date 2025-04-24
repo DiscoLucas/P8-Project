@@ -5,6 +5,9 @@ using UnityEngine.UIElements;
 using Assets.Scripts.Ingridence;
 using TMPro;
 using System.Collections;
+using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using UnityEngine.XR;
 public class LiquidPourer : MonoBehaviour
 {
     [Header("Drink")]
@@ -33,6 +36,21 @@ public class LiquidPourer : MonoBehaviour
     private float disableTextDelay = 5f; // Time in seconds before disabling the text
 
     private Coroutine disableTextCoroutine;
+
+    [Header("Haptics")]
+    [Range(0,1)]
+    public float intensity = 0.2f;
+    public float duration = 0.01f;
+    private Coroutine hapticCoroutine;
+    [SerializeField] private XRBaseController leftController;
+    [SerializeField] private XRBaseController rightController;
+
+
+    private void Awake()
+    {
+        leftController = GameObject.FindWithTag("LeftController")?.GetComponent<XRBaseController>();
+        rightController = GameObject.FindWithTag("RightController")?.GetComponent<XRBaseController>();
+    }
 
     private void Start()
     {
@@ -77,12 +95,21 @@ public class LiquidPourer : MonoBehaviour
             calculatePouringSpeed();
             emitParticles();
             detectCollision();
+
+            if (hapticCoroutine == null)
+                hapticCoroutine = StartCoroutine(HapticFeedbackRoutine());
         }
         else
         {
             currentPourSessionAmout = 0f;
-            if(particles != null)
+            if (particles != null)
                 particles.Stop();
+
+            if (hapticCoroutine != null)
+            {
+                StopCoroutine(hapticCoroutine);
+                hapticCoroutine = null;
+            }
         }
     }
 
@@ -253,5 +280,15 @@ public class LiquidPourer : MonoBehaviour
     public void depleateLiqued()
     {
         liquidContainer.depleateLiqued(pourAmount);
+    }
+
+    private IEnumerator HapticFeedbackRoutine()
+    {
+            if (leftController != null)
+                leftController.SendHapticImpulse(intensity, duration);
+            if (rightController != null)
+                rightController.SendHapticImpulse(intensity, duration);
+
+            yield return new WaitForSeconds(duration);
     }
 }
