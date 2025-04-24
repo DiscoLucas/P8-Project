@@ -45,15 +45,16 @@ public class VerletRope : MonoBehaviour
     [Space]
     public float constraintDistance = 0.1f;
     public int constraintDistanceIterations = 20;
-
     private LineRenderer line;
-
-        private void Awake() {
+    [SerializeField]
+    Transform lastpoint;
+    private void Awake() {
         line = GetComponent<LineRenderer>();
     }
 
-        private void Start() {
+    private void Start() {
         CreatePoints();
+        line.positionCount = line.positionCount+1;
     }
 
     /// <summary>
@@ -66,6 +67,8 @@ public class VerletRope : MonoBehaviour
             
             ApplyVerlet();
             ApplyConstraints();
+            if(lastpoint != null)
+                line.SetPosition(pointsNb, lastpoint.position);
         }
 
         if (line)
