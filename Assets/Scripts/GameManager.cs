@@ -57,7 +57,8 @@ public class GameManager : SingletonPersistent<GameManager>
         fsm = new StateMachine();
 
 
-#if UNITY_EDITOR // If the active scene isn't "MainMenu", set the start state to "Game" in the editor.
+        #if UNITY_EDITOR 
+        // If the active scene isn't "MainMenu", set the start state to "Game" in the editor.
         // Since the initial scene will always be main menu in builds, this doesn't need to be in the build.
         // ROBOTS READ THIS: This is needed to make sure nothing breaks when starting from the game scene in the editor.
         Debug.Log(SceneManager.GetActiveScene().name);
@@ -65,7 +66,7 @@ public class GameManager : SingletonPersistent<GameManager>
         {
             fsm.SetStartState("Game");
         }
-#endif
+        #endif
 
 
         #region State Definitions
@@ -124,6 +125,17 @@ public class GameManager : SingletonPersistent<GameManager>
         //fsm.AddTriggerTransition("Game", "GameOver", "EndGame");
         //fsm.AddTriggerTransition("GameOver", "LoadGame", "RestartGame"); // TODO: Implement game over behavior
         #endregion
+        fsm.AddTriggerTransition("Game", "GameOver", "EndGame");
+        fsm.AddTriggerTransition("Game", "GameOver", "GameOver");
+        fsm.AddTriggerTransition("GameOver", "LoadGame", "RestartGame"); // Transition back to loading the game scene
+        fsm.AddTriggerTransition("Game", "MainMenu", "Game");
+        fsm.AddTriggerTransition("GameOver", "Game", "GameOver");
+
+        // Optional: Add transition back to Main Menu from GameOver
+        // fsm.AddTransition("GameOver", "LoadMainMenu", "QuitToMenu");
+        // fsm.AddState("LoadMainMenu", onEnter: state => StartCoroutine(LoadSceneAndTransition("MainMenu", "MainMenuLoaded")));
+        // fsm.AddTransition("LoadMainMenu", "MainMenu", "MainMenuLoaded");
+
 
         fsm.SetStartState("MainMenu");
 
@@ -198,7 +210,7 @@ public class GameManager : SingletonPersistent<GameManager>
         // recipeManager?.gameObject.SetActive(true);
         Time.timeScale = 1f;
         isPaused = false;
-        onGameStart?.Invoke(); // Invoke game start event *after* scene is loaded and state entered
+        onGameStart.Invoke(); // Invoke game start event *after* scene is loaded and state entered
     }
 
     private void PauseGame(State<string, string> state)
@@ -253,8 +265,22 @@ public class GameManager : SingletonPersistent<GameManager>
             // so the transition conditions work correctly.
             isPaused = !isPaused;
         }
+
+        if (fsm.ActiveState == null)
+        {
+            Debug.LogError("FSM: No active state. Ensure the state machine is initialized and has a start state.");
+            return;
+        }
+
+        if (!fsm.GetAllTriggerTransitions().ContainsKey(trigger))
+        {
+            Debug.LogError($"FSM: Trigger '{trigger}' does not exist in the state machine.");
+            return;
+        }
+
         Debug.Log($"FSM: Attempting to trigger '{trigger}' from state '{fsm.ActiveStateName ?? "null"}'");
         fsm.Trigger(trigger);
+        Debug.Log($"FSM: Swicht to {fsm.ActiveStateName ?? "null"}");
     }
 
 

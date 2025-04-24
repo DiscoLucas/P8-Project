@@ -125,7 +125,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameSettings: {fileID: 11400000, guid: dbfb2955077d9224f8cf2efd2ac8c5b9, type: 2}
+  neverEnd: 0
+  logging: 0
+  baselineDuration: 120
   currentCondition: 0
+  currentState: 
   onGameStart:
     m_PersistentCalls:
       m_Calls: []
@@ -135,7 +139,6 @@ MonoBehaviour:
   onGamePhaseChange:
     m_PersistentCalls:
       m_Calls: []
-  neverEnd: 0
   objectsToClean: []
   maxAllowedObjects: 100
   orderManager: {fileID: 0}
@@ -1132,12 +1135,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2447658782364286232, guid: 7c05c878172f62b4890684b9c42a8bd4, type: 3}
       propertyPath: Agent_prefab.Array.size
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2447658782364286232, guid: 7c05c878172f62b4890684b9c42a8bd4, type: 3}
       propertyPath: 'Agent_prefab.Array.data[0]'
       value: 
-      objectReference: {fileID: 5696667859098330372, guid: 4d4c4373d78a05044a1f0568b61c3b2c, type: 3}
+      objectReference: {fileID: 5172724302251391001, guid: 0d611ca39971fe741af6ead9ede5711a, type: 3}
     - target: {fileID: 2447658782364286232, guid: 7c05c878172f62b4890684b9c42a8bd4, type: 3}
       propertyPath: 'Agent_prefab.Array.data[1]'
       value: 

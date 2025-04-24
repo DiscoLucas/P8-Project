@@ -288,7 +288,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 27639287050270875, guid: ca4cc7de1b5af1a4db2d8d7a5b5b5f20, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.037
+      value: 0.0845
       objectReference: {fileID: 0}
     - target: {fileID: 27639287050270875, guid: ca4cc7de1b5af1a4db2d8d7a5b5b5f20, type: 3}
       propertyPath: m_LocalPosition.z
@@ -568,7 +568,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1571671732415872617, guid: ca4cc7de1b5af1a4db2d8d7a5b5b5f20, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.363
+      value: -0.005
       objectReference: {fileID: 0}
     - target: {fileID: 1900120548516387261, guid: ca4cc7de1b5af1a4db2d8d7a5b5b5f20, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1328,15 +1328,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7751094167235837746, guid: ca4cc7de1b5af1a4db2d8d7a5b5b5f20, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.1889
+      value: 0.0036
       objectReference: {fileID: 0}
     - target: {fileID: 7751094167235837746, guid: ca4cc7de1b5af1a4db2d8d7a5b5b5f20, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.078099996
+      value: 0.1146
       objectReference: {fileID: 0}
     - target: {fileID: 7751094167235837746, guid: ca4cc7de1b5af1a4db2d8d7a5b5b5f20, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.2481
+      value: -0.0064
       objectReference: {fileID: 0}
     - target: {fileID: 7961047703436568443, guid: ca4cc7de1b5af1a4db2d8d7a5b5b5f20, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3316,6 +3316,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7172023719172371848, guid: 77705cb06725786679698ea7dd247353, type: 3}
+      propertyPath: customerOrderDistination
+      value: 
+      objectReference: {fileID: 594946656}
+    - target: {fileID: 7172023719172371848, guid: 77705cb06725786679698ea7dd247353, type: 3}
       propertyPath: 'Agent_prefab.Array.data[0]'
       value: 
       objectReference: {fileID: 5172724302251391001, guid: 0d611ca39971fe741af6ead9ede5711a, type: 3}
@@ -3705,6 +3709,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 6074545605745540648, guid: 0a518deb1fd81254c9ee0d3cc46b7729, type: 3}
   m_PrefabInstance: {fileID: 594858568}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &594946656 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8851136196893930472, guid: 9e8c8c81a1d48bcbdb45294748447191, type: 3}
+  m_PrefabInstance: {fileID: 504689088}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &676234771
 PrefabInstance:

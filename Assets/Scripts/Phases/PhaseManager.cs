@@ -208,13 +208,11 @@ public class PhaseManager : MonoBehaviour
         return phases[currentPhaseIndex].recipes;
     }
 
-    public bool updatePhaseIndex(){
+    public void updatePhaseIndex(){
         currentPhaseIndex++;
         GameManager.Instance.onGamePhaseChange.Invoke();
         if(currentPhaseIndex >= phases.Length ){
-            currentPhaseIndex = phases.Length - 1;
-            return false; 
+            currentPhaseIndex = 0; 
         }
-        return true;
     }
 }

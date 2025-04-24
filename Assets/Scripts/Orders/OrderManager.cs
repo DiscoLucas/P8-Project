@@ -13,6 +13,9 @@ using System.Collections;
 /// </summary>
 public class OrderManager : MonoBehaviour
 {
+    [Header("Game settings")]
+    public GameSettings gameSettings;
+    bool gameFinished = false;
     [Header("Orders")]
     [SerializedDictionary("Id", "Order")]
     public SerializedDictionary<string, Order> currentOrderList;
@@ -47,19 +50,28 @@ public class OrderManager : MonoBehaviour
         recipeManager = FindAnyObjectByType<RecipeManager>();
         phaseManager = FindAnyObjectByType<PhaseManager>();
         GameManager.Instance.orderManager = this;
+        if (gameSettings == null)
+            gameSettings = GameManager.Instance.gameSettings;
+        else
+            Debug.LogError("Game settings have not been assigned in the inspector.");
+       
     }
 
     private void OnEnable()
     {
         GameManager.Instance.onGameStart.AddListener(createOrder);
+        GameManager.Instance.onGameStart.AddListener(onGameStart);
     }
 
     private void OnDisable()
     {
         GameManager.Instance.onGameStart.RemoveListener(createOrder);
+        GameManager.Instance.onGameStart.RemoveListener(onGameStart);
     }
 
-
+    public void onGameStart(){
+         StartCoroutine(TrackRoundTime());
+    }
     /// <summary>
     /// Repeatedly generates orders at random time intervals.
     /// </summary>
@@ -106,12 +118,8 @@ public class OrderManager : MonoBehaviour
 
         availableSpawnPoints.Add(order.location);
         currentOrderList.Remove(order.orderID);
-        if(!phaseManager.updatePhaseIndex() && !GameManager.Instance.neverEnd)
-        {
-            GameManager.Instance.endGame();
-        }
-        else
-        {
+        phaseManager.updatePhaseIndex();
+        if(!gameFinished){
             StartCoroutine(GenerateOrders());
         }    
     }
@@ -122,9 +130,11 @@ public class OrderManager : MonoBehaviour
     [ContextMenu("Generate New Order")]
     public void createOrder()
     {
-        if (availableSpawnPoints.Count <= 0)
+        Debug.Log("Creating new order");
+        if (availableSpawnPoints.Count <= 0){
+            Debug.Log("No available spawn points for new order.");
             return;
-
+        }
         Transform spawnPoint = availableSpawnPoints[0];
         availableSpawnPoints.RemoveAt(0);
         NavMeshHit hit;
@@ -137,6 +147,7 @@ public class OrderManager : MonoBehaviour
         CustomerAgent customerAgenet = agent.GetComponent<CustomerAgent>();
         customerAgenet.reachedDestination.AddListener(placeOrder);
         customerAgenet.setDestination(customerOrderDistination);
+        customerAgenet.orderDestination = spawnPoint;
     }
 
     /// <summary>
@@ -171,5 +182,15 @@ public class OrderManager : MonoBehaviour
 
         agent.reachedDestination.RemoveAllListeners();
         //agent.startOrder(orderName, order);
+    }
+
+    /// <summary>
+    /// Coroutine to track the round time and set gameFinished to true when time elapses.
+    /// </summary>
+    private IEnumerator TrackRoundTime()
+    {
+        yield return new WaitForSeconds(gameSettings.roundTime*60f);
+        gameFinished = true;
+        GameManager.Instance.TriggerFSM("GameOver");
     }
 }

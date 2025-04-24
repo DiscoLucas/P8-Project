@@ -32,7 +32,9 @@ public class GameMenuUIController : MonoBehaviour
     [ContextMenu("Start Game")]
     public void startGame()
     {
-        if (startMenuUI != null) startMenuUI.SetActive(false);
+        if (startMenuUI != null) 
+            startMenuUI.SetActive(false);
+       GameManager.Instance.TriggerFSM("Game");
     }
 
     public void openEndGameMenu()
