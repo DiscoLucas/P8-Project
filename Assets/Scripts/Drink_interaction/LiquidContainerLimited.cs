@@ -31,6 +31,7 @@ namespace Assets.Scripts.Drink_interaction
         public Transform garnishPoint;
         public IngredientBase garnishIngredient = null;
         public bool hasGarnish = false;
+        public bool hasIce = false;
 
         [Header("Solid glass")]
         [SerializeField]

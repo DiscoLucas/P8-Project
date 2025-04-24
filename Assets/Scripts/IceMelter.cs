@@ -1,14 +1,18 @@
 using System.Collections;
+using Assets.Scripts.Drink_interaction;
 using UnityEngine;
 
 public class IceMelter : MonoBehaviour
 {
     public float graceTime = 10f;
     public float meltTime = 360f;
-    private bool isMelting = false;
+    private bool isMelting = true;
 
-    
 
+    public void Start()
+    {
+        Invoke("MeltIce", graceTime);
+    }
 
     private void OncCollisionEnter(Collision collision)
     {
@@ -40,5 +44,16 @@ public class IceMelter : MonoBehaviour
 
         // Destroy the ice object after melting
         Destroy(gameObject);
+    }
+
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.GetComponent<LiquidContainerLimited>() != null)
+        {
+            LiquidContainerLimited liquidContainer = collision.gameObject.GetComponent<LiquidContainerLimited>();
+            liquidContainer.hasIce = true;
+            Destroy(gameObject);
+        }
     }
 }
