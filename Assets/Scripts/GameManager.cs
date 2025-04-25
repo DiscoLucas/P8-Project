@@ -103,16 +103,16 @@ public class GameManager : SingletonPersistent<GameManager>
 
         fsm.AddState("Game", onEnter: async state =>
             {
-                if (logging) Debug.Log("Starting main task recording");
+                if (logging) Debug.Log("Entering game state - activating game systems");
                 ActivateGameSystems(state);
+
+                if (logging) Debug.Log("Waiting briefly before starting the recording");
+                await Task.Delay(500);
+
+                if (logging) Debug.Log("Starting LabRecorder for the game");
                 string taskName = GetConditionNameForTask(currentCondition);
                 bool started = await StartLabRecordingAsync(taskName);
-                if (started)
-                {
-                    //if (logging) Debug.Log("Loading game scene");
-                    //StartCoroutine(LoadSceneAndTransition(GetSceneForCondition(currentCondition), "GameSceneLoaded"));
-                }
-                else
+                if (!started)
                 {
                     Debug.LogError("Failed to start main task recording.");
                 }
@@ -124,7 +124,7 @@ public class GameManager : SingletonPersistent<GameManager>
         #endregion
 
         #region State transitions
-        // rember that trigger transitions arguments are: trigger name, from, to
+        // remember that trigger transitions arguments are: trigger name, from, to
         fsm.AddTriggerTransition("StartExperiment", "MainMenu", "LoadBaseline");
         fsm.AddTriggerTransition("BaselineSceneLoaded", "LoadBaseline", "Baseline");
         fsm.AddTriggerTransition("BaselineComplete", "Baseline", "LoadGame");
@@ -245,11 +245,23 @@ public class GameManager : SingletonPersistent<GameManager>
         Time.timeScale = 1f; // Ensure time is running if paused before game over
         onFinnishGame?.Invoke(); // Invoke game finish event
     }
-
-
+/* // tried to do it syncronously but it stil doesn't work
+    void LoadSceneAndTransition(string sceneName, string transitionTrigger)
+    {
+        Debug.Log($"FSM: Loading scene '{sceneName}'...");
+        SceneManager.LoadScene(sceneName);
+        SceneManager.sceneLoaded += (scene, mode) =>
+        {
+            Debug.Log($"FSM: Scene '{sceneName}' loaded.");
+            // Scene is loaded, trigger the transition to the next state
+            fsm.Trigger(transitionTrigger);
+        };
+    }*/
+    
     IEnumerator LoadSceneAndTransition(string sceneName, string transitionTrigger)
     {
         Debug.Log($"FSM: Loading scene '{sceneName}'...");
+        Debug.Break();
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
         while (!asyncLoad.isDone)
         {
@@ -294,14 +306,6 @@ public class GameManager : SingletonPersistent<GameManager>
     }
 
 
-    IEnumerator LoadScene(string sceneName)
-    {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
-        while (!asyncLoad.isDone)
-        {
-            yield return null;
-        }
-    }
 
 
     #endregion
