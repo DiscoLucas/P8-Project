@@ -149,7 +149,6 @@ public class GameManager : SingletonPersistent<GameManager>
 
 
         fsm.SetStartState("MainMenu");
-        Debug.Log("test");
         fsm.Init();
     }
 

@@ -203,6 +203,7 @@ public class LabRecorder : SingletonPersistent<LabRecorder>
     // Also disconnect if the GameObject is destroyed or disabled
     void OnDestroy()
     {
+        Debug.Log("LabRecorder instance destroyed. Disconnecting...");
         Disconnect();
     }
 
