@@ -64,7 +64,7 @@ public class BaselineSceneController : MonoBehaviour
         }
 
         // Timer finished
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+
         _ = EndBaselineAsync();
     }
 
@@ -74,7 +74,7 @@ public class BaselineSceneController : MonoBehaviour
         Debug.Log("Baseline skipped by user.");
         _ = EndBaselineAsync();
     }
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+
 
     private async Task EndBaselineAsync()
     {
@@ -126,66 +126,7 @@ public class BaselineSceneController : MonoBehaviour
         }
 
     }
-    private async Task EndBaseline()
-    {
-        // Prevent running multiple times
-        if (finished) return;
-        finished = true;
-
-        // Stop the countdown if it's still running
-        if (countdownCoroutine != null)
-        {
-            StopCoroutine(countdownCoroutine);
-            countdownCoroutine = null;
-        }
-
-        // Send Baseline End Marker via LSL
-        if (PerformanceRecorder.Instance != null)
-        {
-            // Add duration as metadata if desired
-            float elapsed = actualBaselineDuration - (countdownCoroutine == null ? 0 : GetRemainingTime()); // Calculate actual elapsed time
-            PerformanceRecorder.Instance.RecordData("BaselineEnd", $"DurationSec:{elapsed:F1}");
-            Debug.Log($"Sent BaselineEnd marker. Duration: {elapsed:F1}s");
-
-            // Stop recording asynchronously, robot said this was better practice to avoid race conditions.
-            try
-            {
-                bool stopped = await LabRecorder.Instance.StopRecordingAsync();
-                if (!stopped) Debug.LogWarning("I don't think the recording stopped properly 🤔.");
-            }
-            catch (Exception e) 
-            {
-                Debug.LogError($"AAAAAAAA I COULD NOT STOP THE RECORDING! {e.Message}");
-            }
-        }
-        else
-        {
-            Debug.LogError("PerformanceRecorder instance not found. Cannot send BaselineEnd marker.");
-        }
-
-        // Update UI one last time
-         if (countdownText != null)
-         {
-            countdownText.text = "Baseline Complete. Loading Game...";
-         }
-         if (skipButton != null)
-         {
-             skipButton.interactable = false; // Disable skip button
-         }
-
-
-        // Tell GameManager FSM to proceed to loading the game scene
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.TriggerFSM("BaselineComplete");
-        }
-        else
-        {
-            Debug.LogError("GameManager instance not found. Cannot trigger FSM.");
-            // Handle this error case appropriately
-        }
-    }
-
+   
     // Helper to get remaining time if needed for accurate duration logging on skip
     private float GetRemainingTime()
     {

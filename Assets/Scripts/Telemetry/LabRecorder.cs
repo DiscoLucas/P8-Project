@@ -116,7 +116,7 @@ public class LabRecorder : SingletonPersistent<LabRecorder>
         // 2. Set the filename using a placeholder
         // Ensure the studyRoot uses double backslashes for Windows paths
         string formattedRoot = studyRoot.Replace('/', '\\');
-        string filenameCommand = $"filename {{root:{formattedRoot}}}  {{template:{filenameTemplate}}} {{participant:{participantID}}} {{session:{sessionNumber}}} {{task:{taskName}}}";
+        string filenameCommand = $"filename {{root:{formattedRoot}}} {{template:{filenameTemplate}}} {{participant:{participantID}}} {{session:{sessionNumber}}} {{task:{taskName}}}";
         await Task.Delay(100);
 
         // 3. start recording
@@ -203,6 +203,7 @@ public class LabRecorder : SingletonPersistent<LabRecorder>
     // Also disconnect if the GameObject is destroyed or disabled
     void OnDestroy()
     {
+        Debug.Log("LabRecorder instance destroyed. Disconnecting...");
         Disconnect();
     }
 
