@@ -9911,6 +9911,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2427041349345060960, guid: 268c81d9d2698b246961c344576b2629, type: 3}
+      propertyPath: duration
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 2427041349345060960, guid: 268c81d9d2698b246961c344576b2629, type: 3}
+      propertyPath: routineWait
+      value: 0.015
+      objectReference: {fileID: 0}
+    - target: {fileID: 2427041349345060960, guid: 268c81d9d2698b246961c344576b2629, type: 3}
+      propertyPath: maxIntensity
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2427041349345060960, guid: 268c81d9d2698b246961c344576b2629, type: 3}
+      propertyPath: leftController
+      value: 
+      objectReference: {fileID: 1482999578}
+    - target: {fileID: 2427041349345060960, guid: 268c81d9d2698b246961c344576b2629, type: 3}
+      propertyPath: rightController
+      value: 
+      objectReference: {fileID: 2044441537}
     - target: {fileID: 2893978941371427995, guid: 268c81d9d2698b246961c344576b2629, type: 3}
       propertyPath: m_Name
       value: Sodagun with tube

@@ -5,6 +5,8 @@ using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using TMPro;
+using UnityEngine.XR.Interaction.Toolkit.Inputs.Haptics;
+using System.Collections;
 public class SodaGunInteractable : LiquidPourer
 {
     private XRGrabInteractable grabInteractable;
@@ -16,7 +18,7 @@ public class SodaGunInteractable : LiquidPourer
 
     [Header("Ingreidents")]
     [SerializeField]
-    IngredientScribtiableObject[] ingredients; 
+    IngredientScribtiableObject[] ingredients;
     [SerializeField]
     int currentIngredientIndex = 0;
     [SerializeField]
@@ -26,6 +28,17 @@ public class SodaGunInteractable : LiquidPourer
 
     [Header("Display")]
     public TMP_Text displayText;
+
+    [Header("Haptics")]
+    [Range(0, 1)]
+    public float intensity = 0.01f;
+    public float duration = 0.01f;
+    private Coroutine hapticCoroutine;
+    [SerializeField] private HapticImpulsePlayer leftController;
+    [SerializeField] private HapticImpulsePlayer rightController;
+    [SerializeField] private float minIntensity = 0.01f;
+    [SerializeField] private float maxIntensity = 0.7f;
+    [SerializeField] private float routineWait = 0.015f;
     private void Awake()
     {
         grabInteractable = GetComponent<XRGrabInteractable>();
@@ -73,25 +86,34 @@ public class SodaGunInteractable : LiquidPourer
         lastPrimaryButtonState = false;
         lastSecondaryButtonState = false;
         isShooting = false;
-        if(particles != null)
+        if (particles != null)
             particles.Stop();
     }
 
     private void OnFireGun(ActivateEventArgs arg0)
     {
         isShooting = true;
+        if (hapticCoroutine == null)
+            hapticCoroutine = StartCoroutine(HapticFeedbackRoutine());
     }
 
     private void OnStopFireGun(DeactivateEventArgs arg0)
     {
         isShooting = false;
-        if(particles != null)
+        if (particles != null)
             particles.Stop();
+        if (hapticCoroutine != null)
+        {
+            StopCoroutine(hapticCoroutine);
+            intensity = minIntensity;
+            hapticCoroutine = null;
+        }
     }
 
-    void changeLiquidUp(){
+    void changeLiquidUp()
+    {
         currentIngredientIndex++;
-        if(currentIngredientIndex >= ingredients.Length)
+        if (currentIngredientIndex >= ingredients.Length)
         {
             currentIngredientIndex = 0;
         }
@@ -100,9 +122,10 @@ public class SodaGunInteractable : LiquidPourer
         updateDisplay();
     }
 
-    void changeLiquidDown(){
+    void changeLiquidDown()
+    {
         currentIngredientIndex--;
-        if(currentIngredientIndex < 0)
+        if (currentIngredientIndex < 0)
         {
             currentIngredientIndex = ingredients.Length - 1;
         }
@@ -110,13 +133,15 @@ public class SodaGunInteractable : LiquidPourer
         updateDisplay();
     }
 
-    void updateDisplay(){
+    void updateDisplay()
+    {
         displayText.text = "Current liquid:\n" + ingredients[currentIngredientIndex].ingredientBase.Name;
     }
 
     void FixedUpdate()
     {
-        if(isShooting){
+        if (isShooting)
+        {
             emitParticles();
             detectCollision();
         }
@@ -149,7 +174,7 @@ public class SodaGunInteractable : LiquidPourer
 
     internal override void changeMaterialFlag()
     {
-        liquidHaveBeenChanged = false; 
+        liquidHaveBeenChanged = false;
     }
 
     internal override bool liquidHaveBeenChange()
@@ -166,6 +191,24 @@ public class SodaGunInteractable : LiquidPourer
     {
         Debug.Log("Current ingredient name: " + ingredients[currentIngredientIndex].ingredientBase.Name);
         return ingredients[currentIngredientIndex].ingredientBase;
+    }
+
+    private IEnumerator HapticFeedbackRoutine()
+    {
+
+        while (isShooting == true)
+        {
+            if (leftController != null)
+                leftController.SendHapticImpulse(intensity, duration);
+            if (rightController != null)
+                rightController.SendHapticImpulse(intensity, duration);
+
+            // Increase intensity, but clamp to 1
+            intensity = Mathf.Min(intensity + minIntensity, maxIntensity);
+
+            yield return new WaitForSeconds(routineWait);
+        }
+
     }
 
 }
