@@ -26,11 +26,6 @@ public class SodaGunInteractable : LiquidPourer
 
     [Header("Display")]
     public TMP_Text displayText;
-
-    [Header("Haptics")]
-    [Range(0, 1)]
-    public float intensity;
-    public float duration;
     private void Awake()
     {
         grabInteractable = GetComponent<XRGrabInteractable>();
