@@ -169,7 +169,7 @@ namespace Assets.Scripts.Drink_interaction
                 if(ingredient.Amount <= 0)
                 {
                     ingredients.Remove(kvp.Key);
-                }else{
+                }else if(!ingredient.solid){
                     ingredientNames.Add(ingredient.Name);
                     ingredient.ingredients = ingredientsList;
                     Debug.Log( " color : "+ kvp.Value.Color + " of " + kvp.Value.Name);
