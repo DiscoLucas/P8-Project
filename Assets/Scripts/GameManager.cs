@@ -90,15 +90,27 @@ public class GameManager : SingletonPersistent<GameManager>
 
         fsm.AddState("Baseline", onEnter: ActivateBaselineSystems); // Placeholder for any baseline-specific activation
 
-        fsm.AddState("LoadGame", onEnter: async state =>
+        fsm.AddState("LoadGame", onEnter: state =>
+            {
+                
+                string taskName = GetConditionNameForTask(currentCondition);
+                
+                if (logging) Debug.Log("Loading game scene");
+                StartCoroutine(LoadSceneAndTransition(GetSceneForCondition(currentCondition), "GameSceneLoaded"));
+                
+            }
+        );
+
+        fsm.AddState("Game", onEnter: async state =>
             {
                 if (logging) Debug.Log("Starting main task recording");
+                ActivateGameSystems(state);
                 string taskName = GetConditionNameForTask(currentCondition);
                 bool started = await StartLabRecordingAsync(taskName);
                 if (started)
                 {
-                    if (logging) Debug.Log("Loading game scene");
-                    StartCoroutine(LoadSceneAndTransition(GetSceneForCondition(currentCondition), "GameSceneLoaded"));
+                    //if (logging) Debug.Log("Loading game scene");
+                    //StartCoroutine(LoadSceneAndTransition(GetSceneForCondition(currentCondition), "GameSceneLoaded"));
                 }
                 else
                 {
@@ -107,7 +119,6 @@ public class GameManager : SingletonPersistent<GameManager>
             }
         );
 
-        fsm.AddState("Game", onEnter: ActivateGameSystems);
         fsm.AddState("Paused", onEnter: PauseGame, onExit: ResumeGame);
         fsm.AddState("GameOver", onEnter: HandleGameOver);
         #endregion
@@ -138,7 +149,7 @@ public class GameManager : SingletonPersistent<GameManager>
 
 
         fsm.SetStartState("MainMenu");
-
+        Debug.Log("test");
         fsm.Init();
     }
 
