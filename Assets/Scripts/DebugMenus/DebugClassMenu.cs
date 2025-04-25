@@ -170,7 +170,7 @@ public class DebugClassMenu : MonoBehaviour
         updateTheIngredientDisplay();
         drinkSlider.value = liquidContainer.FillPercentage();
         glassTypeText.text = liquidContainer.glassType.ToString();
-        IceInText.text = liquidContainer.iceIn ? iceInTextString : noIceTextString;
+        IceInText.text = liquidContainer.hasIce ? iceInTextString : noIceTextString;
         alcoholTypeText.text = alcoholDrinkContain;
         softDrinkText.text = softDrinkContain;
         garnishText.text = liquidContainer.garnishIngredient != null ? liquidContainer.garnishIngredient.Name : "No Garnish";

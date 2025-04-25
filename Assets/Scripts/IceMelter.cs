@@ -1,5 +1,6 @@
 using System.Collections;
 using Assets.Scripts.Drink_interaction;
+using Assets.Scripts.Ingridence;
 using UnityEngine;
 
 public class IceMelter : MonoBehaviour
@@ -8,23 +9,12 @@ public class IceMelter : MonoBehaviour
     public float meltTime = 360f;
     private bool isMelting = true;
 
+    [SerializeField]
+    IngredientScribtiableObject iceConfig;
 
     public void Start()
     {
         Invoke("MeltIce", graceTime);
-    }
-
-    private void OncCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("VR Hand"))
-        {
-            if (!isMelting)
-            {
-                isMelting = true;
-                // Start the melting process after a grace period
-                Invoke("MeltIce", graceTime);
-            }
-        }
     }
 
     IEnumerator MeltIce()
@@ -49,11 +39,22 @@ public class IceMelter : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.GetComponent<LiquidContainerLimited>() != null)
+        if (collision.gameObject.CompareTag("VR Hand"))
+        {
+            if (!isMelting)
+            {
+                isMelting = true;
+                // Start the melting process after a grace period
+                Invoke("MeltIce", graceTime);
+            }
+        }
+        else if(collision.gameObject.GetComponent<LiquidContainerLimited>() != null)
         {
             LiquidContainerLimited liquidContainer = collision.gameObject.GetComponent<LiquidContainerLimited>();
-            liquidContainer.hasIce = true;
-            Destroy(gameObject);
+            IngredientBase iceBase = iceConfig.ingredientBase;
+            bool iceAdded = liquidContainer.addIceToContainer(iceBase);
+            if(iceAdded)
+                Destroy(gameObject);
         }
     }
 }

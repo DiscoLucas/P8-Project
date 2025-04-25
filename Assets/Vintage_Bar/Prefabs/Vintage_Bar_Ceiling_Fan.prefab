@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1030982321}
   - component: {fileID: 8834632369236589663}
   - component: {fileID: 2020272502667310991}
+  - component: {fileID: 4260600195998978320}
   m_Layer: 0
   m_Name: Vintage_Bar_Ceiling_Fan
   m_TagString: Untagged
@@ -88,6 +89,28 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1030982320}
   m_Mesh: {fileID: 4300000, guid: abc00000000003305098341023289686, type: 3}
+--- !u!95 &4260600195998978320
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1030982320}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 01a69533beb144c48831936fd57e23d7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1030982323
 GameObject:
   m_ObjectHideFlags: 0

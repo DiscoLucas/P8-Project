@@ -31,11 +31,11 @@ namespace Assets.Scripts.Drink_interaction
         public Transform garnishPoint;
         public IngredientBase garnishIngredient = null;
         public bool hasGarnish = false;
-        public bool hasIce = false;
 
-        [Header("Solid glass")]
-        [SerializeField]
-        public bool iceIn = false;
+        [Header("Ice")]
+        public bool hasIce = false;
+        public Transform iceFill;
+        int iceCount = 0;
 
         [Header("Debug liquid display")]
         public DebugClassMenu debugGlassMenu;
@@ -266,6 +266,13 @@ namespace Assets.Scripts.Drink_interaction
 
         internal override void drinkOnStart()
         {
+            if (iceFill != null)
+            {
+                foreach (Transform child in iceFill)
+                {
+                    child.gameObject.SetActive(false);
+                }
+            }
             if (xrGrabInteractable == null)
                 xrGrabInteractable = gameObject.GetComponent<XRGrabInteractable>();
 
@@ -299,6 +306,19 @@ namespace Assets.Scripts.Drink_interaction
             }
                 
 
+        }
+
+        public bool addIceToContainer(IngredientBase ice){
+            hasIce = true;
+            //Code to add ice to glass 
+            if(iceFill.childCount > 0 || iceFill.childCount < (iceCount+1)){
+                iceCount++;
+                iceFill.GetChild(iceCount).gameObject.SetActive(true);
+                AddIngredient(ice, ice.Amount, out float actualAddedAmount);
+                return true;
+            }
+            return false;
+            
         }
     }
 }
