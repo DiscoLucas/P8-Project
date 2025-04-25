@@ -3,10 +3,10 @@ using Assets.Scripts.Drink_interaction;
 using Assets.Scripts.Ingridence;
 using UnityEngine;
 
-public class IceMelter : MonoBehaviour
+public class IceBehavoir : MonoBehaviour
 {
-    public float graceTime = 10f;
-    public float meltTime = 360f;
+    [SerializeField]
+    GameSettings gameSettings;
     private bool isMelting = true;
 
     [SerializeField]
@@ -14,7 +14,10 @@ public class IceMelter : MonoBehaviour
 
     public void Start()
     {
-        Invoke("MeltIce", graceTime);
+        if(gameSettings == null)
+            gameSettings = GameManager.Instance.gameSettings;
+        
+        Invoke("MeltIce", gameSettings.graceTime);
     }
 
     IEnumerator MeltIce()
@@ -23,10 +26,10 @@ public class IceMelter : MonoBehaviour
 
         // Start melting the ice
         float elapsedTime = 0f;
-        while (elapsedTime < meltTime)
+        while (elapsedTime < gameSettings.meltTime)
         {
             
-            transform.localScale = Vector3.Lerp(originalScale, originalScale / 100, elapsedTime / meltTime);
+            transform.localScale = Vector3.Lerp(originalScale, originalScale / 100, elapsedTime / gameSettings.meltTime);
 
             elapsedTime += Time.deltaTime;
             yield return null;
@@ -45,7 +48,7 @@ public class IceMelter : MonoBehaviour
             {
                 isMelting = true;
                 // Start the melting process after a grace period
-                Invoke("MeltIce", graceTime);
+                Invoke("MeltIce", gameSettings.graceTime);
             }
         }
         else if(collision.gameObject.GetComponent<LiquidContainerLimited>() != null)

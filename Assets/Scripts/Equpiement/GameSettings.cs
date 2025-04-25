@@ -12,4 +12,9 @@ public class GameSettings : ScriptableObject
     [Header("Round Settings")]
     [Tooltip("Time for the round to end in minutes")]
     public float roundTime = 2f;
+
+    [Header("Ice Melting Settings")]
+    public float graceTime = 10f;
+    public float meltTime = 360f;
+    private bool isMelting = true;
 }
