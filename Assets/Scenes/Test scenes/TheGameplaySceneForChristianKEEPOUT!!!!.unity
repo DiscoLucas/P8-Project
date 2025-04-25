@@ -6670,6 +6670,17 @@ Rigidbody:
   m_CorrespondingSourceObject: {fileID: 5375088571793620415, guid: 4f21bcb8db1466545811ddb6a086bcf5, type: 3}
   m_PrefabInstance: {fileID: 643961925}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1482999578 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 684584870203561581, guid: 499f1f77c6bc82e4abd91ab54debe2af, type: 3}
+  m_PrefabInstance: {fileID: 3936484263274635529}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b734f2bd29eeddd4d85afb0c266228c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1489197394
 GameObject:
   m_ObjectHideFlags: 0
@@ -8455,6 +8466,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4760002040860982589, guid: bc977c823285ba24aa135bec8735a748, type: 3}
+      propertyPath: duration
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 4760002040860982589, guid: bc977c823285ba24aa135bec8735a748, type: 3}
+      propertyPath: leftController
+      value: 
+      objectReference: {fileID: 1482999578}
+    - target: {fileID: 4760002040860982589, guid: bc977c823285ba24aa135bec8735a748, type: 3}
+      propertyPath: rightController
+      value: 
+      objectReference: {fileID: 2044441537}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -9936,11 +9959,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8178039878536675984, guid: 268c81d9d2698b246961c344576b2629, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.995
+      objectReference: {fileID: 0}
+    - target: {fileID: 8178039878536675984, guid: 268c81d9d2698b246961c344576b2629, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.258
+      objectReference: {fileID: 0}
+    - target: {fileID: 8178039878536675984, guid: 268c81d9d2698b246961c344576b2629, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.21
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 268c81d9d2698b246961c344576b2629, type: 3}
+--- !u!114 &2044441537 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4852972594697882272, guid: 499f1f77c6bc82e4abd91ab54debe2af, type: 3}
+  m_PrefabInstance: {fileID: 3936484263274635529}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b734f2bd29eeddd4d85afb0c266228c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2065309695
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48651,6 +48697,10 @@ PrefabInstance:
       propertyPath: m_AttachTransform
       value: 
       objectReference: {fileID: 2855514007680309114}
+    - target: {fileID: 310016061060658344, guid: 499f1f77c6bc82e4abd91ab54debe2af, type: 3}
+      propertyPath: m_TagString
+      value: rightController
+      objectReference: {fileID: 0}
     - target: {fileID: 2112538350327185161, guid: 499f1f77c6bc82e4abd91ab54debe2af, type: 3}
       propertyPath: m_AttachTransform
       value: 
@@ -48709,7 +48759,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6411212522906170250, guid: 499f1f77c6bc82e4abd91ab54debe2af, type: 3}
       propertyPath: m_TagString
-      value: rightController
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601881512199277710, guid: 499f1f77c6bc82e4abd91ab54debe2af, type: 3}
+      propertyPath: m_TagString
+      value: leftController
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -88861,6 +88915,9 @@ MonoBehaviour:
   duration: 0
   leftController: {fileID: 0}
   rightController: {fileID: 0}
+  minIntensity: 0.01
+  maxIntensity: 1
+  routineWait: 0.025
 --- !u!1 &7735868167116740638
 GameObject:
   m_ObjectHideFlags: 0

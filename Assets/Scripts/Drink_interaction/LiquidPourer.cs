@@ -8,6 +8,8 @@ using System.Collections;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR;
+using UnityEngine.XR.Interaction.Toolkit.Inputs.Haptics;
+using Unity.VisualScripting;
 public class LiquidPourer : MonoBehaviour
 {
     [Header("Drink")]
@@ -39,17 +41,20 @@ public class LiquidPourer : MonoBehaviour
 
     [Header("Haptics")]
     [Range(0,1)]
-    public float intensity = 0.2f;
-    public float duration = 0.01f;
+    public float intensity = 0.01f;
+    public float duration = 0.04f;
     private Coroutine hapticCoroutine;
-    [SerializeField] private XRBaseController leftController;
-    [SerializeField] private XRBaseController rightController;
+    [SerializeField] private HapticImpulsePlayer leftController;
+    [SerializeField] private HapticImpulsePlayer rightController;
+    [SerializeField] private float minIntensity = 0.01f;
+    [SerializeField] private float maxIntensity = 0.7f;
+    [SerializeField] private float routineWait = 0.05f;
 
 
     private void Awake()
     {
-        leftController = GameObject.FindWithTag("LeftController")?.GetComponent<XRBaseController>();
-        rightController = GameObject.FindWithTag("RightController")?.GetComponent<XRBaseController>();
+        //leftController = GameObject.FindWithTag("leftController")?.GetComponent<HapticImpulsePlayer>();
+        //rightController = GameObject.FindWithTag("rightController")?.GetComponent<HapticImpulsePlayer>();
     }
 
     private void Start()
@@ -60,6 +65,18 @@ public class LiquidPourer : MonoBehaviour
         {
             fillamountText.gameObject.SetActive(false); // Ensure the text is initially disabled
         }
+
+        if (leftController == null)
+        {
+            Debug.LogWarning("Left XR controller not found or missing HapticImpulsePlayer component.");
+            leftController.SendHapticImpulse(1f, 0.2f); // test pulse
+        }
+        if (rightController == null)
+        {
+            Debug.LogWarning("Right XR controller not found or missing HapticImpulsePlayer component.");
+            rightController.SendHapticImpulse(1f, 0.2f); // test pulse
+        }
+
     }
 
     private void ShowFillAmountText(string text)
@@ -108,6 +125,7 @@ public class LiquidPourer : MonoBehaviour
             if (hapticCoroutine != null)
             {
                 StopCoroutine(hapticCoroutine);
+                intensity = 0.01f;
                 hapticCoroutine = null;
             }
         }
@@ -284,11 +302,20 @@ public class LiquidPourer : MonoBehaviour
 
     private IEnumerator HapticFeedbackRoutine()
     {
+        
+        while (isPouring())
+        {
             if (leftController != null)
                 leftController.SendHapticImpulse(intensity, duration);
             if (rightController != null)
                 rightController.SendHapticImpulse(intensity, duration);
 
-            yield return new WaitForSeconds(duration);
+            // Increase intensity, but clamp to 1
+            intensity = Mathf.Min(intensity + minIntensity, maxIntensity);
+
+            yield return new WaitForSeconds(routineWait);
+        }
+
     }
-}
+
+  }
