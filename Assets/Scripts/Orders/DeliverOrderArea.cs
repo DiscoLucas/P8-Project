@@ -32,9 +32,13 @@ public class DeliverOrderArea : MonoBehaviour
                 Debug.Log("Not enough liquid in the container to deliver the order.");
                 return;
             }
+            Debug.Log("Delivering order: " + order.orderID);
             order.containerLimited = container;
+            Debug.Log("Delivering order: " + order.orderID + " with container: " + container.name);
             agent.endOrder();
+            Debug.Log("Delivering order: " + order.orderID + " with agent: " + agent.name);
             orderDeliverede.Invoke(order, agent);
+            Debug.Log("Delivering order: " + order.orderID + " with agent: " + agent.name + " and order: " + order.orderID + " is delivered and removing: " + gameObject.name);
             Destroy(gameObject);
         }
     }

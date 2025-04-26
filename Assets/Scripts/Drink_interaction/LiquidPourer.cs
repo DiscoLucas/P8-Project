@@ -239,7 +239,6 @@ public class LiquidPourer : MonoBehaviour
                     if (Vector3.Dot(hit.normal, glassUp) > hitThreashold) // Adjust threshold as needed
                     {
                         IngredientBase pouredMixture = getIngredientBase();
-                        Debug.Log("Pouring " + pouredMixture.Name + " into " + glass.name);
                         if (pouredMixture != null)
                         {
                             glass.AddIngredient(pouredMixture, pourAmount, out pourAmount);

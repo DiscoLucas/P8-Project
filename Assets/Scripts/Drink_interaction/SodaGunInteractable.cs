@@ -159,12 +159,10 @@ public class SodaGunInteractable : LiquidPourer
     internal override Color getLiquidColor()
     {
         Color liquidColor = ingredients[currentIngredientIndex].ingredientBase.Color;
-        Debug.Log("Current liquid color: " + liquidColor);
         return liquidColor;
     }
     internal override IngredientBase getIngredientBase()
     {
-        Debug.Log("Current ingredient name: " + ingredients[currentIngredientIndex].ingredientBase.Name);
         return ingredients[currentIngredientIndex].ingredientBase;
     }
 
