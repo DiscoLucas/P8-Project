@@ -16,5 +16,15 @@ public class GameSettings : ScriptableObject
     [Header("Ice Melting Settings")]
     public float graceTime = 10f;
     public float meltTime = 360f;
-    private bool isMelting = true;
+
+    [Header("Haptics Settings")]
+    public float HapticDuration = 0.04f;
+    public float HapticMinIntensity = 0.01f;
+    public float HapticMaxIntensity = 0.7f;
+    public float HapticRoutineWait = 0.05f;
+    public float HapticIntensityOfButtonpress = 0.5f;
+    public float HapticDurationOfButtonPress = 1f;
+
+    public float Haptic_Fill_Contatiner_HapticDuration = 0.1f;
+    public float Haptic_Fill_Contatiner_HapticIntensity = 0.5f;
 }

@@ -184,7 +184,7 @@ MonoBehaviour:
     _serializedList: []
   materialHaveBeenChange: 1
   xrGrabInteractable: {fileID: 7841218095512143861}
-  ingridentTextDisplay: {fileID: 6163763164433935188}
+  ingridentTextDisplay: {fileID: 0}
   ingredient:
     Name: Kahlua
     Amount: 0
@@ -197,6 +197,7 @@ MonoBehaviour:
       action: 0
     ingredients:
       _serializedList: []
+  ingredientScribtiableObject: {fileID: 0}
 --- !u!114 &4760002040860982589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,6 +223,16 @@ MonoBehaviour:
     m_Bits: 4294967295
   pourAmount: 0.01
   hitThreashold: 0.5
+  pourSpeed: 0
+  fillamountText: {fileID: 0}
+  disableTextDelay: 5
+  intensity: 0.01
+  duration: 0.04
+  currentController: {fileID: 0}
+  minIntensity: 0.01
+  maxIntensity: 0.7
+  routineWait: 0.05
+  grabInteractable: {fileID: 0}
 --- !u!54 &5375088571793620415
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5553,7 +5564,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 38d77055c59d73d4f807967a54b71e57, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: 87b1582d926f10b4db73368920b738e1, type: 2}
+      objectReference: {fileID: 2100000, guid: 8f192d9c4eb05494981b71484f79ec8d, type: 2}
     - target: {fileID: -7511558181221131132, guid: 38d77055c59d73d4f807967a54b71e57, type: 3}
       propertyPath: 'm_Materials.Array.data[2]'
       value: 

@@ -10,6 +10,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Inputs.Haptics;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 namespace Assets.Scripts.Drink_interaction
@@ -19,6 +20,11 @@ namespace Assets.Scripts.Drink_interaction
     /// </summary>
     public class LiquidContainerLimited : LiquidContainer
     {
+
+        [Header("Game settings")]
+        public GameSettings gameSettings;
+
+        [Header("Liquid")]
         protected int lastCheckColorCount = 0;
 
         [SerializeField]
@@ -39,6 +45,20 @@ namespace Assets.Scripts.Drink_interaction
 
         [Header("Debug liquid display")]
         public DebugClassMenu debugGlassMenu;
+
+        [Header("Haptics")]
+        public HapticImpulsePlayer currentHapticPlayer;
+
+        [Range(0,1)]
+        public float intensity = 0.01f;
+        public float duration = 0.04f;
+        internal Coroutine hapticCoroutine = null, sessionCoroutine;
+        [SerializeField] internal float minIntensity = 0.01f;
+        [SerializeField] internal float maxIntensity = 0.7f;
+        [SerializeField] internal float routineWait = 0.05f;
+
+        [SerializeField] internal float fillHapticDuration = 0.1f;
+        [SerializeField] internal float fillHapticIntensity = 0.5f;
 
         public void setGarnish(GameObject garnish)
         {
@@ -85,10 +105,11 @@ namespace Assets.Scripts.Drink_interaction
             }
                 
         }
-
+        bool pouringSession = false;
         public override void AddIngredient(IngredientBase ingredient, float inputAmount, out float actualAddedAmount)
         {
             actualAddedAmount= 0;
+
             if (ingredient.solid == false)
             {
                 float availableSpace = maxFill - fillAmount;
@@ -96,6 +117,8 @@ namespace Assets.Scripts.Drink_interaction
 
                 if (actualAddedAmount <= 0)
                 {
+                    if(currentHapticPlayer != null)
+                        currentHapticPlayer.SendHapticImpulse(fillHapticIntensity, fillHapticDuration);
                     Debug.Log($"Glass is full! Cannot add more {ingredient.Name}.");
                     return;
                 }
@@ -119,8 +142,14 @@ namespace Assets.Scripts.Drink_interaction
                     orderCounter++;
                 }
                 updateLiquidDisplay();
-            }     
+            }    
+            pouringSession = true;
+            checkingForSessionEnd = true;
+            if(hapticCoroutine == null)
+                hapticCoroutine = StartCoroutine(HapticFeedbackRoutine()); 
         }
+        
+        
 
         public override IngredientBase createPouredMixture(float pourAmount)
         {
@@ -279,8 +308,21 @@ namespace Assets.Scripts.Drink_interaction
             if (ingridentTextDisplay != null)
             {
                 updateLiquidDisplay();
-                
             }
+            updateFromSettings();
+
+        }
+
+        internal void updateFromSettings(){
+            gameSettings = GameManager.Instance.gameSettings;
+            intensity = gameSettings.HapticMinIntensity;
+            duration = gameSettings.HapticDuration;
+            minIntensity = gameSettings.HapticMinIntensity;
+            maxIntensity = gameSettings.HapticMaxIntensity;
+            routineWait = gameSettings.HapticRoutineWait;
+            fillHapticDuration = gameSettings.Haptic_Fill_Contatiner_HapticDuration;
+            fillHapticIntensity = gameSettings.Haptic_Fill_Contatiner_HapticIntensity;
+
         }
 
         public void activateDrinkDisplayOnSelect(SelectEnterEventArgs arg0)
@@ -309,6 +351,7 @@ namespace Assets.Scripts.Drink_interaction
         }
 
         public bool addIceToContainer(IngredientBase ice){
+
             hasIce = true;
             //Code to add ice to glass 
             if(iceFill.childCount > 0 || iceFill.childCount < (iceCount+1)){
@@ -319,6 +362,71 @@ namespace Assets.Scripts.Drink_interaction
             }
             return false;
             
+        }
+
+        void OnEnable()
+        {
+            if(xrGrabInteractable == null)
+                xrGrabInteractable = gameObject.GetComponent<XRGrabInteractable>();
+            xrGrabInteractable.selectEntered.AddListener(findHapticController);
+            xrGrabInteractable.selectExited.AddListener(removeHapticController);
+        }
+
+        private void removeHapticController(SelectExitEventArgs arg0)
+        {
+            currentHapticPlayer = null;
+            if (hapticCoroutine != null)
+                StopCoroutine(hapticCoroutine);
+            intensity = gameSettings.HapticMinIntensity;
+        }
+
+        void OnDisable()
+        {
+            xrGrabInteractable.selectEntered.RemoveListener(findHapticController);
+            xrGrabInteractable.selectExited.RemoveListener(removeHapticController);
+        }
+        void FixedUpdate()
+        {
+            if(checkingForSessionEnd){
+                checkingForSessionEnd = false;
+                sessionCoroutine= StartCoroutine(endSession());
+            }
+        }
+        //Haptics
+
+        internal void findHapticController(SelectEnterEventArgs arg0){
+            currentHapticPlayer = arg0.interactorObject.transform.parent.GetComponent<HapticImpulsePlayer>();
+            if (currentHapticPlayer == null)
+            {
+                Debug.LogWarning("Interactor does not have a HapticImpulsePlayer component.");
+                return;
+            }
+
+        }
+        bool checkingForSessionEnd = false;
+        internal IEnumerator endSession(){
+            checkingForSessionEnd = true;
+                while(checkingForSessionEnd)
+            yield return new WaitForSeconds(routineWait);
+            pouringSession = false;
+        }
+        internal IEnumerator HapticFeedbackRoutine()
+        {
+            while (pouringSession)
+            {
+                if (currentHapticPlayer != null){
+                    Debug.Log("HapticFeedbackRoutine started " + transform.name);
+                    currentHapticPlayer.SendHapticImpulse(intensity, duration);
+                }
+                    
+
+                // Increase intensity, but clamp to 1
+                intensity = Mathf.Min(intensity + minIntensity, maxIntensity);
+
+                yield return new WaitForSeconds(routineWait);
+            }
+            
+
         }
     }
 }
