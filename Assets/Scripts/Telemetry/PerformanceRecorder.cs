@@ -14,6 +14,8 @@ public class PerformanceRecorder : Singleton<PerformanceRecorder>
     private int conditionNumber;
     private string sessionID;
     
+    public GazePointRunner gazePointRunner;
+
     private StreamOutlet outlet;
     private StreamInfo streamInfo;
     [Tooltip("Max amount of expected value channels")]
@@ -25,6 +27,18 @@ public class PerformanceRecorder : Singleton<PerformanceRecorder>
     {
         base.Awake();
         currentSample = new string[1 + MaxValueChannels]; // 1 for event type + max value channels
+    }
+
+    void Start()
+    {
+        if(gazePointRunner == null)
+        {
+            gazePointRunner = FindAnyObjectByType<GazePointRunner>();
+            if (gazePointRunner == null)
+            {
+                Debug.LogError("GazePointRunner not found in the scene. Please ensure it is present.");
+            }
+        }
     }
 
     /// <summary>
@@ -52,7 +66,7 @@ public class PerformanceRecorder : Singleton<PerformanceRecorder>
             string streamName = "UnityGameEvents";
             string streamType = "Markers"; // Common type for event markers
             int channelCount = 1 + MaxValueChannels; // EventType + Values
-            double nominalRate = LSL.LSL.IRREGULAR_RATE; // Events are not periodic
+            double nominalRate = 60d; // Events are not periodic
             LSL.channel_format_t channelFormat = LSL.channel_format_t.cf_string; // Use strings for flexibility
             string sourceId = $"P{participantID}_C{conditionNumber}_S{sessionID}";
 
@@ -94,7 +108,24 @@ public class PerformanceRecorder : Singleton<PerformanceRecorder>
         }
     }
 
+    void FixedUpdate()
+    {
+        if(gazePointRunner== null)
+        return;
 
+        Collider[] gazePoints = gazePointRunner.getCurrentGazePoints();
+        string[] gazePointNames = new string[gazePoints.Length];
+        for (int i = 0; i < gazePoints.Length; i++)
+        {
+            gazePointNames[i] = gazePoints[i].transform.gameObject.layer.ToString(); // Assuming you want the layer name as a string
+        }
+        if(gazePointNames.Length == 0)
+        {
+            gazePointNames = new string[1];
+            gazePointNames[0] = "NoGazePoints";
+        }
+        RecordData("GazePoints",gazePointNames);
+    }
 
 
 

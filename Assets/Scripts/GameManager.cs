@@ -177,9 +177,9 @@ public class GameManager : SingletonPersistent<GameManager>
     {
         switch (condition)
         {
-            case Condition.LowFi: return "LowFiScene";
-            case Condition.MediumFi: return "MediumFiScene";
-            case Condition.HighFi: return "Main";
+            case Condition.LowFi: return "Main_LoFI";
+            case Condition.MediumFi: return "Main_Midfi";
+            case Condition.HighFi: return "Main_Hifi";
             default:
                 Debug.LogError($"Unknown condition: {condition}. Going back home.");
                 return "MainMenu"; // Fallback scene
@@ -261,7 +261,7 @@ public class GameManager : SingletonPersistent<GameManager>
     IEnumerator LoadSceneAndTransition(string sceneName, string transitionTrigger)
     {
         Debug.Log($"FSM: Loading scene '{sceneName}'...");
-        Debug.Break();
+        //Debug.Break();
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
         while (!asyncLoad.isDone)
         {
