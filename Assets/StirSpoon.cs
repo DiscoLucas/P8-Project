@@ -32,6 +32,7 @@ public class StirSpoon : MonoBehaviour
             {
 
                 LiquidContainerLimited lcl = collision.gameObject.GetComponent<LiquidContainerLimited>();
+                if (lcl == null) return;
                 foreach (IngredientBase ingredient in lcl.ingredients.Values)
                 {
                     ingredient.step.action = DrinkAction.Stirred;

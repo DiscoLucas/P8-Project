@@ -5,6 +5,12 @@ using UnityEngine.UIElements;
 using Assets.Scripts.Ingridence;
 using TMPro;
 using System.Collections;
+using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using UnityEngine.XR;
+using UnityEngine.XR.Interaction.Toolkit.Inputs.Haptics;
+using Unity.VisualScripting;
+using System;
 public class LiquidPourer : MonoBehaviour
 {
     [Header("Drink")]
@@ -34,6 +40,25 @@ public class LiquidPourer : MonoBehaviour
 
     private Coroutine disableTextCoroutine;
 
+    [Header("Haptics")]
+    [Range(0,1)]
+    public float intensity = 0.01f;
+    public float duration = 0.04f;
+    private Coroutine hapticCoroutine;
+    [SerializeField] private HapticImpulsePlayer currentController;
+    [SerializeField] private float minIntensity = 0.01f;
+    [SerializeField] private float maxIntensity = 0.7f;
+    [SerializeField] private float routineWait = 0.05f;
+
+    [Header("Grab")]
+    [SerializeField] XRGrabInteractable grabInteractable;
+
+    private void Awake()
+    {
+        //leftController = GameObject.FindWithTag("leftController")?.GetComponent<HapticImpulsePlayer>();
+        //rightController = GameObject.FindWithTag("rightController")?.GetComponent<HapticImpulsePlayer>();
+    }
+
     private void Start()
     {
         if (particles == null) Debug.LogError("Particale effect have not been assigned");
@@ -42,6 +67,26 @@ public class LiquidPourer : MonoBehaviour
         {
             fillamountText.gameObject.SetActive(false); // Ensure the text is initially disabled
         }
+        grabInteractable = GetComponent<XRGrabInteractable>();
+        grabInteractable.selectEntered.AddListener(OnGrab);
+        grabInteractable.selectExited.AddListener(OnRelease);
+
+        
+    }
+
+    private void OnRelease(SelectExitEventArgs arg0)
+    {
+        currentController = arg0.interactorObject.transform.GetComponent<HapticImpulsePlayer>();
+        if (currentController == null)
+        {
+            Debug.LogWarning("Interactor does not have a HapticImpulsePlayer component.");
+            return;
+        }
+    }
+
+    private void OnGrab(SelectEnterEventArgs arg0)
+    {
+        currentController = null;
     }
 
     private void ShowFillAmountText(string text)
@@ -77,12 +122,22 @@ public class LiquidPourer : MonoBehaviour
             calculatePouringSpeed();
             emitParticles();
             detectCollision();
+
+            if (hapticCoroutine == null)
+                hapticCoroutine = StartCoroutine(HapticFeedbackRoutine());
         }
         else
         {
             currentPourSessionAmout = 0f;
-            if(particles != null)
+            if (particles != null)
                 particles.Stop();
+
+            if (hapticCoroutine != null)
+            {
+                StopCoroutine(hapticCoroutine);
+                intensity = 0.01f;
+                hapticCoroutine = null;
+            }
         }
     }
 
@@ -184,7 +239,6 @@ public class LiquidPourer : MonoBehaviour
                     if (Vector3.Dot(hit.normal, glassUp) > hitThreashold) // Adjust threshold as needed
                     {
                         IngredientBase pouredMixture = getIngredientBase();
-                        Debug.Log("Pouring " + pouredMixture.Name + " into " + glass.name);
                         if (pouredMixture != null)
                         {
                             glass.AddIngredient(pouredMixture, pourAmount, out pourAmount);
@@ -254,4 +308,21 @@ public class LiquidPourer : MonoBehaviour
     {
         liquidContainer.depleateLiqued(pourAmount);
     }
-}
+
+    private IEnumerator HapticFeedbackRoutine()
+    {
+        
+        while (isPouring())
+        {
+            if (currentController != null)
+                currentController.SendHapticImpulse(intensity, duration);
+
+            // Increase intensity, but clamp to 1
+            intensity = Mathf.Min(intensity + minIntensity, maxIntensity);
+
+            yield return new WaitForSeconds(routineWait);
+        }
+
+    }
+
+  }
