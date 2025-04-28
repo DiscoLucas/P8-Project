@@ -226,7 +226,7 @@ MonoBehaviour:
     _serializedList: []
   materialHaveBeenChange: 1
   xrGrabInteractable: {fileID: 7489128875455577258}
-  ingridentTextDisplay: {fileID: 7593427152087897677}
+  ingridentTextDisplay: {fileID: 0}
   ingredient:
     Name: Brandy
     Amount: 0
@@ -239,6 +239,7 @@ MonoBehaviour:
       action: 0
     ingredients:
       _serializedList: []
+  ingredientScribtiableObject: {fileID: 0}
 --- !u!114 &4760002040860982589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -264,6 +265,16 @@ MonoBehaviour:
     m_Bits: 4294967295
   pourAmount: 0.01
   hitThreashold: 0.5
+  pourSpeed: 0
+  fillamountText: {fileID: 0}
+  disableTextDelay: 5
+  intensity: 0.01
+  duration: 0.04
+  currentController: {fileID: 0}
+  minIntensity: 0.01
+  maxIntensity: 0.7
+  routineWait: 0.05
+  grabInteractable: {fileID: 0}
 --- !u!54 &5996444090839704664
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5549,7 +5560,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: eb3a773550d449c49b166044f00a13fe, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 1b09898452d04f341bbfeacaec0cebb2, type: 2}
+      objectReference: {fileID: 2100000, guid: 2fe5b8459adb21148a9f1e6e0212927b, type: 2}
     - target: {fileID: -7511558181221131132, guid: eb3a773550d449c49b166044f00a13fe, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 

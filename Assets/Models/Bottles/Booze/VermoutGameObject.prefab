@@ -184,7 +184,7 @@ MonoBehaviour:
     _serializedList: []
   materialHaveBeenChange: 1
   xrGrabInteractable: {fileID: 5119491210384747656}
-  ingridentTextDisplay: {fileID: 1165834529094113027}
+  ingridentTextDisplay: {fileID: 0}
   ingredient:
     Name: Vermout
     Amount: 0
@@ -197,6 +197,7 @@ MonoBehaviour:
       action: 0
     ingredients:
       _serializedList: []
+  ingredientScribtiableObject: {fileID: 0}
 --- !u!114 &4760002040860982589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,6 +223,16 @@ MonoBehaviour:
     m_Bits: 4294967295
   pourAmount: 0.01
   hitThreashold: 0.5
+  pourSpeed: 0
+  fillamountText: {fileID: 0}
+  disableTextDelay: 5
+  intensity: 0.01
+  duration: 0.04
+  currentController: {fileID: 0}
+  minIntensity: 0.01
+  maxIntensity: 0.7
+  routineWait: 0.05
+  grabInteractable: {fileID: 0}
 --- !u!54 &7791703244185617465
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5549,7 +5560,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: c3288d91d8e7cc0449f2dd655d0ac816, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 87b1582d926f10b4db73368920b738e1, type: 2}
+      objectReference: {fileID: 2100000, guid: 5f84b6a34e968a647a90f43a5f36f584, type: 2}
     - target: {fileID: -7511558181221131132, guid: c3288d91d8e7cc0449f2dd655d0ac816, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
