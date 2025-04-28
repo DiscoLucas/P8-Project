@@ -18,6 +18,18 @@ public class GazePointRunner : MonoBehaviour
     [SerializeField]
     private List<Collider> lookedAtObjects = new List<Collider>();
 
+    [SerializeField]
+    string streamName = "GazePointStream";
+    void Start()
+    {
+        if (PerformanceRecorder.Instance != null)
+        {
+           string[] labels = new string[] { "GazePoint" }; 
+            PerformanceRecorder.Instance.InitializeLSLStream(streamName, "Gaze", 1, LSL.LSL.IRREGULAR_RATE, 
+            LSL.channel_format_t.cf_string, labels );
+        }
+    }
+
     void Update()
     {
         detectGaze();
@@ -118,6 +130,17 @@ public class GazePointRunner : MonoBehaviour
         {
             Debug.Log($"Currently looking at: {collider.name}");
         }
+    }
+
+    void FixedUpdate()
+    {
+        if(gazePoints.Count == 0) return;
+        string[] layersLookedAt = new string[gazePoints.Count];
+        for (int i = 0; i < gazePoints.Count; i++)
+        {
+            layersLookedAt[i] = gazePoints[i].transform.gameObject.layer.ToString();
+        }
+        PerformanceRecorder.Instance?.RecordStreamData(streamName, layersLookedAt);
     }
 
     void OnDrawGizmosSelected()

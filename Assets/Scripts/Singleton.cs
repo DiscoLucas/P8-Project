@@ -2,7 +2,7 @@ using UnityEngine;
 
 public abstract class StaticInstance<T> : MonoBehaviour where T : MonoBehaviour
 {
-    public static T Instance { get; private set; }
+    public static T Instance { get; protected set; }
     protected virtual void Awake() => Instance = this as T;
 
     protected virtual void OnApllicationQuit()
@@ -26,7 +26,13 @@ public abstract class SingletonPersistent<T> : Singleton<T> where T : MonoBehavi
 {
     protected override void Awake()
     {
-        base.Awake();
-        DontDestroyOnLoad(gameObject);
+        if(Instance != null){
+            Destroy(gameObject);
+            return;
+        }else{
+            Instance = this as T;
+            DontDestroyOnLoad(gameObject);
+        }
+        
     }
 }

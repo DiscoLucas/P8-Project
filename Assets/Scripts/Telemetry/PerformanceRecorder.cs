@@ -8,7 +8,7 @@ using LSL;
 /// This class is responsible for initializing participant info and managing LSL streams
 /// for recording continuous data and event markers.
 /// </summary>
-public class PerformanceRecorder : Singleton<PerformanceRecorder>
+public class PerformanceRecorder : SingletonPersistent<PerformanceRecorder>
 {
     private string participantID;
     private int conditionNumber;
@@ -121,6 +121,7 @@ public class PerformanceRecorder : Singleton<PerformanceRecorder>
     /// <returns>True if initialization was successful, false otherwise.</returns>
     public bool InitializeLSLStream(string streamName, string streamType, int channelCount, double nominalRate, LSL.channel_format_t channelFormat, string[] channelLabels, Dictionary<string, string> additionalMetadata = null)
     {
+        Debug.Log("participantID: " + participantID + "Session ID:  " + sessionID);
         if (string.IsNullOrEmpty(participantID) || string.IsNullOrEmpty(sessionID))
         {
             Debug.LogError($"Cannot initialize stream '{streamName}'. Participant/Session not initialized yet. Call InitializeParticipant first.");
@@ -210,44 +211,7 @@ public class PerformanceRecorder : Singleton<PerformanceRecorder>
     }
 
 
-    void FixedUpdate()
-    {
-        // Example: Record gaze object names as markers periodically
-        if (gazePointRunner != null && outlets.ContainsKey(MarkerStreamName))
-        {
-            Collider[] gazePoints = gazePointRunner.getCurrentGazePoints();
-            if (gazePoints.Length > 0)
-            {
-                // Option 1: Send one marker per object gazed at
-                foreach (var col in gazePoints)
-                {
-                    // Use LayerMask.LayerToName for readable layer names
-                    RecordMarker($"GazeOn:{LayerMask.LayerToName(col.gameObject.layer)}:{col.gameObject.name}");
-                }
 
-                // Option 2: Send a single marker summarizing all gazed objects (comma-separated)
-                // string combinedNames = string.Join(",", gazePoints.Select(gp => LayerMask.LayerToName(gp.gameObject.layer) + ":" + gp.gameObject.name));
-                // RecordMarker($"GazeOnMultiple:{combinedNames}");
-            }
-            else
-            {
-                RecordMarker("GazeOn:None");
-            }
-        }
-
-        // Example: Record continuous float data (if a suitable stream was initialized)
-        /*
-        if (outlets.ContainsKey("GazePosition"))
-        {
-            // Replace with actual gaze data acquisition logic
-            float[] gazeDataSample = new float[3];
-            gazeDataSample[0] = UnityEngine.Random.Range(0f, 1920f); // Example X
-            gazeDataSample[1] = UnityEngine.Random.Range(0f, 1080f); // Example Y
-            gazeDataSample[2] = UnityEngine.Random.Range(0f, 1f);   // Example Confidence
-            RecordStreamData("GazePosition", gazeDataSample);
-        }
-        */
-    }
 
     private string GenerateSessionID()
     {
@@ -364,6 +328,32 @@ public class PerformanceRecorder : Singleton<PerformanceRecorder>
     /// <param name="streamName">The name of the target LSL stream.</param>
     /// <param name="dataSample">The int array data sample to push.</param>
     public void RecordStreamData(string streamName, int[] dataSample)
+    {
+        if (outlets.TryGetValue(streamName, out StreamOutlet outlet))
+        {
+            try
+            {
+                outlet.push_sample(dataSample);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Error pushing LSL int sample to stream '{streamName}': {e.Message}");
+            }
+        }
+        else
+        {
+             Debug.LogWarning($"LSL Outlet '{streamName}' not found or not initialized. Cannot record int data.");
+        }
+    }
+
+    /// <summary>
+    /// Records (pushes) a sample of integer data to the specified LSL stream.
+    /// The stream must have been initialized with channel_format_t.cf_string
+    /// and the correct channel count.
+    /// </summary>
+    /// <param name="streamName">The name of the target LSL stream.</param>
+    /// <param name="dataSample">The int array data sample to push.</param>
+    public void RecordStreamData(string streamName, string[] dataSample)
     {
         if (outlets.TryGetValue(streamName, out StreamOutlet outlet))
         {
