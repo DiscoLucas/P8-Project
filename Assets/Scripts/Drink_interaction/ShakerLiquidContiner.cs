@@ -4,6 +4,7 @@ using Assets.Scripts.Drink_interaction;
 
 public class ShakerLiquidContiner : LiquidContainerLimited
 {
+    [Header("Shaker Stuff IG")]
     public ShakerLiquidPourer shakerLiquidPourer;
     bool newIngredientsNeedShaking = false;
     [SerializeField]
@@ -15,6 +16,12 @@ public class ShakerLiquidContiner : LiquidContainerLimited
     private Vector3 lastPosition;
     private Vector3 lastDirection;
 
+    [Header("Shacker Audio or smthin")]
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip shakeSound;
+    [SerializeField] float shakeVolume = 1f;
+    [SerializeField] float shackerMaxPitch = 1.2f;
+    [SerializeField] float shackerMinPitch = 0.8f;
 
 
     public override void AddIngredient(IngredientBase ingredient, float inputAmount)
@@ -57,6 +64,8 @@ public class ShakerLiquidContiner : LiquidContainerLimited
         {
             shakeCount++;
             Debug.Log($"Shake detected! Count: {shakeCount}");
+            audioSource.pitch = Random.Range(shackerMinPitch, shackerMaxPitch);
+            audioSource.PlayOneShot(shakeSound, shakeVolume);
         }
 
         lastPosition = currentPosition;

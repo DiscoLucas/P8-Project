@@ -102,7 +102,7 @@ MonoBehaviour:
   updateMode: 0
   MaxWobble: 0.03
   WobbleSpeedMove: 1
-  DrinkColor: {r: 1, g: 1, b: 1, a: 0.4}
+  DrinkColor: {r: 1, g: 1, b: 1, a: 1}
   liquidProperty: {fileID: 3286949816556206453}
   fillAmount: 0
   fillOffset: 4
@@ -345,6 +345,7 @@ GameObject:
   - component: {fileID: 7201323985490489914}
   - component: {fileID: 3286949816556206453}
   - component: {fileID: 162024246844762693}
+  - component: {fileID: 1202452061545556494}
   m_Layer: 0
   m_Name: GlassLowball
   m_TagString: Glass
@@ -586,6 +587,7 @@ MonoBehaviour:
   materialHaveBeenChange: 1
   xrGrabInteractable: {fileID: 0}
   ingridentTextDisplay: {fileID: 0}
+  gameSettings: {fileID: 0}
   outputColor: {r: 1, g: 1, b: 1, a: 1}
   glassType: 2
   garnish: {fileID: 0}
@@ -606,6 +608,32 @@ MonoBehaviour:
   hasIce: 0
   iceFill: {fileID: 6746445081231916235}
   debugGlassMenu: {fileID: 0}
+  currentHapticPlayer: {fileID: 0}
+  intensity: 0.01
+  duration: 0.04
+  minIntensity: 0.01
+  maxIntensity: 0.7
+  routineWait: 0.05
+  fillHapticDuration: 0.1
+  fillHapticIntensity: 0.5
+  glassPlaceSounds:
+  - {fileID: 8300000, guid: 2970b4c019d28bb4ab8d2b91452d09ee, type: 3}
+  - {fileID: 8300000, guid: 38cb2cfc08501414bb3229cc3cdeb28d, type: 3}
+  - {fileID: 8300000, guid: e4cef51b3be59d04e84f14792894e3d3, type: 3}
+  - {fileID: 8300000, guid: fdd24aa8e6e48d643976a4e47ac1086e, type: 3}
+  - {fileID: 8300000, guid: ebb44aa4d58485e4cb3ad691ebd8d812, type: 3}
+  - {fileID: 8300000, guid: 7aeb24f75bd1eae4fb5a9eecdff26f61, type: 3}
+  glasePlace: {fileID: 0}
+  glaseFill: {fileID: 0}
+  iceSounds:
+  - {fileID: 8300000, guid: 207a4654c785dd546bb0b6209cd4fd04, type: 3}
+  - {fileID: 8300000, guid: 8c326ddd615f0fe4690a7d4e56fef9f7, type: 3}
+  - {fileID: 8300000, guid: 2911afedfebf0524ba5e142e682495d4, type: 3}
+  iceSound: {fileID: 0}
+  glaseVolume: 1
+  maxPitch: 1.2
+  minPitch: 0.8
+  audioSource: {fileID: 1202452061545556494}
 --- !u!114 &162024246844762693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -629,6 +657,103 @@ MonoBehaviour:
   breakSound: {fileID: 8300000, guid: 89dd1d403aeacf2449b2579e482a5105, type: 3}
   beackSoundMinPitch: 0.8
   breakSoundMaxPitch: 1.2
+--- !u!82 &1202452061545556494
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5029409632055533534}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &5574826406041246504
 GameObject:
   m_ObjectHideFlags: 0

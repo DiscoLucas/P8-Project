@@ -60,6 +60,18 @@ namespace Assets.Scripts.Drink_interaction
         [SerializeField] internal float fillHapticDuration = 0.1f;
         [SerializeField] internal float fillHapticIntensity = 0.5f;
 
+        [Header("Audio")]
+        //List of sound effects
+        [SerializeField] List<AudioClip> glassPlaceSounds;
+        [SerializeField] AudioClip glasePlace;
+        [SerializeField] AudioClip glaseFill;
+        [SerializeField] List<AudioClip> iceSounds;
+        [SerializeField] AudioClip iceSound; 
+        [SerializeField] float glaseVolume = 1f;
+        [SerializeField] float maxPitch = 1.2f;
+        [SerializeField] float minPitch = 0.8f;
+        [SerializeField] AudioSource audioSource;
+
         public void setGarnish(GameObject garnish)
         {
             GarnishContainer gc = garnish.GetComponent<GarnishContainer>();
@@ -103,7 +115,21 @@ namespace Assets.Scripts.Drink_interaction
                 setGarnish(collision.gameObject); 
                 hasGarnish = true;
             }
-                
+
+            if (audioSource == null)
+            {
+                audioSource = gameObject.AddComponent<AudioSource>();
+            }
+            if (glassPlaceSounds.Count <= 0)
+                return;
+
+            int randomIndex = UnityEngine.Random.Range(0, glassPlaceSounds.Count);
+            glasePlace = glassPlaceSounds[randomIndex];
+            audioSource.clip = glasePlace;
+            audioSource.volume = glaseVolume;
+            audioSource.pitch = UnityEngine.Random.Range(minPitch, maxPitch);
+            audioSource.Play();
+
         }
         bool pouringSession = false;
         public override void AddIngredient(IngredientBase ingredient, float inputAmount, out float actualAddedAmount)
@@ -327,6 +353,12 @@ namespace Assets.Scripts.Drink_interaction
             }
             updateFromSettings();
 
+            AudioSource audioSource = GetComponent<AudioSource>();
+            if (audioSource == null)
+            {
+                audioSource = gameObject.AddComponent<AudioSource>();
+            }
+
         }
 
         internal void updateFromSettings(){
@@ -374,7 +406,14 @@ namespace Assets.Scripts.Drink_interaction
                 iceCount++;
                 iceFill.GetChild(iceCount).gameObject.SetActive(true);
                 AddIngredient(ice, ice.Amount, out float actualAddedAmount);
+                int randomIndex = UnityEngine.Random.Range(0, iceSounds.Count);
+                iceSound = iceSounds[randomIndex];
+                audioSource.clip = iceSound;
+                audioSource.volume = glaseVolume;
+                audioSource.pitch = UnityEngine.Random.Range(minPitch, maxPitch);
+                audioSource.Play();
                 return true;
+
             }
             return false;
             
@@ -444,6 +483,7 @@ namespace Assets.Scripts.Drink_interaction
             
 
         }
+
     }
 }
 

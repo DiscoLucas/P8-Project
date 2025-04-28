@@ -19,6 +19,17 @@ public class ShakerLiquidPourer : LiquidPourer
     bool strainer = false;
     [SerializeField] protected Transform pourPointClosed;
 
+    [Header("Shacker Lid Sounds")]
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip lidCloseSound;
+    [SerializeField] AudioClip lidOpenSound;
+    [SerializeField] AudioClip capCloseSound;
+    [SerializeField] AudioClip capOpenSound;
+    [SerializeField] float shackerLidsVolume = 1f;
+    [SerializeField] float shackerLidsMaxPitch = 1.2f;
+    [SerializeField] float shackerLidsMinPitch = 0.8f;
+
+
     private void OnEnable()
     {
         if (lowerSocket != null)
@@ -65,6 +76,8 @@ public class ShakerLiquidPourer : LiquidPourer
         else
         {
             set_lower_cap(true);
+            audioSource.pitch = Random.Range(shackerLidsMinPitch, shackerLidsMaxPitch);
+            audioSource.PlayOneShot(capCloseSound, shackerLidsVolume);
             Debug.Log("Strainer detached.");
         }
     }
@@ -74,21 +87,29 @@ public class ShakerLiquidPourer : LiquidPourer
         set_lower_cap(false);
         set_strainer(false);
         set_lower_cap(false);
+        audioSource.pitch = Random.Range(shackerLidsMinPitch, shackerLidsMaxPitch);
+        audioSource.PlayOneShot(capOpenSound, shackerLidsVolume);
     }
 
     private void OnUpperSocketSelectEntered(SelectEnterEventArgs args)
     {
         set_upper_cap(true);
+        audioSource.pitch = Random.Range(shackerLidsMinPitch, shackerLidsMaxPitch);
+        audioSource.PlayOneShot(lidCloseSound, shackerLidsVolume);
     }
 
     private void OnUpperSocketSelectExited(SelectExitEventArgs args)
     {
         set_upper_cap(false);
+        audioSource.pitch = Random.Range(shackerLidsMinPitch, shackerLidsMaxPitch);
+        audioSource.PlayOneShot(lidOpenSound, shackerLidsVolume);
     }
 
     public void set_lower_cap(bool value)
     {
         lower_cap = value;
+
+
     }
 
     public void set_upper_cap(bool value)

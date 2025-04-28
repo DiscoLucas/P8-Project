@@ -21,6 +21,7 @@ public class Glass : MonoBehaviour
     [SerializeField] private AudioClip breakSound; // Optional sound effect
     [SerializeField] private float beackSoundMinPitch = 0.8f; // Minimum pitch for break sound
     [SerializeField] private float breakSoundMaxPitch = 1.2f; // Maximum pitch for break sound
+    [SerializeField] AudioSource audioSource;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -60,14 +61,13 @@ public class Glass : MonoBehaviour
 
             }
             GameManager.Instance.RemoveAfterDelay(brokenGlass, deSpawnTime);
-            Destroy(gameObject);
-            AudioSource audioSource = GetComponent<AudioSource>();
             if (audioSource != null && breakSound != null)
             {
                 audioSource.clip = breakSound;
                 audioSource.pitch = Random.Range(beackSoundMinPitch, breakSoundMaxPitch);
                 audioSource.Play();
             }
+            Destroy(gameObject);
         }
     }
 

@@ -4993,6 +4993,7 @@ GameObject:
   - component: {fileID: 6940425385384382324}
   - component: {fileID: 4461485399190535835}
   - component: {fileID: 1247831165085810418}
+  - component: {fileID: 7167448323632097902}
   m_Layer: 9
   m_Name: Shaker
   m_TagString: Glass
@@ -5191,6 +5192,7 @@ MonoBehaviour:
   materialHaveBeenChange: 1
   xrGrabInteractable: {fileID: 542320704869206945}
   ingridentTextDisplay: {fileID: 0}
+  gameSettings: {fileID: 0}
   outputColor: {r: 1, g: 1, b: 1, a: 1}
   glassType: 0
   garnish: {fileID: 0}
@@ -5208,11 +5210,42 @@ MonoBehaviour:
     ingredients:
       _serializedList: []
   hasGarnish: 0
-  iceIn: 0
+  hasIce: 0
+  iceFill: {fileID: 0}
   debugGlassMenu: {fileID: 7079296470039668176}
+  currentHapticPlayer: {fileID: 0}
+  intensity: 0.01
+  duration: 0.04
+  minIntensity: 0.01
+  maxIntensity: 0.7
+  routineWait: 0.05
+  fillHapticDuration: 0.1
+  fillHapticIntensity: 0.5
+  glassPlaceSounds:
+  - {fileID: 8300000, guid: e43b78fdb5e37814c99acba0b39d7086, type: 3}
+  - {fileID: 8300000, guid: b7413098d6072f84a8facbb758f4c522, type: 3}
+  - {fileID: 8300000, guid: d9579ab360ed6404fac52930def81cab, type: 3}
+  - {fileID: 8300000, guid: 83098e65f6564904e84e7bcc6bd991ab, type: 3}
+  - {fileID: 8300000, guid: 1233fd0095904ec4bbb6d162071306d3, type: 3}
+  glasePlace: {fileID: 0}
+  glaseFill: {fileID: 0}
+  iceSounds:
+  - {fileID: 8300000, guid: 8cfcd0a4c2f015640b92da25f3e1ab8f, type: 3}
+  - {fileID: 8300000, guid: d640ec02aa156bb4680d29a5a6265e4d, type: 3}
+  - {fileID: 8300000, guid: 7e4f9fc42322cb0479edd0ca6df5c750, type: 3}
+  iceSound: {fileID: 0}
+  glaseVolume: 1
+  maxPitch: 1.2
+  minPitch: 0.8
+  audioSource: {fileID: 7167448323632097902}
   shakerLiquidPourer: {fileID: 4461485399190535835}
   amountOfShakes: 6
   minShakeForce: 0.01
+  audioSource: {fileID: 7167448323632097902}
+  shakeSound: {fileID: 8300000, guid: 93691035ed32aa243a7a365ea9ef1689, type: 3}
+  shakeVolume: 1
+  shackerMaxPitch: 1.2
+  shackerMinPitch: 0.8
 --- !u!65 &6940425385384382324
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5246,6 +5279,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 809de3bbd742ce3449dcdf3ff16a903e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameSettings: {fileID: 0}
   liquidContainer: {fileID: 1266697004337916710}
   particles: {fileID: 4668400513532570182}
   pourPoint: {fileID: 6766943715816881298}
@@ -5262,9 +5296,27 @@ MonoBehaviour:
   pourSpeed: 0
   fillamountText: {fileID: 0}
   disableTextDelay: 5
+  intensity: 0.01
+  duration: 0.04
+  currentController: {fileID: 0}
+  minIntensity: 0.01
+  maxIntensity: 0.7
+  routineWait: 0.05
+  grabInteractable: {fileID: 0}
+  lowerSocket: {fileID: 0}
+  upperSocket: {fileID: 0}
   lower_cap: 0
   upper_cap: 0
+  strainer: 0
   pourPointClosed: {fileID: 1160512638278302343}
+  audioSource: {fileID: 7167448323632097902}
+  lidCloseSound: {fileID: 8300000, guid: 6b1182ffd40669d44b43c39d97dc4734, type: 3}
+  lidOpenSound: {fileID: 8300000, guid: b795d45b77eb4aa49840c24938f8e7f3, type: 3}
+  capCloseSound: {fileID: 8300000, guid: b795d45b77eb4aa49840c24938f8e7f3, type: 3}
+  capOpenSound: {fileID: 8300000, guid: b795d45b77eb4aa49840c24938f8e7f3, type: 3}
+  shackerLidsVolume: 1
+  shackerLidsMaxPitch: 1.2
+  shackerLidsMinPitch: 0.8
 --- !u!114 &1247831165085810418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5280,6 +5332,103 @@ MonoBehaviour:
   gameSettings: {fileID: 0}
   spawnPoint: {fileID: 0}
   middelpoint: {fileID: 0}
+--- !u!82 &7167448323632097902
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 926725371225166667}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &929299121086643594
 GameObject:
   m_ObjectHideFlags: 0
