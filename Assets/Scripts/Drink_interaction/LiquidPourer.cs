@@ -14,6 +14,8 @@ using System;
 using UnityEngine.InputSystem.XR.Haptics;
 public class LiquidPourer : MonoBehaviour
 {
+    [Header("Game settings")]
+    public GameSettings gameSettings;
     [Header("Drink")]
     public LiquidContainer liquidContainer;
     [Header("Visuals")]
@@ -54,14 +56,10 @@ public class LiquidPourer : MonoBehaviour
     [Header("Grab")]
     [SerializeField] internal XRGrabInteractable grabInteractable;
 
-    private void Awake()
-    {
-        //leftController = GameObject.FindWithTag("leftController")?.GetComponent<HapticImpulsePlayer>();
-        //rightController = GameObject.FindWithTag("rightController")?.GetComponent<HapticImpulsePlayer>();
-    }
 
     private void Start()
     {
+        gameSettings = GameManager.Instance.gameSettings;
         if (particles == null) Debug.LogError("Particale effect have not been assigned");
 
         if (fillamountText != null)
@@ -71,9 +69,20 @@ public class LiquidPourer : MonoBehaviour
         grabInteractable = GetComponent<XRGrabInteractable>();
         grabInteractable.selectExited.AddListener(OnRelease);
         grabInteractable.selectEntered.AddListener(OnGrab);
+        updateHapticSettings();
 
         
     }
+
+    public virtual void updateHapticSettings()
+    {
+        if(gameSettings == null) return;
+        duration = gameSettings.HapticDuration;
+        minIntensity = gameSettings.HapticMinIntensity;
+        maxIntensity = gameSettings.HapticMaxIntensity;
+        routineWait = gameSettings.HapticRoutineWait;
+    }
+
 
     private void OnGrab(SelectEnterEventArgs arg0)
     {

@@ -36,6 +36,13 @@ public class SodaGunInteractable : LiquidPourer
         grabInteractable = GetComponent<XRGrabInteractable>();
     }
 
+    public override void updateHapticSettings()
+    {
+        base.updateHapticSettings();
+        intensityOfButtonpress = gameSettings.HapticIntensityOfButtonpress;
+        durationOfButtonPress = gameSettings.HapticDurationOfButtonPress;
+    }
+
     private void OnEnable()
     {
         grabInteractable.selectEntered.AddListener(OnSelectEntered);
@@ -43,7 +50,6 @@ public class SodaGunInteractable : LiquidPourer
         grabInteractable.activated.AddListener(OnFireGun);
         grabInteractable.deactivated.AddListener(OnStopFireGun);
         liquidHaveBeenChanged = true;
-        updateDisplay();
     }
 
     private void OnDisable()
