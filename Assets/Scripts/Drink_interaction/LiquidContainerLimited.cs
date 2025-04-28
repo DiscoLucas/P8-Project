@@ -109,6 +109,11 @@ namespace Assets.Scripts.Drink_interaction
         public override void AddIngredient(IngredientBase ingredient, float inputAmount, out float actualAddedAmount)
         {
             actualAddedAmount= 0;
+            if(inputAmount <= 0)
+            {
+                Debug.LogWarning("Input amount must be greater than 0.");
+                return;
+            }
 
             if (ingredient.solid == false)
             {
@@ -131,7 +136,6 @@ namespace Assets.Scripts.Drink_interaction
                     ingredients[ingredient.Name] = ingredient.copy();
                     orderCounter++;
                 }
-                updateLiquidDisplay();
             }
             else
             {
@@ -141,8 +145,8 @@ namespace Assets.Scripts.Drink_interaction
                     ingredients[ingredient.Name] = ingredient.copy(orderCounter);
                     orderCounter++;
                 }
-                updateLiquidDisplay();
             }    
+            updateLiquidDisplay();
             pouringSession = true;
             checkingForSessionEnd = true;
             if(hapticCoroutine == null)
@@ -162,7 +166,7 @@ namespace Assets.Scripts.Drink_interaction
             if (ingredients.Count == 1)
             {
                 IngredientBase singleIngredient = ingredients.Values.First();
-                float amountToPour = Mathf.Min(singleIngredient.Amount, actualPouredAmount);
+                float amountToPour = actualPouredAmount;
                 singleIngredient.Amount -= amountToPour;
                 fillAmount -= amountToPour;
                 if (singleIngredient.Amount <= 0)
@@ -179,11 +183,12 @@ namespace Assets.Scripts.Drink_interaction
             foreach (var kvp in ingredients)
             {
                 IngredientBase ingredient = kvp.Value;
+                if(ingredient == null)
+                    continue;
+
+
                 float proportion = ingredient.Amount / totalCurrentLiquid;
                 float amountToPour = actualPouredAmount * proportion;
-
-                
-                Debug.Log(kvp.Value.Amount);
                 SerializedDictionary<string, IngredientBase> ingredientsList = pouredMixture.ingredients;
                 if (ingredientsList.ContainsKey(ingredient.Name))
                 {
@@ -194,14 +199,18 @@ namespace Assets.Scripts.Drink_interaction
                     IngredientBase ind = ingredient.copy();
                     ingredientsList.Add(ind.Name,ind);
                 }
+
                 ingredient.Amount -= amountToPour;
+
                 if(ingredient.Amount <= 0)
                 {
                     ingredients.Remove(kvp.Key);
-                }else if(!ingredient.solid){
+                    continue;
+                }
+
+                if(!ingredient.solid){
+
                     ingredientNames.Add(ingredient.Name);
-                    ingredient.ingredients = ingredientsList;
-                    Debug.Log( " color : "+ kvp.Value.Color + " of " + kvp.Value.Name);
                     sum = new Vector4(sum.x + ingredient.Color.r*(kvp.Value.Amount/fillAmount)
                     , sum.y + ingredient.Color.g*(kvp.Value.Amount/fillAmount)
                     , sum.z + ingredient.Color.b*(kvp.Value.Amount/fillAmount)
@@ -212,6 +221,13 @@ namespace Assets.Scripts.Drink_interaction
             }
             Debug.Log(sum);
             pouredMixture.Color = new Color(sum.x,sum.y,sum.z,sum.w);
+
+            if(pouredMixture.Color == null)
+                pouredMixture.Color = Color.white;
+            if (pouredMixture.Color == Color.clear)
+                pouredMixture.Color = Color.white;
+
+
             fillAmount -= actualPouredAmount;
 
             pouredMixture.Name = string.Join(", ", ingredientNames.Take(3));
@@ -407,7 +423,7 @@ namespace Assets.Scripts.Drink_interaction
         internal IEnumerator endSession(){
             checkingForSessionEnd = true;
                 while(checkingForSessionEnd)
-            yield return new WaitForSeconds(routineWait);
+            yield return new WaitForSeconds(0.001f);
             pouringSession = false;
         }
         internal IEnumerator HapticFeedbackRoutine()

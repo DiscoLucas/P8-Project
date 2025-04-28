@@ -3,6 +3,7 @@ using Assets.Scripts.Ingridence;
 using Assets.Scripts.Orders;
 using AYellowpaper.SerializedCollections;
 using JetBrains.Annotations;
+using Meta.XR.ImmersiveDebugger.Gizmo;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.XR.CoreUtils.Collections;
@@ -76,6 +77,11 @@ public class RecipeManager : MonoBehaviour
         List<string> wrongIngredients = new List<string>();
 
         Dictionary<string, float> idealAmounts = idealList.ToDictionary(i => i.Name, i => i.Amount);
+        Debug.Log("############ actualList #########");
+        foreach (IngredientBase ing in actualList){
+            Debug.Log(ing.Name + " " + ing.Amount);
+        }
+
         Dictionary<string, float> actualAmounts = actualList.ToDictionary(i => i.Name, i => i.Amount);
 
         List<string> overpourList = new List<string>();
