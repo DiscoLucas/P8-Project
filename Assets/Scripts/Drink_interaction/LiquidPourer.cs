@@ -11,6 +11,7 @@ using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit.Inputs.Haptics;
 using Unity.VisualScripting;
 using System;
+using UnityEngine.InputSystem.XR.Haptics;
 public class LiquidPourer : MonoBehaviour
 {
     [Header("Drink")]
@@ -44,14 +45,14 @@ public class LiquidPourer : MonoBehaviour
     [Range(0,1)]
     public float intensity = 0.01f;
     public float duration = 0.04f;
-    private Coroutine hapticCoroutine;
-    [SerializeField] private HapticImpulsePlayer currentController;
-    [SerializeField] private float minIntensity = 0.01f;
-    [SerializeField] private float maxIntensity = 0.7f;
-    [SerializeField] private float routineWait = 0.05f;
+    internal Coroutine hapticCoroutine;
+    [SerializeField] internal HapticImpulsePlayer currentController;
+    [SerializeField] internal float minIntensity = 0.01f;
+    [SerializeField] internal float maxIntensity = 0.7f;
+    [SerializeField] internal float routineWait = 0.05f;
 
     [Header("Grab")]
-    [SerializeField] XRGrabInteractable grabInteractable;
+    [SerializeField] internal XRGrabInteractable grabInteractable;
 
     private void Awake()
     {
@@ -68,23 +69,29 @@ public class LiquidPourer : MonoBehaviour
             fillamountText.gameObject.SetActive(false); // Ensure the text is initially disabled
         }
         grabInteractable = GetComponent<XRGrabInteractable>();
-        grabInteractable.selectEntered.AddListener(OnGrab);
         grabInteractable.selectExited.AddListener(OnRelease);
+        grabInteractable.selectEntered.AddListener(OnGrab);
 
         
     }
 
-    private void OnRelease(SelectExitEventArgs arg0)
+    private void OnGrab(SelectEnterEventArgs arg0)
     {
-        currentController = arg0.interactorObject.transform.GetComponent<HapticImpulsePlayer>();
+        findHapticController(arg0);
+    }
+
+    internal void findHapticController(SelectEnterEventArgs arg0){
+        currentController = arg0.interactorObject.transform.parent.GetComponent<HapticImpulsePlayer>();
         if (currentController == null)
         {
             Debug.LogWarning("Interactor does not have a HapticImpulsePlayer component.");
             return;
         }
+
+        Debug.Log("Haptic controller found: " + currentController.name);
     }
 
-    private void OnGrab(SelectEnterEventArgs arg0)
+    private void OnRelease(SelectExitEventArgs arg0)
     {
         currentController = null;
     }
@@ -124,7 +131,7 @@ public class LiquidPourer : MonoBehaviour
             detectCollision();
 
             if (hapticCoroutine == null)
-                hapticCoroutine = StartCoroutine(HapticFeedbackRoutine());
+                hapticCoroutine = StartCoroutine(HapticFeedbackRoutine(false));
         }
         else
         {
@@ -132,12 +139,17 @@ public class LiquidPourer : MonoBehaviour
             if (particles != null)
                 particles.Stop();
 
-            if (hapticCoroutine != null)
-            {
-                StopCoroutine(hapticCoroutine);
-                intensity = 0.01f;
-                hapticCoroutine = null;
-            }
+            stopHapticFeedback();
+        }
+    }
+
+    internal void stopHapticFeedback()
+    {
+        if (hapticCoroutine != null)
+        {
+            StopCoroutine(hapticCoroutine);
+            intensity = 0.01f;
+            hapticCoroutine = null;
         }
     }
 
@@ -309,10 +321,10 @@ public class LiquidPourer : MonoBehaviour
         liquidContainer.depleateLiqued(pourAmount);
     }
 
-    private IEnumerator HapticFeedbackRoutine()
+    internal IEnumerator HapticFeedbackRoutine(bool needToFireHaptic)
     {
         
-        while (isPouring())
+        while (isPouring()||needToFireHaptic)
         {
             if (currentController != null)
                 currentController.SendHapticImpulse(intensity, duration);
@@ -324,5 +336,4 @@ public class LiquidPourer : MonoBehaviour
         }
 
     }
-
   }

@@ -7,7 +7,6 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using TMPro;
 public class SodaGunInteractable : LiquidPourer
 {
-    private XRGrabInteractable grabInteractable;
     private UnityEngine.XR.InputDevice currentDevice;
     private bool isHeld = false;
 
@@ -26,6 +25,12 @@ public class SodaGunInteractable : LiquidPourer
 
     [Header("Display")]
     public TMP_Text displayText;
+
+    [Header("Buttonpress haptics")]
+    [SerializeField]
+    internal float intensityOfButtonpress = 0.5f;
+    [SerializeField]
+    internal float durationOfButtonPress = 1f;
     private void Awake()
     {
         grabInteractable = GetComponent<XRGrabInteractable>();
@@ -53,7 +58,7 @@ public class SodaGunInteractable : LiquidPourer
     {
         var interactorTransform = args.interactorObject.transform;
         var handIdentifier = interactorTransform.GetComponent<HandIdentifier>();
-
+        findHapticController(args);
         if (handIdentifier != null)
         {
             var node = handIdentifier.GetNode();
@@ -64,6 +69,7 @@ public class SodaGunInteractable : LiquidPourer
         {
             Debug.LogError("HandIdentifier not found on interactor transform.");
         }
+
     }
 
     private void OnSelectExited(SelectExitEventArgs args)
@@ -75,6 +81,7 @@ public class SodaGunInteractable : LiquidPourer
         isShooting = false;
         if(particles != null)
             particles.Stop();
+        stopHapticFeedback();
     }
 
     private void OnFireGun(ActivateEventArgs arg0)
@@ -87,6 +94,7 @@ public class SodaGunInteractable : LiquidPourer
         isShooting = false;
         if(particles != null)
             particles.Stop();
+        stopHapticFeedback();
     }
 
     void changeLiquidUp(){
@@ -98,6 +106,15 @@ public class SodaGunInteractable : LiquidPourer
 
         liquidHaveBeenChanged = true;
         updateDisplay();
+        sendHapticFeedback();
+    }
+
+    internal void sendHapticFeedback()
+    {
+        if (currentController != null)
+        {
+            currentController.SendHapticImpulse(intensityOfButtonpress,durationOfButtonPress);
+        }
     }
 
     void changeLiquidDown(){
@@ -108,6 +125,7 @@ public class SodaGunInteractable : LiquidPourer
         }
         liquidHaveBeenChanged = true;
         updateDisplay();
+        sendHapticFeedback();
     }
 
     void updateDisplay(){
@@ -119,6 +137,10 @@ public class SodaGunInteractable : LiquidPourer
         if(isShooting){
             emitParticles();
             detectCollision();
+
+            if (hapticCoroutine == null){
+                hapticCoroutine = StartCoroutine(HapticFeedbackRoutine(true));
+            }
         }
     }
     private void Update()
