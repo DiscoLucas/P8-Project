@@ -11,6 +11,8 @@ public class HeadEssentials : MonoBehaviour
     void Start()
     {
         Ears = GetComponent<AudioSource>();
+        Ears.playOnAwake = false; 
+        Ears.Stop();
     }
 
     // Update is called once per frame
