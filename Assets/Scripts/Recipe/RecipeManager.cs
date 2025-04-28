@@ -30,9 +30,22 @@ public class RecipeManager : MonoBehaviour
     [SerializeField]
     float MISHANDLED_INGREDIENT_PENALTY = 5f;
 
+    [Header("Lab streaming")]
+    [SerializeField]
+    string streamName = "DrinkPerformanceMetrics";
+
+    [SerializeField]
+    string[] labels = new string[] { "Ideal Ingredients count" , "Actual Ingredients count", "Wrong Ingredients count", "Overpour", "Underpour", "Total Pouring Deviation", "Total score", "Correct Glass", "Mishandled Ingredients", "Ideal Amount", "Actual Amount","Time taken"}; 
+
 
     void Start()
     {
+        if (PerformanceRecorder.Instance != null)
+        {
+           
+            PerformanceRecorder.Instance.InitializeLSLStream(streamName, "Behavorial metrics", labels.Length, LSL.LSL.IRREGULAR_RATE, 
+            LSL.channel_format_t.cf_float32, labels );
+        }
         phaseManager = FindAnyObjectByType<PhaseManager>();
         performanceRecorder = FindAnyObjectByType<PerformanceRecorder>();
         if (phaseManager == null)
@@ -140,7 +153,27 @@ public class RecipeManager : MonoBehaviour
         Debug.Log("=======================================");
 
         wrongIngreidentCount = wrongIngredients.Count;
-
+        try{
+            if (performanceRecorder != null)
+            {
+                float[] data = new float[labels.Length];
+                data[0] = idealNames.Count;
+                data[1] = actualNames.Count;
+                data[2] = wrongIngredients.Count;
+                data[3] = totalOverpour;
+                data[4] = totalUnderpour;
+                data[5] = totalDeviation;
+                data[6] = totalScore;
+                data[7] = correctGlass ? 1 : 0;
+                data[8] = mishandledIngredientCount;
+                data[9] = sumIdealAmount;
+                data[10] = sumActualAmount;
+                data[11] = timeTaken;
+                PerformanceRecorder.Instance.RecordStreamData(streamName, data);
+            }
+        }catch(System.Exception e){
+            Debug.LogError("Error in performance recorder: " + e.Message);
+        }
         return totalScore;
     }
 
@@ -183,4 +216,11 @@ public class RecipeManager : MonoBehaviour
         return Mathf.Max(finalScore, 0f);
     }
 
+
+    public void setAndFireMarker(string markerName){
+        if (performanceRecorder != null)
+        {
+            PerformanceRecorder.Instance.RecordMarker(streamName, markerName);
+        }
+    }
 }
