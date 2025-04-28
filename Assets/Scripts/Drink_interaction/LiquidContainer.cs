@@ -27,10 +27,9 @@ public class LiquidContainer : MonoBehaviour
     private void Start()
     {
         drinkOnStart();
-
     }
 
-    internal virtual void drinkOnStart() {
+    internal virtual void drinkOnStart() { //This is our actual start() function
         if (xrGrabInteractable == null)
             xrGrabInteractable = gameObject.GetComponent<XRGrabInteractable>();
 
@@ -39,18 +38,19 @@ public class LiquidContainer : MonoBehaviour
             ingridentTextDisplay.gameObject.SetActive(false);
             xrGrabInteractable.hoverEntered.AddListener(activateDrinkDisplay);
             xrGrabInteractable.hoverExited.AddListener(deactivateDrinkDisplay);
+            setDrinkDisplay(true);
 
         }
     }
 
     public virtual void deactivateDrinkDisplay(HoverExitEventArgs arg0)
     {
-        setDrinkDisplay(false);
+        //setDrinkDisplay(false);
     }
 
     public virtual void activateDrinkDisplay(HoverEnterEventArgs arg0)
     {
-        setDrinkDisplay(true);
+        //setDrinkDisplay(true);
     }
 
     public void setDrinkDisplay(bool set){

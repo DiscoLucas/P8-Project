@@ -103,7 +103,7 @@ public class Liquid : MonoBehaviour
     if (liquidProperty != null)
     {
         DrinkColor = liquidProperty.getLiquidColor(); // Get the liquid color
-        DrinkColor.a = 0.4f;
+        
         fillAmount = liquidProperty.FillPercentage(); // Get the fill percentage
     }
 

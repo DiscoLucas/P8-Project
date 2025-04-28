@@ -27,6 +27,7 @@ namespace Assets.Scripts.Drink_interaction
             }
 
             drinkOnStart();
+            setDrinkDisplay(true);
         }
 
 
