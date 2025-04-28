@@ -144,7 +144,7 @@ GameObject:
   - component: {fileID: 5119491210384747656}
   - component: {fileID: 5832484049526682620}
   m_Layer: 0
-  m_Name: VermoutGameObject
+  m_Name: VermoutSweetGameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -186,11 +186,11 @@ MonoBehaviour:
   xrGrabInteractable: {fileID: 5119491210384747656}
   ingridentTextDisplay: {fileID: 0}
   ingredient:
-    Name: Vermout Dry
+    Name: Vermout Sweet
     Amount: 0
     solid: 0
     Type: 0
-    Color: {r: 0.69271773, g: 0.77254903, b: 0.6666667, a: 0.6901961}
+    Color: {r: 0.77254903, g: 0.6666667, b: 0.75781745, a: 0.6901961}
     AlcoholContent: 18
     step:
       order: 0
@@ -5561,7 +5561,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: c3288d91d8e7cc0449f2dd655d0ac816, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 5f84b6a34e968a647a90f43a5f36f584, type: 2}
+      objectReference: {fileID: 2100000, guid: 1a6d309bde347c243a0bdd18899b5181, type: 2}
     - target: {fileID: -7511558181221131132, guid: c3288d91d8e7cc0449f2dd655d0ac816, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
@@ -5576,7 +5576,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 937560bf302233a44b25921f99cc4a87, type: 2}
     - target: {fileID: 919132149155446097, guid: c3288d91d8e7cc0449f2dd655d0ac816, type: 3}
       propertyPath: m_Name
-      value: Vermout
+      value: Vermout Sweet
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
