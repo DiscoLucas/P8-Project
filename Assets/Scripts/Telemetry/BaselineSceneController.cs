@@ -37,7 +37,10 @@ public class BaselineSceneController : MonoBehaviour
         // Send Baseline Start Marker via LSL
         if (PerformanceRecorder.Instance != null)
         {
-            PerformanceRecorder.Instance.RecordData("BaselineStart");
+            string[] labels = { "x", "y", "z" };
+            PerformanceRecorder.Instance.InitializeLSLStream("DummyStream","Misc", 3, LSL.LSL.IRREGULAR_RATE, 
+            LSL.channel_format_t.cf_float32, labels);
+            PerformanceRecorder.Instance.RecordMarker("BaselineStart");
             Debug.Log("Sent BaselineStart marker.");
         }
         else
@@ -91,6 +94,7 @@ public class BaselineSceneController : MonoBehaviour
         {
             try
             {
+                PerformanceRecorder.Instance.RecordMarker("BaselineEnd");
                 bool stopped = await LabRecorder.Instance.StopRecordingAsync();
                 if (!stopped) Debug.LogWarning("I don't think the recording stopped properly 🤔.");
                 else Debug.Log("Recording stopped successfully.");
