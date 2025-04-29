@@ -23,6 +23,7 @@ public class LiquidPourer : MonoBehaviour
     [SerializeField] protected Transform pourPoint;
 
     [Header("Properties")]
+    [SerializeField] internal bool deepleteWithooutConatiner = false;
     [SerializeField] protected float pourMultiplier = 8;
     [SerializeField] protected float pourThreshold = 80f;
     [SerializeField] protected int arcResolution = 10;
@@ -111,7 +112,7 @@ public class LiquidPourer : MonoBehaviour
 
     internal void ShowFillAmountText(string text)
     {
-        lastGlass = null; 
+        
         if (fillamountText != null)
         {
             fillamountText.text = text;
@@ -167,6 +168,7 @@ public class LiquidPourer : MonoBehaviour
                 particles.Stop();
 
             stopHapticFeedback();
+            currentPourSessionAmout = 0f;
         }
     }
 
@@ -250,7 +252,6 @@ public class LiquidPourer : MonoBehaviour
     }
 
     internal float currentPourSessionAmout = 0f;
-    internal LiquidContainer lastGlass = null;
     /// <summary>
     /// Detect where the liquid lands.
     /// </summary>
@@ -281,17 +282,29 @@ public class LiquidPourer : MonoBehaviour
                         IngredientBase pouredMixture = getIngredientBase();
                         if (pouredMixture != null)
                         {
+
+                            // Add the ingredient to the current glass
                             glass.AddIngredient(pouredMixture, pourAmount, out pourAmount);
-                            if (lastGlass != glass)
-                            {
-                                currentPourSessionAmout = 0f;
-                                lastGlass = glass;
-                            }
+
+                            // Update the current pouring session amount
                             currentPourSessionAmout += pourAmount;
-                            if(fillamountText != null){
-                                ShowFillAmountText("Pouring: " + currentPourSessionAmout.ToString("F2") + "ml");
+
+                            // Update the fill amount text
+                            if (fillamountText != null)
+                            {
+                                ShowFillAmountText($"Pouring: {currentPourSessionAmout:F2}ml");
                             }
                         }
+                    }
+                } else if (deepleteWithooutConatiner){
+                    // Deplete the liquid in the container
+                    liquidContainer.depleateLiqued(pourAmount);
+                    currentPourSessionAmout += pourAmount;
+
+                    // Update the fill amount text
+                    if (fillamountText != null)
+                    {
+                        ShowFillAmountText($"Pouring: {currentPourSessionAmout:F2}ml");
                     }
                 }
                 break;
@@ -369,4 +382,4 @@ public class LiquidPourer : MonoBehaviour
         }
 
     }
-  }
+}

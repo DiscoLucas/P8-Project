@@ -43,6 +43,8 @@ namespace Assets.Scripts.Drink_interaction
         public Transform iceFill;
         int iceCount = 0;
 
+        public float delteICeThreashold = 0.5f;
+
         [Header("Debug liquid display")]
         public DebugClassMenu debugGlassMenu;
 
@@ -247,6 +249,15 @@ namespace Assets.Scripts.Drink_interaction
             updateLiquidDisplay();
             foreach (var key in keysToRemove)
             {
+                if(ingredients[key].Name == "Ice"){
+                    iceCount--;
+                    if(iceCount < 0){
+                        iceCount = 0;
+                    }
+                    if(iceFill != null && iceCount >= 0){
+                        iceFill.GetChild(iceCount).gameObject.SetActive(false);
+                    }
+                }
                 ingredients.Remove(key);
             }
             return pouredMixture;
