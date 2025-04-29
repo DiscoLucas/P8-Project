@@ -111,6 +111,7 @@ public class LiquidPourer : MonoBehaviour
 
     internal void ShowFillAmountText(string text)
     {
+        lastGlass = null; 
         if (fillamountText != null)
         {
             fillamountText.text = text;
@@ -249,6 +250,7 @@ public class LiquidPourer : MonoBehaviour
     }
 
     internal float currentPourSessionAmout = 0f;
+    internal LiquidContainer lastGlass = null;
     /// <summary>
     /// Detect where the liquid lands.
     /// </summary>
@@ -280,6 +282,11 @@ public class LiquidPourer : MonoBehaviour
                         if (pouredMixture != null)
                         {
                             glass.AddIngredient(pouredMixture, pourAmount, out pourAmount);
+                            if (lastGlass != glass)
+                            {
+                                currentPourSessionAmout = 0f;
+                                lastGlass = glass;
+                            }
                             currentPourSessionAmout += pourAmount;
                             if(fillamountText != null){
                                 ShowFillAmountText("Pouring: " + currentPourSessionAmout.ToString("F2") + "ml");
