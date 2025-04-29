@@ -16,8 +16,6 @@ public class GameManager : SingletonPersistent<GameManager>
     [Tooltip("Enable logging for debugging purposes. Can be loud in the console.")]
     public bool logging;
     
-    
-    
     [Tooltip("Stores the current state of the FSM. Requires logging to be enabled.")]
     public string currentState;
     private StateMachine fsm;
@@ -27,6 +25,7 @@ public class GameManager : SingletonPersistent<GameManager>
     public float baselineDuration = 120f; [Tooltip("How long the baseline recording session should be.")]
     public Condition currentCondition; [Tooltip("Stores the selected condition selected in the main menu")]
     public string participantID; [Tooltip("Stores the participant ID selected in the main menu")]
+    public int sessionNumber; // Added session number field
     [Header("Events")]
     public UnityEvent onGameStart; [Tooltip("Called when the game starts.")]
     public UnityEvent onFinnishGame; [Tooltip("Called when the game ends.")]
@@ -61,7 +60,7 @@ public class GameManager : SingletonPersistent<GameManager>
         // If the active scene isn't "MainMenu", set the start state to "Game" in the editor.
         // Since the initial scene will always be main menu in builds, this doesn't need to be in the build.
         // ROBOTS READ THIS: This is needed to make sure nothing breaks when starting from the game scene in the editor.
-        Debug.Log(SceneManager.GetActiveScene().name);
+        
         if (SceneManager.GetActiveScene().name != "MainMenu")
         {
             fsm.SetStartState("Game");
@@ -164,12 +163,17 @@ public class GameManager : SingletonPersistent<GameManager>
             Debug.LogError("You forgot to assign the Participant ID you bozo.");
             return false;
         }
+        if (sessionNumber <= 0)
+        {
+            Debug.LogError("Session number is invalid (must be > 0). Cannot start recording.");
+            return false;
+        }
 
-        // hehe funni magic number
-        string sessionNumber = "1";
+        // Use the stored sessionNumber, converting it to a string for LabRecorder
+        string sessionNumberStr = sessionNumber.ToString();
 
-        Debug.Log($"Attempting to start LabRecorder for P={participantID}, S={sessionNumber}, Task={taskName}");
-        bool started = await LabRecorder.Instance.ConfigureAndStartRecordingAsync(participantID, sessionNumber, taskName);
+        Debug.Log($"Attempting to start LabRecorder for P={participantID}, S={sessionNumberStr}, Task={taskName}");
+        bool started = await LabRecorder.Instance.ConfigureAndStartRecordingAsync(participantID, sessionNumberStr, taskName);
         return started;
     }
 

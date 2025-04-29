@@ -12,7 +12,8 @@ public class PerformanceRecorder : SingletonPersistent<PerformanceRecorder>
 {
     private string participantID;
     private int conditionNumber;
-    private string sessionID;
+    private int sessionNumber; // Added to store the session number
+    private string sessionID; // Unique ID for this specific run/instance
 
     public GazePointRunner gazePointRunner;
 
@@ -50,13 +51,14 @@ public class PerformanceRecorder : SingletonPersistent<PerformanceRecorder>
     }
 
     /// <summary>
-    /// Initializes the participant ID and condition number, generates a session ID,
-    /// and sets up the necessary LSL streams.
+    /// Initializes the participant ID, condition number, and session number.
+    /// Generates a unique session instance ID and sets up the necessary LSL streams.
     /// This method MUST be called before recording any data or markers.
     /// </summary>
     /// <param name="partID">Unique ID for the given test participant</param>
     /// <param name="condition">Condition number</param>
-    public void InitializeParticipant(string partID, int condition)
+    /// <param name="sessionNum">The session number for this experiment run</param>
+    public void InitializeParticipant(string partID, int condition, int sessionNum) // Added sessionNum parameter
     {
         if (!string.IsNullOrEmpty(participantID))
         {
@@ -67,15 +69,16 @@ public class PerformanceRecorder : SingletonPersistent<PerformanceRecorder>
 
         participantID = partID;
         conditionNumber = condition;
-        sessionID = GenerateSessionID();
+        sessionNumber = sessionNum; // Store the session number
+        sessionID = GenerateSessionInstanceID(); // Keep this for unique run identification
 
-        Debug.Log($"Initializing Participant: ID={participantID}, Condition={conditionNumber}, SessionID={sessionID}");
+        Debug.Log($"Initializing Participant: ID={participantID}, Condition={conditionNumber}, SessionNumber={sessionNumber}, SessionInstanceID={sessionID}");
 
         // Initialize standard streams
         SetupStandardStreams();
 
-        // Record session start marker
-        RecordMarker($"SessionStart_ParticipantID:{participantID}_Condition:{conditionNumber}_SessionID:{sessionID}");
+        // Record session start marker including the session number
+        RecordMarker($"SessionStart_ParticipantID:{participantID}_Condition:{conditionNumber}_SessionNumber:{sessionNumber}_SessionInstanceID:{sessionID}");
     }
 
     /// <summary>
@@ -107,7 +110,6 @@ public class PerformanceRecorder : SingletonPersistent<PerformanceRecorder>
         */
     }
 
-
     /// <summary>
     /// Initializes a specific LSL data stream.
     /// </summary>
@@ -121,8 +123,8 @@ public class PerformanceRecorder : SingletonPersistent<PerformanceRecorder>
     /// <returns>True if initialization was successful, false otherwise.</returns>
     public bool InitializeLSLStream(string streamName, string streamType, int channelCount, double nominalRate, LSL.channel_format_t channelFormat, string[] channelLabels, Dictionary<string, string> additionalMetadata = null)
     {
-        Debug.Log("participantID: " + participantID + "Session ID:  " + sessionID);
-        if (string.IsNullOrEmpty(participantID) || string.IsNullOrEmpty(sessionID))
+        //Debug.Log("participantID: " + participantID + "Session ID:  " + sessionID);
+        if (string.IsNullOrEmpty(participantID) || sessionNumber <= 0) // Check sessionNumber instead of sessionID
         {
             Debug.LogError($"Cannot initialize stream '{streamName}'. Participant/Session not initialized yet. Call InitializeParticipant first.");
             return false;
@@ -142,14 +144,16 @@ public class PerformanceRecorder : SingletonPersistent<PerformanceRecorder>
 
         try
         {
-            string sourceId = $"P{participantID}_C{conditionNumber}_S{sessionID}_{streamName}"; // Unique source ID per stream
+            // Modified sourceId to include the actual session number
+            string sourceId = $"P{participantID}_C{conditionNumber}_S{sessionNumber}_{streamName}";
             StreamInfo info = new StreamInfo(streamName, streamType, channelCount, nominalRate, channelFormat, sourceId);
 
             // Add common metadata
             XMLElement desc = info.desc();
             desc.append_child_value("participant_id", participantID);
             desc.append_child_value("condition_number", conditionNumber.ToString());
-            desc.append_child_value("session_id", sessionID);
+            desc.append_child_value("session_number", sessionNumber.ToString()); // Add session number metadata
+            desc.append_child_value("session_instance_id", sessionID); // Keep unique instance ID
             desc.append_child_value("start_time_iso", DateTime.UtcNow.ToString("o")); // ISO 8601 format
             desc.append_child_value("unity_version", Application.unityVersion);
             desc.append_child_value("game_version", Application.version); // Set this in Project Settings
@@ -210,16 +214,16 @@ public class PerformanceRecorder : SingletonPersistent<PerformanceRecorder>
         }
     }
 
-
-
-
-    private string GenerateSessionID()
+    /// <summary>
+    /// Generates a unique ID for this specific instance/run of the session.
+    /// </summary>
+    /// <returns>A unique string identifier.</returns>
+    private string GenerateSessionInstanceID() // Renamed from GenerateSessionID
     {
         Guid guid = Guid.NewGuid();
-        // Using 'u' format for GUID to be more standard and avoid potential issues
+        // Using 'N' format for GUID for compactness
         return DateTime.Now.ToString("yyyyMMdd_HHmmss") + "_" + guid.ToString("N");
     }
-
 
     /// <summary>
     /// Records (pushes) a string marker to the dedicated marker LSL stream.
@@ -260,7 +264,6 @@ public class PerformanceRecorder : SingletonPersistent<PerformanceRecorder>
              Debug.LogWarning($"LSL Outlet '{targetStreamName}' not found or not initialized. Cannot record marker.");
         }
     }
-
 
     /// <summary>
     /// Records (pushes) a sample of float data to the specified LSL stream.
@@ -373,7 +376,6 @@ public class PerformanceRecorder : SingletonPersistent<PerformanceRecorder>
     }
 
     // Add similar RecordStreamData overloads for other LSL types (short[], string[], char[]) if needed.
-
 
     /// <summary>
     /// Disposes of all active LSL outlets and clears dictionaries.

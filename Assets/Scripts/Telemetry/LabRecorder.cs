@@ -29,12 +29,33 @@ public class LabRecorder : SingletonPersistent<LabRecorder>
     void Start()
     {
         if(!useOwnPath)
-            studyRoot = Application.dataPath + "\\Dataprocessing Pipeline\\CollectedData";
-
-        if (!Directory.Exists(studyRoot))
         {
-            Directory.CreateDirectory(studyRoot);
-            Debug.Log($"Directory created at: {studyRoot}");
+            string relativePath = Path.Combine("Dataprocessing Pipeline", "CollectedData"); 
+            studyRoot = Path.Combine(Application.persistentDataPath, relativePath);
+            //studyRoot = Application.dataPath + "\\Dataprocessing Pipeline\\CollectedData";
+
+            studyRoot = Path.GetFullPath(studyRoot);
+        }
+            
+        else
+        {
+             if (debugLogging) Debug.Log($"Using custom path specified in Inspector: {studyRoot}");
+        }
+
+        // Ensure the directory exists locally (useful if LabRecorder runs on the same machine)
+        // If LabRecorder is remote, this directory might not be relevant on the Unity side.
+        try
+        {
+            if (!Directory.Exists(studyRoot))
+            {
+                Directory.CreateDirectory(studyRoot);
+                Debug.Log($"Directory created/verified at: {studyRoot}");
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Failed to create or access directory '{studyRoot}'. Error: {e.Message}");
+            // Decide how to handle this - maybe disable recording functionality?
         }
     }
 
@@ -132,6 +153,7 @@ public class LabRecorder : SingletonPersistent<LabRecorder>
         // Ensure the studyRoot uses double backslashes for Windows paths
         string formattedRoot = studyRoot.Replace('/', '\\');
         string filenameCommand = $"filename {{root:{formattedRoot}}} {{template:{filenameTemplate}}} {{participant:{participantID}}} {{session:{sessionNumber}}} {{task:{taskName}}}";
+        if (!await SendCommandAsync(filenameCommand)) return false;
         await Task.Delay(100);
 
         // 3. start recording
@@ -193,7 +215,7 @@ public class LabRecorder : SingletonPersistent<LabRecorder>
         }
     }
 
-    void OnApplicationQuit()
+    protected override void OnApplicationQuit()
     {
         // Attempt to stop recording cleanly if it's running
         if (isRecording)

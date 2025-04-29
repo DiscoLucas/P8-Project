@@ -2,60 +2,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Threading.Tasks;
+#if UNITY_EDITOR
+using UnityEditor; // Required for checking if in editor play mode
+#endif
 
-/// <summary>
-/// Ensure LabRecorder is ready and configure the LabRecorderController in your Unity scene.
-/// </summary>
-/// <remarks>
-/// <para>**Ensure LabRecorder is Ready**</para>
-/// <list type="bullet">
-///   <item>
-///     <description>
-///       <c>Run LabRecorder</c>: Start the LabRecorder application on the machine specified by <c>labRecorderHost</c> (usually the same machine or one on the same network).
-///     </description>
-///   </item>
-///   <item>
-///     <description>
-///       <c>Enable RCS</c>: In LabRecorder’s UI, <b>you MUST check the “Enable RCS” checkbox</b>. Otherwise, the TCP connection will fail.
-///     </description>
-///   </item>
-///   <item>
-///     <description>
-///       <c>Firewall</c>: Ensure firewalls (Windows Firewall, etc.) allow incoming connections on the specified <c>labRecorderPort</c> (default 22345) on the machine running LabRecorder.
-///     </description>
-///   </item>
-/// </list>
-/// 
-/// <para>**Add Controller to Scene**</para>
-/// <list type="bullet">
-///   <item>
-///     <description>
-///       Add the <c>LabRecorder.cs</c> script to a persistent GameObject in your scene (for example, the one holding your <c>GameManager</c> or <c>PerformanceRecorder</c>).
-///     </description>
-///   </item>
-///   <item>
-///     <description>
-///       Configure the <c>Study Root</c> path in the Inspector to point to a valid directory on the machine where LabRecorder is running. Use the correct path format for that OS (e.g., <c>C:\LSL_Data</c> for Windows, <c>/home/user/lsl_data</c> for Linux).
-///     </description>
-///   </item>
-///   <item>
-///     <description>
-///       Adjust the <c>Filename Template</c> if desired.
-///     </description>
-///   </item>
-/// </list>
-/// 
-/// <para>When you enter the participant ID, select a condition, and click “Start” in your Unity UI, the controller will:</para>
-/// <list type="number">
-///   <item><description>Initialize the LSL stream via <c>PerformanceRecorder</c>.</description></item>
-///   <item><description>Connect to LabRecorder via TCP.</description></item>
-///   <item><description>Tell LabRecorder to select all streams.</description></item>
-///   <item><description>Set the filename based on the template and the provided participant ID, session (“1”), and condition name.</description></item>
-///   <item><description>Tell LabRecorder to start recording.</description></item>
-///   <item><description>Load your baseline/game scene.</description></item>
-///   <item><description>When the Unity application quits, send a “stop” command to LabRecorder.</description></item>
-/// </list>
-/// </remarks>
 public class MainMenuUIController : MonoBehaviour
 {
     [Header("UI References")]
@@ -64,6 +14,9 @@ public class MainMenuUIController : MonoBehaviour
     [SerializeField] private Button startButton;
     [SerializeField] private TextMeshProUGUI errorText;
     [SerializeField] private GameObject loadingOverlay;
+    [SerializeField] private TMP_InputField sessionNumberField; // Added session number field
+    [SerializeField] private Button incrementSessionButton; // Added increment button
+    [SerializeField] private Button decrementSessionButton; // Added decrement button
 
     private void Start()
     {
@@ -78,6 +31,26 @@ public class MainMenuUIController : MonoBehaviour
 
         errorText.gameObject.SetActive(false);
         startButton.onClick.AddListener(HandleStartExperiment);
+
+        // Session Number Setup
+#if UNITY_EDITOR
+        // In Editor, force session number to 1 and disable controls
+        sessionNumberField.text = "1";
+        sessionNumberField.interactable = false;
+        incrementSessionButton.interactable = false;
+        decrementSessionButton.interactable = false;
+#else
+        // In Build, initialize to 1 and enable controls
+        sessionNumberField.text = "1";
+        sessionNumberField.interactable = true; // Ensure interactable in build
+        incrementSessionButton.interactable = true;
+        decrementSessionButton.interactable = true; // Start disabled as initial value is 1
+        decrementSessionButton.onClick.AddListener(DecrementSessionNumber);
+        incrementSessionButton.onClick.AddListener(IncrementSessionNumber);
+        sessionNumberField.onValueChanged.AddListener(ValidateSessionNumberInput); // Add listener for direct input validation
+        UpdateDecrementButtonState(1); // Initial state check for decrement button
+#endif
+
         if (loadingOverlay) loadingOverlay.SetActive(false);
     }
 
@@ -91,17 +64,24 @@ public class MainMenuUIController : MonoBehaviour
         _ = StartExperimentSetupAsync(); // Discard Task with _
     }
 
-    
-
     private async Task StartExperimentSetupAsync() // Make the method async
     {
-        string participantId = participantIdField.text; // TODO: automate this
+        string participantId = participantIdField.text;
         errorText.gameObject.SetActive(false);
 
-        // Validate input
+        // Validate participant ID input
         if (string.IsNullOrWhiteSpace(participantId))
         {
             ShowError("Please enter a participant ID");
+            ResetUIState();
+            return;
+        }
+
+        // Validate and parse session number input
+        int sessionNumber;
+        if (!int.TryParse(sessionNumberField.text, out sessionNumber) || sessionNumber < 1)
+        {
+            ShowError("Invalid Session Number. Please enter a positive integer.");
             ResetUIState();
             return;
         }
@@ -118,14 +98,17 @@ public class MainMenuUIController : MonoBehaviour
              ResetUIState();
              return;
         }
-        PerformanceRecorder.Instance.InitializeParticipant(participantId, conditionIndex);
+        // Pass parsed sessionNumber to InitializeParticipant
+        PerformanceRecorder.Instance.InitializeParticipant(participantId, conditionIndex, sessionNumber);
         await Task.Delay(200); // Give LSL stream a moment to register on the network
 
         if (GameManager.Instance != null)
         {
-            // store the selected condition enum and participant ID in GameManager
+            // store the selected condition enum, participant ID, and parsed session number in GameManager
             GameManager.Instance.participantID = participantId;
             GameManager.Instance.currentCondition = selectedConditionEnum;
+            GameManager.Instance.sessionNumber = sessionNumber; // Use parsed session number
+            //Debug.Log("Attempting to trigger FSM on GameManager instance."); // Added log
             GameManager.Instance.TriggerFSM("StartExperiment");
         }
         else
@@ -135,11 +118,83 @@ public class MainMenuUIController : MonoBehaviour
             return;
         }
 
-
         // might also want to hide the main menu UI here if loading happens immediately
         // gameObject.SetActive(false);
         if (loadingOverlay) loadingOverlay.SetActive(false); // Hide overlay once loading starts
     }
+
+    private void IncrementSessionNumber()
+    {
+        if (int.TryParse(sessionNumberField.text, out int currentSession))
+        {
+            currentSession++;
+            sessionNumberField.text = currentSession.ToString();
+            UpdateDecrementButtonState(currentSession);
+        }
+        else
+        {
+            // Handle potential invalid text in the field if manually edited
+            sessionNumberField.text = "1";
+            UpdateDecrementButtonState(1);
+        }
+    }
+
+    private void DecrementSessionNumber()
+    {
+        if (int.TryParse(sessionNumberField.text, out int currentSession))
+        {
+            if (currentSession > 1)
+            {
+                currentSession--;
+                sessionNumberField.text = currentSession.ToString();
+                UpdateDecrementButtonState(currentSession);
+            }
+        }
+        else
+        {
+            // Handle potential invalid text in the field if manually edited
+            sessionNumberField.text = "1";
+            UpdateDecrementButtonState(1);
+        }
+    }
+
+    // Optional: Validate input if user types directly into the field
+    private void ValidateSessionNumberInput(string input)
+    {
+#if !UNITY_EDITOR // Only run validation logic in builds
+        if (int.TryParse(input, out int currentSession))
+        {
+            if (currentSession < 1)
+            {
+                sessionNumberField.text = "1"; // Reset to 1 if below 1
+                UpdateDecrementButtonState(1);
+            }
+            else
+            {
+                UpdateDecrementButtonState(currentSession);
+            }
+        }
+        else if (!string.IsNullOrEmpty(input)) // If not empty and not a valid int
+        {
+             // Optionally revert to last valid number or reset to 1
+             // For simplicity, let's reset to 1 if input is invalid
+             sessionNumberField.text = "1";
+             UpdateDecrementButtonState(1);
+        }
+        else // Handle empty input case if needed
+        {
+             // Maybe default to 1 or show an error, for now, disable decrement
+             UpdateDecrementButtonState(0); // Pass 0 or similar to indicate invalid/empty state
+        }
+#endif
+    }
+
+     private void UpdateDecrementButtonState(int currentSession)
+     {
+#if !UNITY_EDITOR
+        decrementSessionButton.interactable = currentSession > 1;
+#endif
+     }
 
     private void ShowError(string message)
     {
@@ -152,6 +207,19 @@ public class MainMenuUIController : MonoBehaviour
     {
          // Re-enable button and hide loading overlay on error
         startButton.interactable = true;
+#if !UNITY_EDITOR
+        // Also re-enable session buttons if they were active
+        if (int.TryParse(sessionNumberField.text, out int currentSession))
+        {
+             UpdateDecrementButtonState(currentSession);
+        }
+        else
+        {
+             UpdateDecrementButtonState(1); // Default state on error
+        }
+        incrementSessionButton.interactable = true;
+        sessionNumberField.interactable = true;
+#endif
         if (loadingOverlay) loadingOverlay.SetActive(false);
     }
 }
