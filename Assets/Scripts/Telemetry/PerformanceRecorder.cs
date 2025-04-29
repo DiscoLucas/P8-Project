@@ -363,7 +363,7 @@ public class PerformanceRecorder : SingletonPersistent<PerformanceRecorder>
             }
             catch (Exception e)
             {
-                Debug.LogError($"Error pushing LSL int sample to stream '{streamName}': {e.Message}");
+                Debug.LogError($"Error pushing LSL string sample to stream '{streamName}': {e.Message}");
             }
         }
         else
