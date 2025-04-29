@@ -113,10 +113,10 @@ public class GazePointRunner : MonoBehaviour
             }
         }
 
-        // Debug looked-at objects
+        // Debug looked-at objects WHY WOULD YOU DO THIS!!!!!!??? MY DEBUG LOG IS FULL OF THIS!!!!
         foreach (var collider in lookedAtObjects)
         {
-            Debug.Log($"Currently looking at: {collider.name}");
+            //Debug.Log($"Currently looking at: {collider.name}");
         }
     }
 
