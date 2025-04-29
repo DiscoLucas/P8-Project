@@ -82,7 +82,7 @@ public class RecipeManager : MonoBehaviour
             Debug.Log(ing.Name + " " + ing.Amount);
         }
 
-        Dictionary<string, float> actualAmounts = actualList.ToDictionary(i => i.Name, i => i.Amount);
+        Dictionary<string, float> actualAmounts = actualList.GroupBy(i => i.Name).ToDictionary(g => g.Key, g => g.Sum(i => i.Amount));
 
         List<string> overpourList = new List<string>();
         List<string> underpourList = new List<string>();

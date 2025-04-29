@@ -55,8 +55,12 @@ public class LiquidPourer : MonoBehaviour
 
     [Header("Grab")]
     [SerializeField] internal XRGrabInteractable grabInteractable;
-
-
+    [Header("Audio")]
+    [SerializeField]internal AudioSource liquid_audioSource;
+    [SerializeField]internal float minvolunme = 0.1f;
+    [SerializeField]internal float maxvolunme = 0.5f;
+    [SerializeField]internal float minPitch = 0.8f;
+    [SerializeField]internal float maxPitch = 1.2f;
     private void Start()
     {
         gameSettings = GameManager.Instance.gameSettings;
@@ -130,7 +134,15 @@ public class LiquidPourer : MonoBehaviour
             fillamountText.gameObject.SetActive(false);
         }
     }
-
+    public void playAudio()
+    {
+        if (liquid_audioSource != null && !liquid_audioSource.isPlaying)
+        {
+            liquid_audioSource.pitch = UnityEngine.Random.Range(minPitch, maxPitch);
+            liquid_audioSource.Play();
+        }
+        liquid_audioSource.volume = Mathf.Lerp(minvolunme, maxvolunme, pourSpeed / pourMultiplier);
+    }
     void FixedUpdate()
     {
         if (isPouring())
@@ -138,12 +150,17 @@ public class LiquidPourer : MonoBehaviour
             calculatePouringSpeed();
             emitParticles();
             detectCollision();
-
+            playAudio();
+            
             if (hapticCoroutine == null)
                 hapticCoroutine = StartCoroutine(HapticFeedbackRoutine(false));
         }
         else
         {
+            if(liquid_audioSource.isPlaying)
+            {
+                liquid_audioSource.Stop();
+            }
             currentPourSessionAmout = 0f;
             if (particles != null)
                 particles.Stop();

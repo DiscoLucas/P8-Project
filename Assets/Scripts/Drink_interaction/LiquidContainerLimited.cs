@@ -52,7 +52,7 @@ namespace Assets.Scripts.Drink_interaction
         [Range(0,1)]
         public float intensity = 0.01f;
         public float duration = 0.04f;
-        internal Coroutine hapticCoroutine = null, sessionCoroutine;
+        internal Coroutine hapticCoroutine = null;
         [SerializeField] internal float minIntensity = 0.01f;
         [SerializeField] internal float maxIntensity = 0.7f;
         [SerializeField] internal float routineWait = 0.05f;
@@ -141,42 +141,31 @@ namespace Assets.Scripts.Drink_interaction
                 return;
             }
 
-            if (ingredient.solid == false)
+            int garnishCount = hasGarnish ? 1 : 0;
+            float availableSpace = (maxFill+ garnishCount) - fillAmount;
+            actualAddedAmount = Mathf.Min(inputAmount, availableSpace);
+
+            if (actualAddedAmount <= 0)
             {
-                float availableSpace = maxFill - fillAmount;
-                actualAddedAmount = Mathf.Min(inputAmount, availableSpace);
 
-                if (actualAddedAmount <= 0)
-                {
-                    if(currentHapticPlayer != null)
-                        currentHapticPlayer.SendHapticImpulse(fillHapticIntensity, fillHapticDuration);
-                    Debug.Log($"Glass is full! Cannot add more {ingredient.Name}.");
-                    return;
-                }
-
-                fillAmount += actualAddedAmount;
-
-                if (ingredients.ContainsKey(ingredient.Name))
-                    ingredients[ingredient.Name].Amount += actualAddedAmount;
-                else {
-                    ingredients[ingredient.Name] = ingredient.copy();
-                    orderCounter++;
-                }
+                sendOneShotHaptic(fillHapticIntensity, fillHapticDuration);
+                Debug.Log($"Glass is full! Cannot add more {ingredient.Name}.");
+                return;
             }
-            else
-            {
-                if (ingredients.ContainsKey(ingredient.Name))
-                    ingredients[ingredient.Name].Amount += inputAmount;
-                else {
-                    ingredients[ingredient.Name] = ingredient.copy(orderCounter);
-                    orderCounter++;
-                }
-            }    
+
+            fillAmount += actualAddedAmount;
+
+            if (ingredients.ContainsKey(ingredient.Name))
+                ingredients[ingredient.Name].Amount += actualAddedAmount;
+            else {
+                ingredients[ingredient.Name] = ingredient.copy();
+                orderCounter++;
+            }
+            
+  
             updateLiquidDisplay();
-            pouringSession = true;
-            checkingForSessionEnd = true;
-            if(hapticCoroutine == null)
-                hapticCoroutine = StartCoroutine(HapticFeedbackRoutine()); 
+            sendOneShotHaptic(fillHapticIntensity, fillHapticDuration);
+                
         }
         
         
@@ -206,12 +195,14 @@ namespace Assets.Scripts.Drink_interaction
             IngredientBase pouredMixture = new IngredientBase("", 0, IngredientType.MixedLiquid, Color.clear);
             Color objectColor = new Color(0, 0, 0, 0);
             Vector4 sum= new Vector4(0, 0, 0, 0);
+            List<string> keysToRemove = new List<string>();
             foreach (var kvp in ingredients)
             {
                 IngredientBase ingredient = kvp.Value;
-                if(ingredient == null)
+                if(ingredient == null || ingredient.Amount <= 0){
+                    keysToRemove.Add(kvp.Key);
                     continue;
-
+                }
 
                 float proportion = ingredient.Amount / totalCurrentLiquid;
                 float amountToPour = actualPouredAmount * proportion;
@@ -227,13 +218,6 @@ namespace Assets.Scripts.Drink_interaction
                 }
 
                 ingredient.Amount -= amountToPour;
-
-                if(ingredient.Amount <= 0)
-                {
-                    ingredients.Remove(kvp.Key);
-                    continue;
-                }
-
                 if(!ingredient.solid){
 
                     ingredientNames.Add(ingredient.Name);
@@ -243,8 +227,9 @@ namespace Assets.Scripts.Drink_interaction
                     , sum.w + ingredient.Color.a*(kvp.Value.Amount/fillAmount)
                     );
                 }
-               
             }
+            
+            Debug.Log(sum);
             Debug.Log(sum);
             pouredMixture.Color = new Color(sum.x,sum.y,sum.z,sum.w);
 
@@ -260,7 +245,10 @@ namespace Assets.Scripts.Drink_interaction
             if (ingredientNames.Count > 3)
                 pouredMixture.Name += " & more";
             updateLiquidDisplay();
-
+            foreach (var key in keysToRemove)
+            {
+                ingredients.Remove(key);
+            }
             return pouredMixture;
         }
 
@@ -303,6 +291,13 @@ namespace Assets.Scripts.Drink_interaction
                 .Where(ing => ing.ingredients == null || ing.ingredients.Count == 0)
                 .ToList();
 
+
+            for(int i = 0; i < orderedIngredients.Count; i++){
+                if(orderedIngredients[i].Amount <= 0 || orderedIngredients[i] == null){
+                    orderedIngredients.RemoveAt(i);
+                    i--;
+                }
+            }
             return orderedIngredients;
         }
 
@@ -323,7 +318,8 @@ namespace Assets.Scripts.Drink_interaction
         }
 
         public float FillPercentage(){
-            float fill = fillAmount / maxFill;
+            int garnishCount = hasGarnish ? 1 : 0;
+            float fill = (fillAmount-iceCount-garnishCount)/ (maxFill-iceCount-garnishCount);
             return fill; 
         }
 
@@ -442,9 +438,8 @@ namespace Assets.Scripts.Drink_interaction
         }
         void FixedUpdate()
         {
-            if(checkingForSessionEnd){
-                checkingForSessionEnd = false;
-                sessionCoroutine= StartCoroutine(endSession());
+            if(pouringSession && hapticCoroutine != null){
+                pouringSession = false;
             }
         }
         //Haptics
@@ -458,13 +453,14 @@ namespace Assets.Scripts.Drink_interaction
             }
 
         }
-        bool checkingForSessionEnd = false;
-        internal IEnumerator endSession(){
-            checkingForSessionEnd = true;
-                while(checkingForSessionEnd)
-            yield return new WaitForSeconds(0.001f);
-            pouringSession = false;
+        public void sendOneShotHaptic(float intensity, float duration)
+        {
+            if (currentHapticPlayer != null)
+            {
+            currentHapticPlayer.SendHapticImpulse(intensity, duration);
+            }
         }
+
         internal IEnumerator HapticFeedbackRoutine()
         {
             while (pouringSession)

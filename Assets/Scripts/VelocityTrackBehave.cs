@@ -23,6 +23,10 @@ public class VelocityTrackBehave : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if(spoonPlaceSounds.Count == 0)
+        {
+            return;
+        }
         int randomIndex = Random.Range(0, spoonPlaceSounds.Count);
         AudioClip randomSound = spoonPlaceSounds[randomIndex];
         audioSource.PlayOneShot(randomSound, spoonVolume);

@@ -7,7 +7,6 @@ using UnityEngine.AI;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Transformers;
-
 public class CustomerAgent : MonoBehaviour
 {
     [SerializeField]
@@ -31,8 +30,28 @@ public class CustomerAgent : MonoBehaviour
     [SerializeField]
     float modelRoationSpeed = 10f;
 
+    [Header("Sound")]
+    [SerializeField]
+    AudioSource audioSource;
+    [SerializeField]
+    AudioClip[] soundClips;
+
+    [SerializeField]
+    float minPitch = 0.8f;
+    [SerializeField]
+    float maxPitch = 1.2f;
+
     public void Start()
     {
+        if(audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+            if (audioSource == null)
+            {
+                Debug.LogError("AudioSource component is missing on the customer!");
+            }
+        }
+
         if (animator == null)
         {
             animator = GetComponent<Animator>(); // Automatically get Animator if not assigned
@@ -76,6 +95,12 @@ public class CustomerAgent : MonoBehaviour
             reachedDestination.Invoke(this);
             navMeshAgent.isStopped = true; 
             isMoving = false;
+            if(audioSource == null || soundClips.Length == 0)
+            {
+                return;
+            }
+            audioSource.pitch = UnityEngine.Random.Range(minPitch, maxPitch);
+            audioSource.PlayOneShot(soundClips[UnityEngine.Random.Range(0, soundClips.Length)], 1f);
         }
     }
 

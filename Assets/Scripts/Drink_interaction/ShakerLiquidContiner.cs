@@ -64,6 +64,7 @@ public class ShakerLiquidContiner : LiquidContainerLimited
         {
             shakeCount++;
             Debug.Log($"Shake detected! Count: {shakeCount}");
+            sendOneShotHaptic(fillHapticIntensity, fillHapticDuration);
             audioSource.pitch = Random.Range(shackerMinPitch, shackerMaxPitch);
             audioSource.PlayOneShot(shakeSound, shakeVolume);
         }

@@ -11,7 +11,7 @@ public class DeliverOrderArea : MonoBehaviour
     public GameObject tex_feild;
     public CustomerAgent agent;
     public TMP_Text text_title;
-
+    public bool isOrderDelivered = false;
 
     public void Start()
     {
@@ -19,27 +19,34 @@ public class DeliverOrderArea : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == glassTag) {
-            Debug.Log("Delivering order: " + other.gameObject.name);
-            LiquidContainerLimited container = other.GetComponent<LiquidContainerLimited>();
-            if (container == null)
-            {
-                Debug.LogError("LiquidContainerLimited component not found on the object.");
-                return;
-            }
-            if (container.FillPercentage()<= 0)
-            {
-                Debug.Log("Not enough liquid in the container to deliver the order.");
-                return;
-            }
-            Debug.Log("Delivering order: " + order.orderID);
-            order.containerLimited = container;
-            Debug.Log("Delivering order: " + order.orderID + " with container: " + container.name);
-            agent.endOrder();
-            Debug.Log("Delivering order: " + order.orderID + " with agent: " + agent.name);
-            orderDeliverede.Invoke(order, agent);
-            Debug.Log("Delivering order: " + order.orderID + " with agent: " + agent.name + " and order: " + order.orderID + " is delivered and removing: " + gameObject.name);
-            Destroy(gameObject);
+
+        if (other.gameObject.tag == glassTag && !isOrderDelivered) {
+            
+                Debug.Log("Delivering order: " + other.gameObject.name);
+                LiquidContainerLimited container = other.GetComponent<LiquidContainerLimited>();
+                if (container == null)
+                {
+                    Debug.LogError("LiquidContainerLimited component not found on the object.");
+                    return;
+                }
+                if (container.FillPercentage()<= 0)
+                {
+                    Debug.Log("Not enough liquid in the container to deliver the order.");
+                    return;
+                }
+                order.containerLimited = container;
+                agent.endOrder();
+                Debug.Log("Delivering order: " + order.orderID + " with agent: " + agent.name);
+                try{
+                    orderDeliverede.Invoke(order, agent);
+                }catch(System.Exception e)
+                {
+                    Debug.LogError("Error delivering order because of:\n " + e.Message);
+                    Destroy(other.gameObject);
+                }
+                isOrderDelivered = true;
+                Debug.Log("Delivering order: " + order.orderID + " with agent: " + agent.name + " and order: " + order.orderID + " is delivered and removing: " + gameObject.name);
+                Destroy(gameObject);
         }
     }
 

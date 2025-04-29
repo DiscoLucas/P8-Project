@@ -93,6 +93,7 @@ public class SodaGunInteractable : LiquidPourer
     private void OnFireGun(ActivateEventArgs arg0)
     {
         isShooting = true;
+        playAudio();
     }
 
     private void OnStopFireGun(DeactivateEventArgs arg0)
@@ -101,6 +102,11 @@ public class SodaGunInteractable : LiquidPourer
         if(particles != null)
             particles.Stop();
         stopHapticFeedback();
+
+        if(liquid_audioSource != null && liquid_audioSource.isPlaying)
+        {
+            liquid_audioSource.Stop();
+        }
     }
 
     void changeLiquidUp(){
