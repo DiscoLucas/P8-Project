@@ -37,7 +37,7 @@ public class LiquidPourer : MonoBehaviour
     protected Vector3 lastHitPoint;
 
     [SerializeField]
-    TMP_Text fillamountText;
+    internal TMP_Text fillamountText;
     [SerializeField]
     private float disableTextDelay = 5f; // Time in seconds before disabling the text
 
@@ -109,8 +109,9 @@ public class LiquidPourer : MonoBehaviour
         currentController = null;
     }
 
-    private void ShowFillAmountText(string text)
+    internal void ShowFillAmountText(string text)
     {
+        lastGlass = null; 
         if (fillamountText != null)
         {
             fillamountText.text = text;
@@ -125,7 +126,7 @@ public class LiquidPourer : MonoBehaviour
         }
     }
 
-    private IEnumerator DisableFillAmountTextAfterDelay()
+    internal IEnumerator DisableFillAmountTextAfterDelay()
     {
         yield return new WaitForSeconds(disableTextDelay);
 
@@ -248,7 +249,8 @@ public class LiquidPourer : MonoBehaviour
         return pourPoint;
     }
 
-    float currentPourSessionAmout = 0f;
+    internal float currentPourSessionAmout = 0f;
+    internal LiquidContainer lastGlass = null;
     /// <summary>
     /// Detect where the liquid lands.
     /// </summary>
@@ -280,6 +282,11 @@ public class LiquidPourer : MonoBehaviour
                         if (pouredMixture != null)
                         {
                             glass.AddIngredient(pouredMixture, pourAmount, out pourAmount);
+                            if (lastGlass != glass)
+                            {
+                                currentPourSessionAmout = 0f;
+                                lastGlass = glass;
+                            }
                             currentPourSessionAmout += pourAmount;
                             if(fillamountText != null){
                                 ShowFillAmountText("Pouring: " + currentPourSessionAmout.ToString("F2") + "ml");

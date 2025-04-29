@@ -412,6 +412,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ea28d35725a7754e9a59a66b9582c85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameSettings: {fileID: 0}
   liquidContainer: {fileID: 0}
   particles: {fileID: 4681839257234485117}
   pourPoint: {fileID: 945627832884203772}
@@ -426,6 +427,20 @@ MonoBehaviour:
   pourAmount: 0.5
   hitThreashold: 0.5
   pourSpeed: 10
+  fillamountText: {fileID: 0}
+  disableTextDelay: 5
+  intensity: 0.01
+  duration: 0.04
+  currentController: {fileID: 0}
+  minIntensity: 0.01
+  maxIntensity: 0.7
+  routineWait: 0.05
+  grabInteractable: {fileID: 0}
+  liquid_audioSource: {fileID: 0}
+  minvolunme: 0.1
+  maxvolunme: 0.5
+  minPitch: 0.8
+  maxPitch: 1.2
   ingredients:
   - {fileID: 11400000, guid: 00ae4c5a6f3d84e4283a396097fe7fc5, type: 2}
   - {fileID: 11400000, guid: 64dff18ce0e69484d93e8c42e50f4fa5, type: 2}
@@ -433,6 +448,8 @@ MonoBehaviour:
   currentIngredientIndex: 0
   liquidHaveBeenChanged: 0
   displayText: {fileID: 4323251426551739358}
+  intensityOfButtonpress: 0.5
+  durationOfButtonPress: 1
 --- !u!1 &5894552354369887222
 GameObject:
   m_ObjectHideFlags: 0
@@ -4110,7 +4127,7 @@ ParticleSystem:
         m_NumAlphaKeys: 2
     range: {x: 0, y: 1}
   CollisionModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 4
     type: 1
     collisionMode: 0
@@ -4279,11 +4296,11 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     minKillSpeed: 0
-    maxKillSpeed: 10000
+    maxKillSpeed: 0
     radiusScale: 1
     collidesWith:
       serializedVersion: 2
-      m_Bits: 4294967295
+      m_Bits: 31457279
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5

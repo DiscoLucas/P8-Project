@@ -10,6 +10,8 @@ public class EqupimentSpawner : MonoBehaviour
     private float checkInterval = 1f; // Time interval (in seconds) between distance checks
     [SerializeField] private Transform middelpoint; // Reference to the player (or their hand/controller)
 
+    
+
     Rigidbody rigidbody;
 
 
@@ -63,15 +65,27 @@ public class EqupimentSpawner : MonoBehaviour
             if (middelpoint != null)
             {
                 float distanceToPlayer = Vector3.Distance(transform.position, middelpoint.position);
-                if (distanceToPlayer > maxDistanceFromPlayer)
+                if (distanceToPlayer > maxDistanceFromPlayer || collidedWithFloor)
                 {
                     Debug.Log($"{gameObject.name} is too far from the player! Respawning...");
+                    collidedWithFloor = false; 
                     Respawn();
                 }
             }
         }
     }
 
+    [SerializeField] private bool collidedWithFloor = false; // Bool to track collision with layer 7
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        // Check if the collided object's layer is 7
+        if (collision.gameObject.layer == 7)
+        {
+            collidedWithFloor = true;
+            Debug.Log($"{gameObject.name} collided with an object of layer 7.");
+        }
+    }
     private void Respawn()
     {
         rigidbody.linearVelocity = Vector3.zero;
