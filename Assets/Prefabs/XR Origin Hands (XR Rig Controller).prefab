@@ -838,7 +838,7 @@ GameObject:
   - component: {fileID: 6664518313399216584}
   - component: {fileID: 1851076210840658808}
   - component: {fileID: 3034842766931075400}
-  - component: {fileID: 2742602844366939262}
+  - component: {fileID: 8850337041988324000}
   m_Layer: 2
   m_Name: XR Origin Hands (XR Rig Controller)
   m_TagString: Untagged
@@ -960,7 +960,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9b3d17eeb2e6bc47ada81d8f7f638d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_GazeInteractor: {fileID: 2742602844366939262}
+  m_GazeInteractor: {fileID: 8850337041988324000}
   m_FallbackDivergence: 60
   m_HideCursorWithNoActiveRays: 1
   m_RayInteractors:
@@ -976,7 +976,7 @@ MonoBehaviour:
   m_AimAssistRequiredSpeed: 0.25
   m_AimAssistPercent: 0.8
   m_AimAssistMaxSpeedPercent: 10
---- !u!114 &2742602844366939262
+--- !u!114 &8850337041988324000
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1986,7 +1986,7 @@ GameObject:
   - component: {fileID: 6625666872628819442}
   - component: {fileID: 606781875721839931}
   - component: {fileID: 4989379108708606646}
-  - component: {fileID: 6428519797673848827}
+  - component: {fileID: 3627423002757882790}
   m_Layer: 0
   m_Name: Near-Far Interactor
   m_TagString: Untagged
@@ -2271,7 +2271,7 @@ MonoBehaviour:
   m_AimTargetObject: {fileID: 0}
   m_PhysicsLayerMask:
     serializedVersion: 2
-    m_Bits: 9729
+    m_Bits: 12576257
   m_PhysicsTriggerInteraction: 1
   m_CastRadius: 0.05
 --- !u!114 &6625666872628819442
@@ -2360,7 +2360,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handNode: 4
---- !u!114 &6428519797673848827
+--- !u!114 &3627423002757882790
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2388,7 +2388,7 @@ GameObject:
   - component: {fileID: 1524785104728325050}
   - component: {fileID: 3779838109253817490}
   - component: {fileID: 81760647007990863}
-  - component: {fileID: 7260455144085121588}
+  - component: {fileID: 6650284584129072353}
   m_Layer: 0
   m_Name: Near-Far Interactor
   m_TagString: Untagged
@@ -2673,7 +2673,7 @@ MonoBehaviour:
   m_AimTargetObject: {fileID: 0}
   m_PhysicsLayerMask:
     serializedVersion: 2
-    m_Bits: 9729
+    m_Bits: 12576257
   m_PhysicsTriggerInteraction: 1
   m_CastRadius: 0.05
 --- !u!114 &1524785104728325050
@@ -2762,7 +2762,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handNode: 5
---- !u!114 &7260455144085121588
+--- !u!114 &6650284584129072353
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3414,9 +3414,10 @@ GameObject:
   - component: {fileID: 6961663752890023838}
   - component: {fileID: 7130839698119076639}
   - component: {fileID: 3664926704425706145}
-  - component: {fileID: 53590917193785945}
-  - component: {fileID: 7288841724993218144}
-  - component: {fileID: 2426573593680433813}
+  - component: {fileID: 1653707863039377382}
+  - component: {fileID: 4986500261109231261}
+  - component: {fileID: 5766389387419145521}
+  - component: {fileID: 8648527041862770206}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3689,14 +3690,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detectedLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 24576
   detectionRadius: 5
   coneAngle: 30
   rayCount: 20
   gazePointThreshold: 2
   gazePoints: []
   lookedAtObjects: []
-  streamName: GazePointStream
 --- !u!114 &6961663752890023838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3742,7 +3742,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: b795d45b77eb4aa49840c24938f8e7f3, type: 3}
   m_Resource: {fileID: 8300000, guid: b795d45b77eb4aa49840c24938f8e7f3, type: 3}
-  m_PlayOnAwake: 0
+  m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -3827,7 +3827,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &53590917193785945
+--- !u!114 &1653707863039377382
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3841,15 +3841,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detectedLayers:
     serializedVersion: 2
-    m_Bits: 24576
+    m_Bits: 29353472
   detectionRadius: 5
   coneAngle: 30
   rayCount: 20
   gazePointThreshold: 2
   gazePoints: []
   lookedAtObjects: []
-  streamName: GazePointStream
---- !u!114 &7288841724993218144
+--- !u!114 &4986500261109231261
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3861,7 +3860,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cba72d6d191aa0742af2ede8d18e28f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!65 &2426573593680433813
+--- !u!65 &5766389387419145521
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3882,6 +3881,103 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.25, y: 0.16936108, z: 0.25}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!82 &8648527041862770206
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8704944913533230694}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: b795d45b77eb4aa49840c24938f8e7f3, type: 3}
+  m_Resource: {fileID: 8300000, guid: b795d45b77eb4aa49840c24938f8e7f3, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &8750417069568715038
 GameObject:
   m_ObjectHideFlags: 0
