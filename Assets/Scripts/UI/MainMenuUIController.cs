@@ -3,7 +3,6 @@ using UnityEngine.UI;
 using TMPro;
 using System.Threading.Tasks;
 
-// TODO: remove LabRecorder start logic and make it only initialize the stream and trigger the FSM
 /// <summary>
 /// Ensure LabRecorder is ready and configure the LabRecorderController in your Unity scene.
 /// </summary>
@@ -64,7 +63,7 @@ public class MainMenuUIController : MonoBehaviour
     [SerializeField] private TMP_Dropdown conditionDropdown;
     [SerializeField] private Button startButton;
     [SerializeField] private TextMeshProUGUI errorText;
-    [SerializeField] private GameObject loadingOverlay; // Optional: UI to show while connecting/starting
+    [SerializeField] private GameObject loadingOverlay;
 
     private void Start()
     {
@@ -119,7 +118,7 @@ public class MainMenuUIController : MonoBehaviour
              ResetUIState();
              return;
         }
-        PerformanceRecorder.Instance.InitializeParticipantID(participantId, conditionIndex);
+        PerformanceRecorder.Instance.InitializeParticipant(participantId, conditionIndex);
         await Task.Delay(200); // Give LSL stream a moment to register on the network
 
         if (GameManager.Instance != null)

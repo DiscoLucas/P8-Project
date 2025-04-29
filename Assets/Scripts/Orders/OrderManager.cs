@@ -98,6 +98,7 @@ public class OrderManager : MonoBehaviour
     /// </summary>
     public void finnishOrder(Order order, CustomerAgent agent)
     {
+        recipeManager.setAndFireMarker("Finnish Order");
         CocktailRecipe recipe = phaseManager.getRecipe(order.recipieID);
         List<IngredientBase> ideal_List = recipe.ingredients.ToList();
         List<IngredientBase> order_List = order.containerLimited.getIngreidentsAsOrderedeList();
@@ -137,6 +138,7 @@ public class OrderManager : MonoBehaviour
     [ContextMenu("Generate New Order")]
     public void createOrder()
     {
+        recipeManager.setAndFireMarker("Create order");
         Debug.Log("Creating new order");
         if (availableSpawnPoints.Count <= 0){
             Debug.Log("No available spawn points for new order.");
@@ -162,6 +164,7 @@ public class OrderManager : MonoBehaviour
     /// </summary>
     public void placeOrder(CustomerAgent agent)
     {
+        recipeManager.setAndFireMarker("Place order");
         Transform spawnPoint = agent.orderDestination;
         string keyRecipe;
         CocktailRecipe recipe = recipeManager.getCocktailRecipe(out keyRecipe);

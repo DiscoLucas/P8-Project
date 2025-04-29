@@ -13,8 +13,10 @@ public class LabRecorder : SingletonPersistent<LabRecorder>
     public bool debugLogging = false;
 
     [Header("Recording Settings")]
+    [SerializeField]
+    bool useOwnPath = false;
     [Tooltip("Root directory for recordings on the machine that runs LabRecorder")]
-    public string studyRoot; // I don't remeber how to do relative paths in Unity ;_;
+    public string studyRoot;
     [Tooltip("Filename template using LabRecorder placeholders (%p=participant, %s=session, %b=task/block, %n=run, %m=modality).")]
     public string filenameTemplate = "sub-%p\\ses-%s\\sub-%p_ses-%s_task-%b_run-01_beh.xdf";
 
@@ -22,6 +24,19 @@ public class LabRecorder : SingletonPersistent<LabRecorder>
     NetworkStream stream;
     bool isConnected = false;
     bool isRecording = false;
+
+
+    void Start()
+    {
+        if(!useOwnPath)
+            studyRoot = Application.dataPath + "\\Dataprocessing Pipeline\\CollectedData";
+
+        if (!Directory.Exists(studyRoot))
+        {
+            Directory.CreateDirectory(studyRoot);
+            Debug.Log($"Directory created at: {studyRoot}");
+        }
+    }
 
     /// <summary>
     /// Attempts to connect to LabRecorder RCS.
@@ -190,6 +205,7 @@ public class LabRecorder : SingletonPersistent<LabRecorder>
             {
                  if (isConnected && stream != null)
                  {
+                   
                     string commandToSend = "stop\n";
                     byte[] data = Encoding.UTF8.GetBytes(commandToSend);
                     stream.Write(data, 0, data.Length);

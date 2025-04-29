@@ -14,6 +14,6 @@ public class BaselineDummyData : MonoBehaviour
         // move object from left to right with sinewave
         float x = Mathf.Sin(Time.time) * 5;
         gameObject.transform.position = new Vector3(x, gameObject.transform.position.y, gameObject.transform.position.z);
-        PerformanceRecorder.Instance.RecordData("DummyData", gameObject.transform.position.magnitude.ToString());
+        PerformanceRecorder.Instance.RecordStreamData("DummyStream", new float[] { x, gameObject.transform.position.y, gameObject.transform.position.z });
     }
 }
