@@ -31,4 +31,7 @@ public class GameSettings : ScriptableObject
     [Header("Scene loadning settings")]
     public float fadeDuration = 1f;
     public float startLoadningInFade = 0.8f;
+
+    [Header("Experinces ")]
+    public float baselineDuration = 5f;
 }

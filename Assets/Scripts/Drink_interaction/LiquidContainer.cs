@@ -24,11 +24,24 @@ public class LiquidContainer : MonoBehaviour
     [Header("Display")]
     public GameObject ingridentTextDisplay;
 
+    [Header("unit proboyts")]
+    [SerializeField] internal float unitsPerMilliliter = 0.01f; // Adjust this value based on your internal logic
+    [SerializeField] internal float maxFillInMl = 300f;
+
     private void Start()
     {
+        unitsPerMilliliter = maxFill / maxFillInMl;
         drinkOnStart();
     }
+    internal float ConvertToInternalUnits(float milliliters)
+    {
+        return milliliters * unitsPerMilliliter;
+    }
 
+    internal float ConvertToMilliliters(float internalUnits)
+    {
+        return internalUnits / unitsPerMilliliter;
+    }
     internal virtual void drinkOnStart() { //This is our actual start() function
         if (xrGrabInteractable == null)
             xrGrabInteractable = gameObject.GetComponent<XRGrabInteractable>();

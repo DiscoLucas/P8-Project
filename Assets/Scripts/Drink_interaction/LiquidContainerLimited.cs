@@ -25,6 +25,7 @@ namespace Assets.Scripts.Drink_interaction
         public GameSettings gameSettings;
 
         [Header("Liquid")]
+        public float maxFillInMl = 300f;
         protected int lastCheckColorCount = 0;
 
         [SerializeField]
