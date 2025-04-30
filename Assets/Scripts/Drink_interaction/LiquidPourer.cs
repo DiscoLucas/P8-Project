@@ -288,6 +288,7 @@ public class LiquidPourer : MonoBehaviour
                             if(lastGlass != glass)
                             {
                                 currentPourSessionAmout = 0f;
+                                lastGlass = glass;
                             }
                             currentPourSessionAmout += actialAmount;
                             if (fillamountText != null)
@@ -302,6 +303,7 @@ public class LiquidPourer : MonoBehaviour
                     if(lastGlass != glass)
                     {
                         currentPourSessionAmout = 0f;
+                        lastGlass = glass;
                     }
                     currentPourSessionAmout += pourAmount;
 
