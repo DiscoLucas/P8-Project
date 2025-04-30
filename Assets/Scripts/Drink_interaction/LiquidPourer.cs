@@ -135,6 +135,7 @@ public class LiquidPourer : MonoBehaviour
         {
             fillamountText.gameObject.SetActive(false);
         }
+        lastGlass = null;
     }
     public void playAudio()
     {
@@ -252,6 +253,7 @@ public class LiquidPourer : MonoBehaviour
     }
 
     internal float currentPourSessionAmout = 0f;
+    internal LiquidContainer lastGlass = null;
     /// <summary>
     /// Detect where the liquid lands.
     /// </summary>
@@ -283,7 +285,10 @@ public class LiquidPourer : MonoBehaviour
                             float actialAmount = 0;
                             glass.AddIngredient(pouredMixture, pourAmount, out actialAmount);
                             Debug.Log("Actual amount out: " + actialAmount);
-
+                            if(lastGlass != glass)
+                            {
+                                currentPourSessionAmout = 0f;
+                            }
                             currentPourSessionAmout += actialAmount;
                             if (fillamountText != null)
                             {
@@ -294,6 +299,10 @@ public class LiquidPourer : MonoBehaviour
                 } else if (deepleteWithooutConatiner){
                     // Deplete the liquid in the container
                     liquidContainer.depleateLiqued(pourAmount);
+                    if(lastGlass != glass)
+                    {
+                        currentPourSessionAmout = 0f;
+                    }
                     currentPourSessionAmout += pourAmount;
 
                     // Update the fill amount text
