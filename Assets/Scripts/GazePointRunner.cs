@@ -95,7 +95,6 @@ public class GazePointRunner : MonoBehaviour
             if (gazePointTimers[collider] >= gazePointThreshold && !gazePoints.Contains(collider))
             {
                 gazePoints.Add(collider);
-                Debug.Log($"New gaze point added: {collider.name}");
             }
         }
 
@@ -119,7 +118,6 @@ public class GazePointRunner : MonoBehaviour
         {
             if (!lookedAtObjects.Contains(gazePoints[i]))
             {
-                Debug.Log($"Gaze point removed: {gazePoints[i].name}");
                 gazePoints.RemoveAt(i);
                 i = 0;
             }

@@ -284,7 +284,6 @@ public class LiquidPourer : MonoBehaviour
                         {
                             float actialAmount = 0;
                             glass.AddIngredient(pouredMixture, pourAmount, out actialAmount);
-                            Debug.Log("Actual amount out: " + actialAmount);
                             if(lastGlass != glass)
                             {
                                 currentPourSessionAmout = 0f;

@@ -368,6 +368,10 @@ PrefabInstance:
       value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 2427041349345060960, guid: 268c81d9d2698b246961c344576b2629, type: 3}
+      propertyPath: hitThreashold
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2427041349345060960, guid: 268c81d9d2698b246961c344576b2629, type: 3}
       propertyPath: liquid_audioSource
       value: 
       objectReference: {fileID: 1469253652}
@@ -943,6 +947,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1266697004337916710, guid: ca4cc7de1b5af1a4db2d8d7a5b5b5f20, type: 3}
+      propertyPath: maxFill
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1338135573716211752, guid: ca4cc7de1b5af1a4db2d8d7a5b5b5f20, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1382,6 +1390,10 @@ PrefabInstance:
     - target: {fileID: 3455601225537168109, guid: ca4cc7de1b5af1a4db2d8d7a5b5b5f20, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3530278460599602609, guid: ca4cc7de1b5af1a4db2d8d7a5b5b5f20, type: 3}
+      propertyPath: fillOffset
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3592029301733314665, guid: ca4cc7de1b5af1a4db2d8d7a5b5b5f20, type: 3}
       propertyPath: m_AnchorMax.x

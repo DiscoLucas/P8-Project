@@ -41,7 +41,7 @@ namespace Assets.Scripts.Drink_interaction
         [Header("Ice")]
         public bool hasIce = false;
         public Transform iceFill;
-        int iceCount = 0;
+        internal int iceCount = 0;
 
         public float delteICeThreashold = 0.5f;
 
@@ -133,7 +133,7 @@ namespace Assets.Scripts.Drink_interaction
             audioSource.Play();
 
         }
-        bool pouringSession = false;
+        internal bool pouringSession = false;
         public override void AddIngredient(IngredientBase ingredient, float inputAmount, out float actualAddedAmount)
         {
             actualAddedAmount= 0;
@@ -271,7 +271,6 @@ namespace Assets.Scripts.Drink_interaction
                 }else{
                     outputColor = mix.Color;
                 }
-                Debug.Log(outputColor.ToString());
             }
             return outputColor;
         }

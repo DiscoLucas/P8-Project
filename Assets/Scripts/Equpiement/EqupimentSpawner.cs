@@ -67,7 +67,6 @@ public class EqupimentSpawner : MonoBehaviour
                 float distanceToPlayer = Vector3.Distance(transform.position, middelpoint.position);
                 if (distanceToPlayer > maxDistanceFromPlayer || collidedWithFloor)
                 {
-                    Debug.Log($"{gameObject.name} is too far from the player! Respawning...");
                     collidedWithFloor = false; 
                     Respawn();
                 }
@@ -83,7 +82,6 @@ public class EqupimentSpawner : MonoBehaviour
         if (collision.gameObject.layer == 7)
         {
             collidedWithFloor = true;
-            Debug.Log($"{gameObject.name} collided with an object of layer 7.");
         }
     }
     private void Respawn()
@@ -93,7 +91,6 @@ public class EqupimentSpawner : MonoBehaviour
         {
             transform.position = spawnPoint.position;
             transform.rotation = spawnPoint.rotation;
-            Debug.Log($"{gameObject.name} has been respawned at the spawn point.");
         }
         else
         {
