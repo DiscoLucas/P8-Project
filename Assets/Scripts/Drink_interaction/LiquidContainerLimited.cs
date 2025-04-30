@@ -195,7 +195,6 @@ namespace Assets.Scripts.Drink_interaction
 
             List<string> ingredientNames = new List<string>();
             IngredientBase pouredMixture = new IngredientBase("", 0, IngredientType.MixedLiquid, Color.clear);
-            Color objectColor = new Color(0, 0, 0, 0);
             Vector4 sum= new Vector4(0, 0, 0, 0);
             List<string> keysToRemove = new List<string>();
             foreach (var kvp in ingredients)
@@ -226,13 +225,9 @@ namespace Assets.Scripts.Drink_interaction
                     sum = new Vector4(sum.x + ingredient.Color.r*(kvp.Value.Amount/fillAmount)
                     , sum.y + ingredient.Color.g*(kvp.Value.Amount/fillAmount)
                     , sum.z + ingredient.Color.b*(kvp.Value.Amount/fillAmount)
-                    , sum.w + ingredient.Color.a*(kvp.Value.Amount/fillAmount)
-                    );
+                    , sum.w + ingredient.Color.a*(kvp.Value.Amount/fillAmount));
                 }
             }
-            
-            Debug.Log(sum);
-            Debug.Log(sum);
             pouredMixture.Color = new Color(sum.x,sum.y,sum.z,sum.w);
 
             if(pouredMixture.Color == null)
