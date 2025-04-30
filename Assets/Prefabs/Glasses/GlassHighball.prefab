@@ -633,7 +633,7 @@ MonoBehaviour:
   m_StartingHoverFilters: []
   m_StartingSelectFilters: []
   m_StartingInteractionStrengthFilters: []
-  m_AttachTransform: {fileID: 2279783564271890175}
+  m_AttachTransform: {fileID: 2196875715606568509}
   m_SecondaryAttachTransform: {fileID: 0}
   m_UseDynamicAttach: 1
   m_MatchAttachPosition: 0
@@ -743,6 +743,7 @@ MonoBehaviour:
   hasGarnish: 0
   hasIce: 0
   iceFill: {fileID: 1499848160832244681}
+  delteICeThreashold: 0.5
   debugGlassMenu: {fileID: 0}
   currentHapticPlayer: {fileID: 0}
   intensity: 0.01
@@ -793,7 +794,7 @@ MonoBehaviour:
   breakSound: {fileID: 8300000, guid: 89dd1d403aeacf2449b2579e482a5105, type: 3}
   beackSoundMinPitch: 0.8
   breakSoundMaxPitch: 1.2
-  AudioSource: {fileID: 8434378074089329005}
+  audioSource: {fileID: 0}
 --- !u!82 &8434378074089329005
 AudioSource:
   m_ObjectHideFlags: 0

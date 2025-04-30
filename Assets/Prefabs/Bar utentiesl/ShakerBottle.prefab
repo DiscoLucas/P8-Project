@@ -5247,6 +5247,7 @@ MonoBehaviour:
   hasGarnish: 0
   hasIce: 0
   iceFill: {fileID: 6134211228693981932}
+  delteICeThreashold: 0.5
   debugGlassMenu: {fileID: 3740540551117728429}
   currentHapticPlayer: {fileID: 0}
   intensity: 0.01
@@ -5318,6 +5319,7 @@ MonoBehaviour:
   liquidContainer: {fileID: 1266697004337916710}
   particles: {fileID: 4668400513532570182}
   pourPoint: {fileID: 6766943715816881298}
+  deepleteWithooutConatiner: 0
   pourMultiplier: 1
   pourThreshold: 80
   arcResolution: 60
@@ -5909,8 +5911,8 @@ Transform:
   m_GameObject: {fileID: 2172542724029058103}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0.066, z: 0}
-  m_LocalScale: {x: 0.84660697, y: 0.85075533, z: 0.88178945}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 4.75, y: 4.75, z: 4.75}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1571671732415872617}
@@ -5922,7 +5924,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2172542724029058103}
-  m_Mesh: {fileID: -8542463572726036090, guid: 5f5b511a87ec5a2438c94db5539c3e66, type: 3}
+  m_Mesh: {fileID: 3376931702889642407, guid: 889c641f9d9e3614b9af88fde48939be, type: 3}
 --- !u!23 &4772457642812753915
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5986,7 +5988,7 @@ MonoBehaviour:
   DrinkColor: {r: 1, g: 1, b: 1, a: 1}
   liquidProperty: {fileID: 1266697004337916710}
   fillAmount: 0
-  fillOffset: 4
+  fillOffset: 2
   fillAmountLerpMax: 1
   fillAmountLerpMin: 0
   Recovery: 1
@@ -5996,7 +5998,7 @@ MonoBehaviour:
   rend: {fileID: 4772457642812753915}
   isCone: 0
   coneFillPower: 1.5
-  scaleRatios: {x: 0.042330347, y: 0.042537764, z: 0.04408947}
+  scaleRatios: {x: 0.23749998, y: 0.23749998, z: 0.23749998}
 --- !u!1 &2267772061778728302
 GameObject:
   m_ObjectHideFlags: 0
