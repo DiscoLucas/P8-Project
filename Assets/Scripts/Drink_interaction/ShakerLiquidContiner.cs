@@ -107,4 +107,8 @@ public class ShakerLiquidContiner : LiquidContainerLimited
             ingredient.step.action = DrinkAction.Shaked;
         }
     }
+
+    public override void setGarnish(GameObject garnish)
+    {
+    }
 }

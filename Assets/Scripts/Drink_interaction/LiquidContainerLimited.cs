@@ -74,7 +74,7 @@ namespace Assets.Scripts.Drink_interaction
         [SerializeField] float minPitch = 0.8f;
         [SerializeField] AudioSource audioSource;
 
-        public void setGarnish(GameObject garnish)
+        public virtual void setGarnish(GameObject garnish)
         {
             GarnishContainer gc = garnish.GetComponent<GarnishContainer>();
             IngredientBase ib;
@@ -109,13 +109,13 @@ namespace Assets.Scripts.Drink_interaction
             {
                 Destroy(col);
             }
+            hasGarnish = true;
         }
 
         void OnCollisionEnter(Collision collision)
         {
             if(collision.gameObject.tag == "Garnish" && !hasGarnish){
                 setGarnish(collision.gameObject); 
-                hasGarnish = true;
             }
 
             if (audioSource == null)
