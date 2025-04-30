@@ -149,6 +149,8 @@ public class GameManager : SingletonPersistent<GameManager>
 
         fsm.SetStartState("MainMenu");
         fsm.Init();
+
+        baselineDuration = gameSettings.baselineDuration * 60f; 
     }
 
     private async Task<bool> StartLabRecordingAsync(string taskName)
@@ -283,7 +285,7 @@ public class GameManager : SingletonPersistent<GameManager>
     }
 
     private IEnumerator LoadSceneAndTransition(string sceneName, string transitionTrigger)
-{
+    {
     Debug.Log($"FSM: Loading scene '{sceneName}'...");
 
     // Activate loading space if it exists
@@ -293,26 +295,28 @@ public class GameManager : SingletonPersistent<GameManager>
     // Start loading the scene in the background
 
     AsyncOperation asyncLoad = null;
-    bool loadningStarted = false;
     if (loadingSpace != null)
     {
         float fadeDuration = gameSettings.fadeDuration;
         for (float t = 0; t < fadeDuration; t += Time.unscaledDeltaTime)
         {
             loadingSpace.material.color = Color.Lerp(transparentBlack, Color.black, t / fadeDuration);
-            if(!loadningStarted && t >= fadeDuration*gameSettings.startLoadningInFade){
-                asyncLoad = SceneManager.LoadSceneAsync(sceneName);
-                asyncLoad.allowSceneActivation = false;
-                loadningStarted = true;
-            }
             yield return null;
         }
         loadingSpace.material.color = Color.black;
     }
-    asyncLoad.allowSceneActivation = true;
+    asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+    asyncLoad.allowSceneActivation = false;
     while (!asyncLoad.isDone)
     {
         Debug.Log($"Loading progress: {asyncLoad.progress * 100}%");
+        if (asyncLoad.progress >= 0.85f)
+        {
+            // Scene is loaded, but not activated yet
+            asyncLoad.allowSceneActivation = true;
+            Debug.Log($"FSM: Scene '{sceneName}' loaded.");
+            break;
+        }
         yield return null;
     }
 

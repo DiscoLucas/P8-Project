@@ -30,6 +30,7 @@ public class LiquidPourer : MonoBehaviour
     [SerializeField] protected float timeStep = 0.05f;
     [SerializeField] protected float gravity = 9.81f;
     [SerializeField] protected LayerMask collisionLayers;
+    //11 ml er second (Husk at gangee med deltatime)
     [SerializeField] protected float pourAmount = 0.01f;
     [Tooltip("Defines how strictly the liquid must hit the top of the glass to be considered valid. A value closer to 1 means only near-perfect top hits count, while lower values allow slight angles.")]
     [SerializeField] protected float hitThreashold = 0.5f;
@@ -284,7 +285,6 @@ public class LiquidPourer : MonoBehaviour
                         {
                             float actialAmount = 0;
                             glass.AddIngredient(pouredMixture, pourAmount, out actialAmount);
-                            Debug.Log("Actual amount out: " + actialAmount);
                             if(lastGlass != glass)
                             {
                                 currentPourSessionAmout = 0f;

@@ -25,6 +25,7 @@ namespace Assets.Scripts.Drink_interaction
         public GameSettings gameSettings;
 
         [Header("Liquid")]
+        public float maxFillInMl = 300f;
         protected int lastCheckColorCount = 0;
 
         [SerializeField]
@@ -41,7 +42,7 @@ namespace Assets.Scripts.Drink_interaction
         [Header("Ice")]
         public bool hasIce = false;
         public Transform iceFill;
-        int iceCount = 0;
+        internal int iceCount = 0;
 
         public float delteICeThreashold = 0.5f;
 
@@ -74,7 +75,7 @@ namespace Assets.Scripts.Drink_interaction
         [SerializeField] float minPitch = 0.8f;
         [SerializeField] AudioSource audioSource;
 
-        public void setGarnish(GameObject garnish)
+        public virtual void setGarnish(GameObject garnish)
         {
             GarnishContainer gc = garnish.GetComponent<GarnishContainer>();
             IngredientBase ib;
@@ -109,13 +110,13 @@ namespace Assets.Scripts.Drink_interaction
             {
                 Destroy(col);
             }
+            hasGarnish = true;
         }
 
         void OnCollisionEnter(Collision collision)
         {
             if(collision.gameObject.tag == "Garnish" && !hasGarnish){
                 setGarnish(collision.gameObject); 
-                hasGarnish = true;
             }
 
             if (audioSource == null)
@@ -133,7 +134,7 @@ namespace Assets.Scripts.Drink_interaction
             audioSource.Play();
 
         }
-        bool pouringSession = false;
+        internal bool pouringSession = false;
         public override void AddIngredient(IngredientBase ingredient, float inputAmount, out float actualAddedAmount)
         {
             actualAddedAmount= 0;
@@ -271,7 +272,6 @@ namespace Assets.Scripts.Drink_interaction
                 }else{
                     outputColor = mix.Color;
                 }
-                Debug.Log(outputColor.ToString());
             }
             return outputColor;
         }

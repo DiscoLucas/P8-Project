@@ -26,28 +26,34 @@ public class ShakerLiquidContiner : LiquidContainerLimited
 
     public override void AddIngredient(IngredientBase ingredient, float inputAmount)
     {
-        base.AddIngredient(ingredient, inputAmount);
         newIngredientsNeedShaking = true;
         shakeCount = 0; // Reset shake count when new ingredients are added
         lastPosition = transform.position;
         lastDirection = Vector3.zero;
+        Debug.Log($"New ingredient added: {newIngredientsNeedShaking}");
+        base.AddIngredient(ingredient, inputAmount);
     }
 
-
+    public override void AddIngredient(IngredientBase ingredient, float inputAmount, out float actualAddedAmount)
+    {
+        newIngredientsNeedShaking = true;
+        shakeCount = 0; // Reset shake count when new ingredients are added
+        lastPosition = transform.position;
+        lastDirection = Vector3.zero;
+        Debug.Log($"New ingredient added: {newIngredientsNeedShaking}");
+        base.AddIngredient(ingredient, inputAmount, out actualAddedAmount);
+    }
+    
 
     private void FixedUpdate()
     {
+        if(pouringSession && hapticCoroutine != null){
+                pouringSession = false;
+        }
+        Debug.Log($"FixedUpdate: newIngredientsNeedShaking: {newIngredientsNeedShaking}, shakeCount: {shakeCount}");
         if (newIngredientsNeedShaking && shakerLiquidPourer != null && shakerLiquidPourer.canShake())
         {
-            // Check if the shaker is being shaken
-            if (Vector3.Dot(transform.up, Vector3.down) > Mathf.Cos(minShakeForce * Mathf.Deg2Rad))
-            {
-                // Call the shaking detection method
-                DetectShaking();
-            }
-        }
-        else if (newIngredientsNeedShaking)
-        {
+            Debug.Log("Shake detected in FixedUpdate!");
             DetectShaking();
         }
     }
@@ -59,8 +65,9 @@ public class ShakerLiquidContiner : LiquidContainerLimited
         float movementMagnitude = (currentPosition - lastPosition).magnitude;
 
         bool directionChanged = Vector3.Dot(movementDirection, lastDirection) < 0;
-
-        if (movementMagnitude >= minShakeForce && directionChanged)
+        bool isShaking = movementMagnitude > minShakeForce && directionChanged;
+        Debug.Log($"Movement Direction: {movementDirection}, Magnitude: {movementMagnitude}, Direction Changed: {directionChanged}, Is Shaking: {isShaking}");
+        if (isShaking)
         {
             shakeCount++;
             Debug.Log($"Shake detected! Count: {shakeCount}");
@@ -86,6 +93,10 @@ public class ShakerLiquidContiner : LiquidContainerLimited
             newIngredientsNeedShaking = false;
             Debug.Log("Shaking complete! Ingredients are now shaken.");
             UpdateIngredientsToShaken();
+            iceCount = 0;
+            for(int i = 0; i < iceFill.childCount; i++){
+                iceFill.GetChild(i).gameObject.SetActive(false);
+            }
         }
     }
 
@@ -95,5 +106,9 @@ public class ShakerLiquidContiner : LiquidContainerLimited
         {
             ingredient.step.action = DrinkAction.Shaked;
         }
+    }
+
+    public override void setGarnish(GameObject garnish)
+    {
     }
 }
