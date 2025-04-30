@@ -273,23 +273,18 @@ public class LiquidPourer : MonoBehaviour
 
                 if (glass != null)
                 {
-                    // Get the local up direction of the glass
                     Vector3 glassUp = glass.transform.up;
-
-                    // Compare hit normal to the glass's up direction
-                    if (Vector3.Dot(hit.normal, glassUp) > hitThreashold) // Adjust threshold as needed
+                    if (Vector3.Dot(hit.normal, glassUp) > hitThreashold)
                     {
                         IngredientBase pouredMixture = getIngredientBase();
+                        Debug.Log("Pouring into glass: " + glass?.name + " pour mixture: " + pouredMixture?.Name);
                         if (pouredMixture != null)
                         {
+                            float actialAmount = 0;
+                            glass.AddIngredient(pouredMixture, pourAmount, out actialAmount);
+                            Debug.Log("Actual amount out: " + actialAmount);
 
-                            // Add the ingredient to the current glass
-                            glass.AddIngredient(pouredMixture, pourAmount, out pourAmount);
-
-                            // Update the current pouring session amount
-                            currentPourSessionAmout += pourAmount;
-
-                            // Update the fill amount text
+                            currentPourSessionAmout += actialAmount;
                             if (fillamountText != null)
                             {
                                 ShowFillAmountText($"Pouring: {currentPourSessionAmout:F2}ml");
