@@ -262,46 +262,78 @@ public class GameManager : SingletonPersistent<GameManager>
         };
     }*/
     
-    IEnumerator LoadSceneAndTransition(string sceneName, string transitionTrigger)
-    {
-        Debug.Log($"FSM: Loading scene '{sceneName}'...");
+    private MeshRenderer findLoadningSpace(){
         MeshRenderer loadingSpace = null;
         foreach (Transform child in Camera.main.transform)
         {
-            if (child.CompareTag("LoadingSpace"))
+            Debug.Log($"Child: {child.name} is begin looked at when finding loading space and tag is: {child.tag} and is looking for LoadningSpace {child.CompareTag("LoadingSpace")}");
+            if (child.CompareTag("LoadningSpace"))
             {
                 child.gameObject.SetActive(true);
                 loadingSpace = child.GetComponent<MeshRenderer>();
+                Debug.Log("Found loading space mesh renderer.");
                 break;
             }
         }
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
-        Color transpartionColorBlack = new Color(0, 0, 0, 0);
-        while (!asyncLoad.isDone)
+        if(loadingSpace == null)
         {
-            if(loadingSpace != null){
-                loadingSpace.material.color = Color.Lerp(transpartionColorBlack, Color.black, asyncLoad.progress);
+            Debug.LogError("Loading space not found. Loading without fade effect.");
+        }
+        return loadingSpace;
+    }
+
+    private IEnumerator LoadSceneAndTransition(string sceneName, string transitionTrigger)
+{
+    Debug.Log($"FSM: Loading scene '{sceneName}'...");
+
+    // Activate loading space if it exists
+    MeshRenderer loadingSpace = findLoadningSpace();
+    Color transparentBlack = new Color(0, 0, 0, 0);
+
+    // Start loading the scene in the background
+
+    AsyncOperation asyncLoad = null;
+    bool loadningStarted = false;
+    if (loadingSpace != null)
+    {
+        float fadeDuration = gameSettings.fadeDuration;
+        for (float t = 0; t < fadeDuration; t += Time.unscaledDeltaTime)
+        {
+            loadingSpace.material.color = Color.Lerp(transparentBlack, Color.black, t / fadeDuration);
+            if(!loadningStarted && t >= fadeDuration*gameSettings.startLoadningInFade){
+                asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+                asyncLoad.allowSceneActivation = false;
+                loadningStarted = true;
             }
-            // Update loading progress UI here if needed
             yield return null;
         }
-        Debug.Log($"FSM: Scene '{sceneName}' loaded.");
-
-        if (loadingSpace != null)
-        {
-            float fadeDuration = gameSettings.fadeDuration;
-            float elapsedTime = 0f;
-            while (elapsedTime < fadeDuration)
-            {
-                loadingSpace.material.color = Color.Lerp(Color.black, transpartionColorBlack, elapsedTime / fadeDuration);
-                elapsedTime += Time.deltaTime;
-                yield return null;
-            }
-            loadingSpace.material.color = transpartionColorBlack;
-            loadingSpace.gameObject.SetActive(false);
-        }
-        fsm.Trigger(transitionTrigger);
+        loadingSpace.material.color = Color.black;
     }
+    asyncLoad.allowSceneActivation = true;
+    while (!asyncLoad.isDone)
+    {
+        Debug.Log($"Loading progress: {asyncLoad.progress * 100}%");
+        yield return null;
+    }
+
+
+    // Fade out the loading screen
+    if (loadingSpace != null)
+    {
+        float fadeDuration = gameSettings.fadeDuration;
+        for (float t = 0; t < fadeDuration; t += Time.unscaledDeltaTime)
+        {
+            loadingSpace.material.color = Color.Lerp(Color.black, transparentBlack, t / fadeDuration);
+            yield return null;
+        }
+        loadingSpace.material.color = transparentBlack;
+        loadingSpace.gameObject.SetActive(false);
+    }
+
+    // Trigger FSM transition
+    fsm.Trigger(transitionTrigger);
+    Debug.Log($"FSM: Triggered transition '{transitionTrigger}' after loading scene '{sceneName}'.");
+}
 
     #region Scene Loading
 
