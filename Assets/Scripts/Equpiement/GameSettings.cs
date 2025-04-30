@@ -27,4 +27,7 @@ public class GameSettings : ScriptableObject
 
     public float Haptic_Fill_Contatiner_HapticDuration = 0.1f;
     public float Haptic_Fill_Contatiner_HapticIntensity = 0.5f;
+
+    [Header("Scene loadning settings")]
+    public float fadeDuration = 1f;
 }

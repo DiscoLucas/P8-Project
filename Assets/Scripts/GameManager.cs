@@ -265,15 +265,41 @@ public class GameManager : SingletonPersistent<GameManager>
     IEnumerator LoadSceneAndTransition(string sceneName, string transitionTrigger)
     {
         Debug.Log($"FSM: Loading scene '{sceneName}'...");
-        //Debug.Break();
+        MeshRenderer loadingSpace = null;
+        foreach (Transform child in Camera.main.transform)
+        {
+            if (child.CompareTag("LoadingSpace"))
+            {
+                child.gameObject.SetActive(true);
+                loadingSpace = child.GetComponent<MeshRenderer>();
+                break;
+            }
+        }
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+        Color transpartionColorBlack = new Color(0, 0, 0, 0);
         while (!asyncLoad.isDone)
         {
+            if(loadingSpace != null){
+                loadingSpace.material.color = Color.Lerp(transpartionColorBlack, Color.black, asyncLoad.progress);
+            }
             // Update loading progress UI here if needed
             yield return null;
         }
         Debug.Log($"FSM: Scene '{sceneName}' loaded.");
-        // Scene is loaded, trigger the transition to the next state
+
+        if (loadingSpace != null)
+        {
+            float fadeDuration = gameSettings.fadeDuration;
+            float elapsedTime = 0f;
+            while (elapsedTime < fadeDuration)
+            {
+                loadingSpace.material.color = Color.Lerp(Color.black, transpartionColorBlack, elapsedTime / fadeDuration);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+            loadingSpace.material.color = transpartionColorBlack;
+            loadingSpace.gameObject.SetActive(false);
+        }
         fsm.Trigger(transitionTrigger);
     }
 
