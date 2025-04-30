@@ -13,6 +13,13 @@ public class DeliverOrderArea : MonoBehaviour
     public TMP_Text text_title;
     public bool isOrderDelivered = false;
 
+    [Header("Audio Stuff")]
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip deliveryClip;
+    [SerializeField] float minPitch = 0.8f;
+    [SerializeField] float maxPitch = 1.2f;
+    [SerializeField] float volume = 0.5f;
+
     public void Start()
     {
         text_title.text = order.orderID;
@@ -21,6 +28,7 @@ public class DeliverOrderArea : MonoBehaviour
     {
 
         if (other.gameObject.tag == glassTag && !isOrderDelivered) {
+
             
                 Debug.Log("Delivering order: " + other.gameObject.name);
                 LiquidContainerLimited container = other.GetComponent<LiquidContainerLimited>();
@@ -45,6 +53,10 @@ public class DeliverOrderArea : MonoBehaviour
                     Destroy(other.gameObject);
                 }
                 isOrderDelivered = true;
+                audioSource.clip = deliveryClip;
+                audioSource.volume = volume;
+                audioSource.pitch = Random.Range(minPitch, maxPitch);
+                audioSource.Play();
                 Debug.Log("Delivering order: " + order.orderID + " with agent: " + agent.name + " and order: " + order.orderID + " is delivered and removing: " + gameObject.name);
                 Destroy(gameObject);
         }

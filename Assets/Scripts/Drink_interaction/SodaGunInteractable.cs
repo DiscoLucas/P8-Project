@@ -31,6 +31,13 @@ public class SodaGunInteractable : LiquidPourer
     internal float intensityOfButtonpress = 0.5f;
     [SerializeField]
     internal float durationOfButtonPress = 1f;
+
+    [Header("Audio")]
+    [SerializeField] AudioSource displayAudio;
+    [SerializeField] AudioClip displayAudioClip;
+    [SerializeField] float displayAudioVolume = 0.5f;
+    [SerializeField] float displayMinPitch = 0.8f;
+    [SerializeField] float displayMaxPitch = 1.2f;
     private void Awake()
     {
         grabInteractable = GetComponent<XRGrabInteractable>();
@@ -119,6 +126,7 @@ public class SodaGunInteractable : LiquidPourer
         liquidHaveBeenChanged = true;
         updateDisplay();
         sendHapticFeedback();
+        playDisplayAudio();
     }
 
     internal void sendHapticFeedback()
@@ -138,6 +146,7 @@ public class SodaGunInteractable : LiquidPourer
         liquidHaveBeenChanged = true;
         updateDisplay();
         sendHapticFeedback();
+        playDisplayAudio();
     }
 
     void updateDisplay(){
@@ -198,6 +207,17 @@ public class SodaGunInteractable : LiquidPourer
     internal override IngredientBase getIngredientBase()
     {
         return ingredients[currentIngredientIndex].ingredientBase;
+    }
+
+    private void playDisplayAudio()
+    {
+        if (displayAudio != null && displayAudioClip != null)
+        {
+            displayAudio.clip = displayAudioClip;
+            displayAudio.volume = displayAudioVolume;
+            displayAudio.pitch = UnityEngine.Random.Range(displayMinPitch, displayMaxPitch);
+            displayAudio.Play();
+        }
     }
 
 }
