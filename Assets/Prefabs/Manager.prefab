@@ -80,6 +80,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f87e10588b925f94a91b57444018c877, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gazePointRunner: {fileID: 0}
 --- !u!1 &3824265777420112814
 GameObject:
   m_ObjectHideFlags: 0
@@ -127,9 +128,11 @@ MonoBehaviour:
   gameSettings: {fileID: 11400000, guid: dbfb2955077d9224f8cf2efd2ac8c5b9, type: 2}
   neverEnd: 0
   logging: 0
+  currentState: 
   baselineDuration: 120
   currentCondition: 0
-  currentState: 
+  participantID: 
+  sessionNumber: 0
   onGameStart:
     m_PersistentCalls:
       m_Calls: []
@@ -206,21 +209,21 @@ MonoBehaviour:
             AlcoholContent: 40
             step:
               order: 1
-              action: 4
+              action: 1
             ingredients:
               _serializedList: []
-          - Name: Tonic_Water
-            Amount: 150
+          - Name: Tonic Water
+            Amount: 180
             solid: 0
             Type: 1
             Color: {r: 95, g: 95, b: 95, a: 8}
             AlcoholContent: 0
             step:
               order: 2
-              action: 4
+              action: 1
             ingredients:
               _serializedList: []
-          - Name: Lime_Wedge
+          - Name: Lime Wedge
             Amount: 1
             solid: 1
             Type: 2
@@ -231,6 +234,17 @@ MonoBehaviour:
               action: 3
             ingredients:
               _serializedList: []
+          - Name: Ice
+            Amount: 1
+            solid: 1
+            Type: 2
+            Color: {r: 5, g: 8, b: 2, a: 10}
+            AlcoholContent: 0
+            step:
+              order: 3
+              action: 4
+            ingredients:
+              _serializedList: []
           maxScore: 100
           expectedTime: 30
           glassType: 0
@@ -239,7 +253,7 @@ MonoBehaviour:
           Name: Cuba Libre
           diffuculty: 2
           ingredients:
-          - Name: White_Rum
+          - Name: White Rum
             Amount: 60
             solid: 0
             Type: 0
@@ -247,10 +261,10 @@ MonoBehaviour:
             AlcoholContent: 40
             step:
               order: 1
-              action: 4
+              action: 1
             ingredients:
               _serializedList: []
-          - Name: Lime_Juice
+          - Name: Lime Juice
             Amount: 15
             solid: 0
             Type: 0
@@ -258,21 +272,32 @@ MonoBehaviour:
             AlcoholContent: 0
             step:
               order: 2
-              action: 4
+              action: 1
             ingredients:
               _serializedList: []
-          - Name: Coca-Cola
-            Amount: 150
+          - Name: Cola
+            Amount: 180
             solid: 0
             Type: 1
             Color: {r: 3, g: 2, b: 0, a: 10}
             AlcoholContent: 0
             step:
               order: 3
-              action: 4
+              action: 1
             ingredients:
               _serializedList: []
-          - Name: Lime_Wedge
+          - Name: Ice
+            Amount: 1
+            solid: 1
+            Type: 2
+            Color: {r: 5, g: 8, b: 2, a: 10}
+            AlcoholContent: 0
+            step:
+              order: 4
+              action: 3
+            ingredients:
+              _serializedList: []
+          - Name: Orange Slice
             Amount: 1
             solid: 1
             Type: 2
@@ -299,21 +324,32 @@ MonoBehaviour:
             AlcoholContent: 40
             step:
               order: 1
-              action: 4
+              action: 1
             ingredients:
               _serializedList: []
-          - Name: Orange_Juice
-            Amount: 150
+          - Name: Orange Juice
+            Amount: 180
             solid: 0
             Type: 0
             Color: {r: 10, g: 7, b: 0, a: 10}
             AlcoholContent: 0
             step:
               order: 2
-              action: 4
+              action: 1
             ingredients:
               _serializedList: []
-          - Name: Orange_Slice
+          - Name: Orange Slice
+            Amount: 1
+            solid: 1
+            Type: 2
+            Color: {r: 10, g: 6, b: 0, a: 10}
+            AlcoholContent: 0
+            step:
+              order: 3
+              action: 3
+            ingredients:
+              _serializedList: []
+          - Name: Ice
             Amount: 1
             solid: 1
             Type: 2
@@ -340,18 +376,18 @@ MonoBehaviour:
             AlcoholContent: 40
             step:
               order: 1
-              action: 4
+              action: 1
             ingredients:
               _serializedList: []
-          - Name: Orange_Juice
-            Amount: 120
+          - Name: Orange Juice
+            Amount: 180
             solid: 0
             Type: 0
             Color: {r: 10, g: 7, b: 0, a: 10}
             AlcoholContent: 0
             step:
               order: 2
-              action: 4
+              action: 1
             ingredients:
               _serializedList: []
           - Name: Grenadine
@@ -362,10 +398,10 @@ MonoBehaviour:
             AlcoholContent: 0
             step:
               order: 3
-              action: 4
+              action: 1
             ingredients:
               _serializedList: []
-          - Name: Orange_Slice
+          - Name: Orange Slice
             Amount: 1
             solid: 1
             Type: 2
@@ -406,10 +442,10 @@ MonoBehaviour:
             AlcoholContent: 40
             step:
               order: 1
-              action: 1
+              action: 5
             ingredients:
               _serializedList: []
-          - Name: Dry_Vermouth
+          - Name: Dry Vermouth
             Amount: 15
             solid: 0
             Type: 0
@@ -417,10 +453,21 @@ MonoBehaviour:
             AlcoholContent: 18
             step:
               order: 2
-              action: 1
+              action: 5
             ingredients:
               _serializedList: []
-          - Name: Lemon_Twist
+          - Name: Olive
+            Amount: 1
+            solid: 1
+            Type: 2
+            Color: {r: 10, g: 9, b: 0, a: 10}
+            AlcoholContent: 0
+            step:
+              order: 3
+              action: 3
+            ingredients:
+              _serializedList: []
+          - Name: Ice
             Amount: 1
             solid: 1
             Type: 2
@@ -439,8 +486,8 @@ MonoBehaviour:
           Name: Manhattan
           diffuculty: 5
           ingredients:
-          - Name: Rye_Whiskey
-            Amount: 60
+          - Name: Rye Whiskey
+            Amount: 75
             solid: 0
             Type: 0
             Color: {r: 7, g: 4, b: 2, a: 10}
@@ -450,7 +497,7 @@ MonoBehaviour:
               action: 1
             ingredients:
               _serializedList: []
-          - Name: Sweet_Vermouth
+          - Name: Sweet Vermouth
             Amount: 30
             solid: 0
             Type: 0
@@ -461,8 +508,8 @@ MonoBehaviour:
               action: 1
             ingredients:
               _serializedList: []
-          - Name: Angostura_Bitters
-            Amount: 2
+          - Name: Angostura Bitters
+            Amount: 6
             solid: 0
             Type: 0
             Color: {r: 5, g: 1, b: 0, a: 10}
@@ -483,6 +530,17 @@ MonoBehaviour:
               action: 3
             ingredients:
               _serializedList: []
+          - Name: Ice
+            Amount: 1
+            solid: 1
+            Type: 2
+            Color: {r: 7, g: 0, b: 0, a: 10}
+            AlcoholContent: 0
+            step:
+              order: 4
+              action: 3
+            ingredients:
+              _serializedList: []
           maxScore: 100
           expectedTime: 65
           glassType: 0
@@ -492,14 +550,14 @@ MonoBehaviour:
           diffuculty: 5
           ingredients:
           - Name: Gin
-            Amount: 1
+            Amount: 30
             solid: 0
             Type: 0
             Color: {r: 9, g: 9, b: 9, a: 10}
             AlcoholContent: 40
             step:
               order: 0
-              action: 4
+              action: 1
             ingredients:
               _serializedList: []
           - Name: Campari
@@ -510,10 +568,10 @@ MonoBehaviour:
             AlcoholContent: 0
             step:
               order: 0
-              action: 4
+              action: 1
             ingredients:
               _serializedList: []
-          - Name: Sweet_Vermouth
+          - Name: Sweet Vermouth
             Amount: 1
             solid: 0
             Type: 0
@@ -521,7 +579,7 @@ MonoBehaviour:
             AlcoholContent: 16
             step:
               order: 0
-              action: 4
+              action: 1
             ingredients:
               _serializedList: []
           - Name: Orange_Slice
@@ -555,40 +613,40 @@ MonoBehaviour:
           diffuculty: 5
           ingredients:
           - Name: Gin
-            Amount: 2
+            Amount: 60
             solid: 0
             Type: 0
             Color: {r: 9, g: 9, b: 9, a: 10}
             AlcoholContent: 40
             step:
               order: 0
-              action: 4
+              action: 1
             ingredients:
               _serializedList: []
-          - Name: Lemon_Juice
-            Amount: 0.75
+          - Name: Lemon Juice
+            Amount: 20
             solid: 0
             Type: 0
             Color: {r: 10, g: 9, b: 1, a: 9}
             AlcoholContent: 0
             step:
               order: 0
-              action: 4
+              action: 1
             ingredients:
               _serializedList: []
-          - Name: Simple_Syrup
-            Amount: 0.75
+          - Name: Simple Syrup
+            Amount: 20
             solid: 0
             Type: 0
             Color: {r: 95, g: 95, b: 95, a: 9}
             AlcoholContent: 0
             step:
               order: 0
-              action: 4
+              action: 1
             ingredients:
               _serializedList: []
-          - Name: Soda_Water
-            Amount: 1
+          - Name: Soda Water
+            Amount: 60
             solid: 0
             Type: 1
             Color: {r: 10, g: 10, b: 10, a: 7}
@@ -642,29 +700,29 @@ MonoBehaviour:
               action: 0
             ingredients:
               _serializedList: []
-          - Name: Lemon_Juice
-            Amount: 22
+          - Name: Lemon Juice
+            Amount: 20
             solid: 0
             Type: 0
             Color: {r: 10, g: 9, b: 1, a: 9}
             AlcoholContent: 0
             step:
               order: 2
-              action: 0
+              action: 5
             ingredients:
               _serializedList: []
-          - Name: Simple_Syrup
-            Amount: 22
+          - Name: Simple Syrup
+            Amount: 20
             solid: 0
             Type: 0
             Color: {r: 95, g: 95, b: 95, a: 9}
             AlcoholContent: 0
             step:
               order: 3
-              action: 0
+              action: 5
             ingredients:
               _serializedList: []
-          - Name: Egg_White
+          - Name: Egg White
             Amount: 15
             solid: 0
             Type: 5
@@ -672,11 +730,22 @@ MonoBehaviour:
             AlcoholContent: 0
             step:
               order: 4
-              action: 0
+              action: 5
             ingredients:
               _serializedList: []
-          - Name: Angostura_Bitters
-            Amount: 2
+          - Name: Angostura Bitters
+            Amount: 6
+            solid: 0
+            Type: 0
+            Color: {r: 5, g: 1, b: 0, a: 10}
+            AlcoholContent: 44
+            step:
+              order: 5
+              action: 5
+            ingredients:
+              _serializedList: []
+          - Name: Ice
+            Amount: 1
             solid: 0
             Type: 0
             Color: {r: 5, g: 1, b: 0, a: 10}
@@ -689,130 +758,45 @@ MonoBehaviour:
           maxScore: 100
           expectedTime: 90
           glassType: 0
-      - Key: Mojito
-        Value:
-          Name: Mojito
-          diffuculty: 6
-          ingredients:
-          - Name: Lime_Juice
-            Amount: 22
-            solid: 0
-            Type: 0
-            Color: {r: 8, g: 9, b: 7, a: 9}
-            AlcoholContent: 0
-            step:
-              order: 1
-              action: 2
-            ingredients:
-              _serializedList: []
-          - Name: Mint_Leaves
-            Amount: 8
-            solid: 1
-            Type: 0
-            Color: {r: 0, g: 6, b: 0, a: 10}
-            AlcoholContent: 0
-            step:
-              order: 1
-              action: 2
-            ingredients:
-              _serializedList: []
-          - Name: Simple_Syrup
-            Amount: 30
-            solid: 0
-            Type: 0
-            Color: {r: 95, g: 95, b: 95, a: 9}
-            AlcoholContent: 0
-            step:
-              order: 2
-              action: 2
-            ingredients:
-              _serializedList: []
-          - Name: White_Rum
-            Amount: 60
-            solid: 0
-            Type: 0
-            Color: {r: 10, g: 10, b: 10, a: 10}
-            AlcoholContent: 40
-            step:
-              order: 3
-              action: 4
-            ingredients:
-              _serializedList: []
-          - Name: Soda_Water
-            Amount: 60
-            solid: 0
-            Type: 1
-            Color: {r: 10, g: 10, b: 10, a: 7}
-            AlcoholContent: 0
-            step:
-              order: 4
-              action: 4
-            ingredients:
-              _serializedList: []
-          - Name: Mint_Sprig
-            Amount: 1
-            solid: 1
-            Type: 2
-            Color: {r: 0, g: 6, b: 0, a: 10}
-            AlcoholContent: 0
-            step:
-              order: 5
-              action: 3
-            ingredients:
-              _serializedList: []
-          - Name: Lime_Wedge
-            Amount: 1
-            solid: 1
-            Type: 2
-            Color: {r: 5, g: 8, b: 2, a: 10}
-            AlcoholContent: 0
-            step:
-              order: 6
-              action: 3
-            ingredients:
-              _serializedList: []
-          maxScore: 100
-          expectedTime: 85
-          glassType: 0
       - Key: Amaretto_Sour
         Value:
           Name: Amaretto Sour
           diffuculty: 6
           ingredients:
           - Name: Amaretto
-            Amount: 1.5
+            Amount: 60
             solid: 0
             Type: 0
             Color: {r: 0.5943396, g: 0.2808746, b: 0, a: 0.7098039}
             AlcoholContent: 28
             step:
               order: 0
-              action: 0
+              action: 5
             ingredients:
               _serializedList: []
-          - Name: Bourbon
-            Amount: 0.75
+          - Name: Angostura Bitters
+            Amount: 6
             solid: 0
             Type: 0
             Color: {r: 7, g: 4, b: 1, a: 10}
             AlcoholContent: 45
             step:
               order: 0
-              action: 0
+              action: 5
             ingredients:
               _serializedList: []
-          - Name: Lemon_Juice
-            Amount: 0.75
+          - Name: Lemon Juice
+            Amount: 20
             solid: 0
             Type: 0
             Color: {r: 10, g: 9, b: 1, a: 9}
             AlcoholContent: 0
             step:
               order: 0
-              action: 0
+              action: 5
             ingredients:
               _serializedList: []
-          - Name: Simple_Syrup
+          - Name: Simple Syrup
             Amount: 0.5
             solid: 0
             Type: 0
@@ -820,99 +804,25 @@ MonoBehaviour:
             AlcoholContent: 0
             step:
               order: 0
-              action: 0
+              action: 5
             ingredients:
               _serializedList: []
-          - Name: Egg_White
-            Amount: 0.5
+          - Name: Egg White
+            Amount: 15
             solid: 0
             Type: 5
             Color: {r: 10, g: 10, b: 10, a: 8}
             AlcoholContent: 0
             step:
               order: 0
-              action: 0
+              action: 5
             ingredients:
               _serializedList: []
-          - Name: Orange_Slice
+          - Name: Orange Slice
             Amount: 1
             solid: 1
             Type: 2
             Color: {r: 10, g: 6, b: 0, a: 10}
-            AlcoholContent: 0
-            step:
-              order: 0
-              action: 3
-            ingredients:
-              _serializedList: []
-          - Name: Ice
-            Amount: 1
-            solid: 0
-            Type: 5
-            Color: {r: 0, g: 0.8183856, b: 1, a: 0}
-            AlcoholContent: 0
-            step:
-              order: 0
-              action: 3
-            ingredients:
-              _serializedList: []
-          maxScore: 100
-          expectedTime: 85
-          glassType: 0
-      - Key: Sidecar
-        Value:
-          Name: Sidecar
-          diffuculty: 6
-          ingredients:
-          - Name: Brandy
-            Amount: 2
-            solid: 0
-            Type: 0
-            Color: {r: 0.6698113, g: 0.3020718, b: 0, a: 0.5803922}
-            AlcoholContent: 0
-            step:
-              order: 0
-              action: 0
-            ingredients:
-              _serializedList: []
-          - Name: Brandy
-            Amount: 2
-            solid: 0
-            Type: 0
-            Color: {r: 0.6698113, g: 0.3020718, b: 0, a: 0.5803922}
-            AlcoholContent: 0
-            step:
-              order: 0
-              action: 0
-            ingredients:
-              _serializedList: []
-          - Name: Triple_sec
-            Amount: 0.75
-            solid: 0
-            Type: 0
-            Color: {r: 0.7830189, g: 0.2725167, b: 0, a: 0.6117647}
-            AlcoholContent: 0
-            step:
-              order: 0
-              action: 0
-            ingredients:
-              _serializedList: []
-          - Name: Lemon_Juice
-            Amount: 0.75
-            solid: 0
-            Type: 0
-            Color: {r: 10, g: 9, b: 1, a: 9}
-            AlcoholContent: 0
-            step:
-              order: 0
-              action: 0
-            ingredients:
-              _serializedList: []
-          - Name: Lemon_Twist
-            Amount: 1
-            solid: 1
-            Type: 2
-            Color: {r: 10, g: 9, b: 0, a: 10}
             AlcoholContent: 0
             step:
               order: 0

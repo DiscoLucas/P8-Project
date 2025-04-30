@@ -31,7 +31,8 @@ public class LiquidPourer : MonoBehaviour
     [SerializeField] protected float gravity = 9.81f;
     [SerializeField] protected LayerMask collisionLayers;
     //11 ml er second (Husk at gangee med deltatime)
-    [SerializeField] protected float pourAmount = 0.01f;
+    [Tooltip("The amount of liquid to pour per second. Normale rate is 11ml/s")]
+    [SerializeField] protected float pour_Amount = 11f;
     [Tooltip("Defines how strictly the liquid must hit the top of the glass to be considered valid. A value closer to 1 means only near-perfect top hits count, while lower values allow slight angles.")]
     [SerializeField] protected float hitThreashold = 0.5f;
     [SerializeField]
@@ -284,7 +285,8 @@ public class LiquidPourer : MonoBehaviour
                         if (pouredMixture != null)
                         {
                             float actialAmount = 0;
-                            glass.AddIngredient(pouredMixture, pourAmount, out actialAmount);
+                            float currentPourAmount = pour_Amount*Time.fixedDeltaTime;
+                            glass.AddIngredient(pouredMixture, currentPourAmount, out actialAmount);
                             if(lastGlass != glass)
                             {
                                 currentPourSessionAmout = 0f;
@@ -299,13 +301,13 @@ public class LiquidPourer : MonoBehaviour
                     }
                 } else if (deepleteWithooutConatiner){
                     // Deplete the liquid in the container
-                    liquidContainer.depleateLiqued(pourAmount);
+                    liquidContainer.depleateLiqued(pour_Amount);
                     if(lastGlass != glass)
                     {
                         currentPourSessionAmout = 0f;
                         lastGlass = glass;
                     }
-                    currentPourSessionAmout += pourAmount;
+                    currentPourSessionAmout += pour_Amount*Time.fixedDeltaTime;
 
                     // Update the fill amount text
                     if (fillamountText != null)
@@ -331,7 +333,7 @@ public class LiquidPourer : MonoBehaviour
     }
     internal virtual IngredientBase getIngredientBase()
     {
-        return liquidContainer.createPouredMixture(pourAmount);
+        return liquidContainer.createPouredMixture(pour_Amount);
     }
 
 
@@ -370,7 +372,7 @@ public class LiquidPourer : MonoBehaviour
     /// </summary>
     public void depleateLiqued()
     {
-        liquidContainer.depleateLiqued(pourAmount);
+        liquidContainer.depleateLiqued(pour_Amount);
     }
 
     internal IEnumerator HapticFeedbackRoutine(bool needToFireHaptic)

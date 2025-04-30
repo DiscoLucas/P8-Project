@@ -25,7 +25,6 @@ namespace Assets.Scripts.Drink_interaction
         public GameSettings gameSettings;
 
         [Header("Liquid")]
-        public float maxFillInMl = 300f;
         protected int lastCheckColorCount = 0;
 
         [SerializeField]
@@ -146,7 +145,7 @@ namespace Assets.Scripts.Drink_interaction
 
             int garnishCount = hasGarnish ? 1 : 0;
             float availableSpace = (maxFill+ garnishCount) - fillAmount;
-            actualAddedAmount = Mathf.Min(inputAmount, availableSpace);
+            actualAddedAmount = Mathf.Min(ConvertToInternalUnits(inputAmount), availableSpace);
 
             if (actualAddedAmount <= 0)
             {
@@ -155,8 +154,8 @@ namespace Assets.Scripts.Drink_interaction
                 Debug.Log($"Glass is full! Cannot add more {ingredient.Name}.");
                 return;
             }
-
-            fillAmount += actualAddedAmount;
+            if(ingredient.Type != IngredientType.Garnish)
+                fillAmount += actualAddedAmount;
 
             if (ingredients.ContainsKey(ingredient.Name))
                 ingredients[ingredient.Name].Amount += actualAddedAmount;
@@ -165,7 +164,7 @@ namespace Assets.Scripts.Drink_interaction
                 orderCounter++;
             }
             
-  
+            actualAddedAmount = ConvertToMilliliters(actualAddedAmount);
             updateLiquidDisplay();
             sendOneShotHaptic(fillHapticIntensity, fillHapticDuration);
                 
@@ -179,8 +178,8 @@ namespace Assets.Scripts.Drink_interaction
                 return null;
 
             float totalCurrentLiquid = fillAmount;
-            float actualPouredAmount = Mathf.Min(pourAmount, totalCurrentLiquid);
-
+            float actualPouredAmount = Mathf.Min(ConvertToInternalUnits(pourAmount), totalCurrentLiquid);
+            //If there is only one ingredient, pour it directly
             if (ingredients.Count == 1)
             {
                 IngredientBase singleIngredient = ingredients.Values.First();
@@ -191,9 +190,10 @@ namespace Assets.Scripts.Drink_interaction
                 {
                     ingredients.Remove(singleIngredient.Name);
                 }
-                return new IngredientBase(singleIngredient.Name, amountToPour, singleIngredient.Type, singleIngredient.Color, singleIngredient.AlcoholContent);
+                return new IngredientBase(singleIngredient.Name, ConvertToMilliliters(amountToPour), singleIngredient.Type, singleIngredient.Color, singleIngredient.AlcoholContent);
             }
 
+            //If there are multiple ingredients, create a mixture
             List<string> ingredientNames = new List<string>();
             IngredientBase pouredMixture = new IngredientBase("", 0, IngredientType.MixedLiquid, Color.clear);
             Vector4 sum= new Vector4(0, 0, 0, 0);
@@ -211,15 +211,16 @@ namespace Assets.Scripts.Drink_interaction
                 SerializedDictionary<string, IngredientBase> ingredientsList = pouredMixture.ingredients;
                 if (ingredientsList.ContainsKey(ingredient.Name))
                 {
-                    ingredientsList[ingredient.Name].Amount += amountToPour;
+                    ingredientsList[ingredient.Name].Amount += ConvertToInternalUnits(amountToPour);
                 }
                 else
                 {
                     IngredientBase ind = ingredient.copy();
+                    ind.Amount = ConvertToInternalUnits(amountToPour);
                     ingredientsList.Add(ind.Name,ind);
                 }
 
-                ingredient.Amount -= amountToPour;
+                ingredient.Amount -= ConvertToInternalUnits(amountToPour);
                 if(!ingredient.solid){
 
                     ingredientNames.Add(ingredient.Name);
@@ -303,6 +304,10 @@ namespace Assets.Scripts.Drink_interaction
                     orderedIngredients.RemoveAt(i);
                     i--;
                 }
+
+                if(orderedIngredients[i].Type != IngredientType.Garnish){
+                    orderedIngredients[i].Amount = ConvertToMilliliters(orderedIngredients[i].Amount);
+                }
             }
             return orderedIngredients;
         }
@@ -324,8 +329,7 @@ namespace Assets.Scripts.Drink_interaction
         }
 
         public float FillPercentage(){
-            int garnishCount = hasGarnish ? 1 : 0;
-            float fill = (fillAmount-iceCount-garnishCount)/ (maxFill-iceCount-garnishCount);
+            float fill = fillAmount/ maxFill;
             return fill; 
         }
 

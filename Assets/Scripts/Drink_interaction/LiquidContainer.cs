@@ -33,12 +33,12 @@ public class LiquidContainer : MonoBehaviour
         unitsPerMilliliter = maxFill / maxFillInMl;
         drinkOnStart();
     }
-    internal float ConvertToInternalUnits(float milliliters)
+    public float ConvertToInternalUnits(float milliliters)
     {
         return milliliters * unitsPerMilliliter;
     }
 
-    internal float ConvertToMilliliters(float internalUnits)
+    public float ConvertToMilliliters(float internalUnits)
     {
         return internalUnits / unitsPerMilliliter;
     }
@@ -99,35 +99,26 @@ public class LiquidContainer : MonoBehaviour
     public virtual void AddIngredient(IngredientBase ingredient, float inputAmount, out float actualAddedAmount)
     {
         actualAddedAmount = 0f;
-        if (ingredient.solid == false)
+
+        float availableSpace = maxFill - fillAmount;
+        actualAddedAmount = Mathf.Min(ConvertToInternalUnits(inputAmount), availableSpace);
+
+        if (actualAddedAmount <= 0)
         {
-            float availableSpace = maxFill - fillAmount;
-            actualAddedAmount = Mathf.Min(inputAmount, availableSpace);
-
-            if (actualAddedAmount <= 0)
-            {
-                Debug.Log($"Glass is full! Cannot add more {ingredient.Name}.");
-                return ;
-            }
-
-            fillAmount += actualAddedAmount;
-            Debug.Log($"Liquid added: {ingredient.Name} ({actualAddedAmount}ml). Total: {fillAmount}/{maxFill}");
-
-            if (ingredients.ContainsKey(ingredient.Name))
-                ingredients[ingredient.Name].Amount += actualAddedAmount;
-            else
-                ingredients[ingredient.Name] = new IngredientBase(ingredient.Name, actualAddedAmount, ingredient.Type, ingredient.Color, ingredient.AlcoholContent);
-
-            updateLiquidVisual();
+            Debug.Log($"Glass is full! Cannot add more {ingredient.Name}.");
+            return ;
         }
+
+        fillAmount += actualAddedAmount;
+        Debug.Log($"Liquid added: {ingredient.Name} ({actualAddedAmount}ml). Total: {fillAmount}/{maxFill}");
+
+        if (ingredients.ContainsKey(ingredient.Name))
+            ingredients[ingredient.Name].Amount += actualAddedAmount;
         else
-        {
-            if (ingredients.ContainsKey(ingredient.Name))
-                ingredients[ingredient.Name].Amount += inputAmount;
-            else
-                ingredients[ingredient.Name] = new IngredientBase(ingredient.Name, inputAmount, ingredient.Type, ingredient.Color);
+            ingredients[ingredient.Name] = new IngredientBase(ingredient.Name, actualAddedAmount, ingredient.Type, ingredient.Color, ingredient.AlcoholContent);
 
-        }
+        updateLiquidVisual();
+        
     }
 
     /// <summary>
