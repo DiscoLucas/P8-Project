@@ -60,6 +60,8 @@ MonoBehaviour:
   materialHaveBeenChange: 1
   xrGrabInteractable: {fileID: 5171437789061155944}
   ingridentTextDisplay: {fileID: 3920233178741069170}
+  unitsPerMilliliter: 0.01
+  maxFillInMl: 300
   ingredient:
     Name: Ameretto
     Amount: 0
@@ -89,6 +91,7 @@ MonoBehaviour:
   liquidContainer: {fileID: 7894054207400921220}
   particles: {fileID: 218107624421349630}
   pourPoint: {fileID: 6332876790227298599}
+  deepleteWithooutConatiner: 0
   pourMultiplier: 1
   pourThreshold: 80
   arcResolution: 60
@@ -97,7 +100,7 @@ MonoBehaviour:
   collisionLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  pourAmount: 0.01
+  pour_Amount: 11
   hitThreashold: 0.5
   pourSpeed: 0
   fillamountText: {fileID: 3337775939708546827}
@@ -327,6 +330,7 @@ MonoBehaviour:
   gameSettings: {fileID: 0}
   spawnPoint: {fileID: 0}
   middelpoint: {fileID: 0}
+  collidedWithFloor: 0
 --- !u!82 &8444662045925322150
 AudioSource:
   m_ObjectHideFlags: 0
