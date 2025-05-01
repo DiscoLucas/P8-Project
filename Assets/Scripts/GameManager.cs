@@ -315,23 +315,40 @@ public class GameManager : SingletonPersistent<GameManager>
             // Scene is loaded, but not activated yet
             asyncLoad.allowSceneActivation = true;
             Debug.Log($"FSM: Scene '{sceneName}' loaded.");
+            yield return null;
             break;
         }
         yield return null;
     }
 
+        loadingSpace = findLoadningSpace();
 
-    // Fade out the loading screen
-    if (loadingSpace != null)
+        // Fade out the loading screen
+        if (loadingSpace != null)
     {
         float fadeDuration = gameSettings.fadeDuration;
         for (float t = 0; t < fadeDuration; t += Time.unscaledDeltaTime)
         {
-            loadingSpace.material.color = Color.Lerp(Color.black, transparentBlack, t / fadeDuration);
-            yield return null;
+            try {
+                    loadingSpace.material.color = Color.Lerp(Color.black, transparentBlack, t / fadeDuration);
+            }
+                catch (Exception e)
+                {
+                   break;
+                }
+
+                yield return null;
         }
-        loadingSpace.material.color = transparentBlack;
-        loadingSpace.gameObject.SetActive(false);
+            try
+            {
+                loadingSpace.material.color = transparentBlack;
+                loadingSpace.gameObject.SetActive(false);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Loading space not found. Loading without fade effect.");
+            }
+        
     }
 
     // Trigger FSM transition
