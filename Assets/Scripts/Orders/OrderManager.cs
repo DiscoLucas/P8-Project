@@ -54,13 +54,15 @@ public class OrderManager : MonoBehaviour
             gameSettings = GameManager.Instance.gameSettings;
         else
             Debug.LogError("Game settings have not been assigned in the inspector.");
+
+        GameManager.Instance.onGameStart.AddListener(createOrder);
+        GameManager.Instance.onGameStart.AddListener(onGameStart);
        
     }
 
     private void OnEnable()
     {
-        GameManager.Instance.onGameStart.AddListener(createOrder);
-        GameManager.Instance.onGameStart.AddListener(onGameStart);
+
     }
 
     private void OnDisable()
@@ -138,7 +140,8 @@ public class OrderManager : MonoBehaviour
     [ContextMenu("Generate New Order")]
     public void createOrder()
     {
-        recipeManager.setAndFireMarker("Create order");
+        try{recipeManager.setAndFireMarker("Create order");} catch(System.Exception e){Debug.LogError("Error in order creation: " + e.Message);}
+            
         Debug.Log("Creating new order");
         if (availableSpawnPoints.Count <= 0){
             Debug.Log("No available spawn points for new order.");
