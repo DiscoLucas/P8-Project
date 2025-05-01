@@ -19,4 +19,14 @@ public class HandAnimationController : MonoBehaviour
         handAni.SetFloat("Grab", grabVal);
     }
 
+    void FixedUpdate()
+    {
+        ResetHandAnimation();
+    }
+    public void ResetHandAnimation()
+    {
+        handAni.SetFloat("Pintch", 0f);
+        handAni.SetFloat("Grab", 0f);
+    }
+
 }
