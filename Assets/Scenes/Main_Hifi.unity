@@ -34,7 +34,7 @@ RenderSettings:
   m_SpotCookie: {fileID: 10001, guid: 0000000000000000e000000000000000, type: 0}
   m_DefaultReflectionMode: 0
   m_DefaultReflectionResolution: 512
-  m_ReflectionBounces: 3
+  m_ReflectionBounces: 2
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1268857713}
@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: 082a988c967c10c4e939a36a6f3cc20c, type: 2}
+  m_LightingDataAsset: {fileID: 112000000, guid: 7b878c72b18d5d65ba7ded40a9fc6f59, type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: 4a5cc3ff61c40ae6d89342eb32fc965a, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -15609,6 +15609,52 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2706797473093685149, guid: 54fefc8de84c998479c5d51f0f43bfb3, type: 3}
   m_PrefabInstance: {fileID: 1025214188}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1747886140
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1747886142}
+  - component: {fileID: 1747886141}
+  m_Layer: 0
+  m_Name: Steam Audio Static Mesh
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1747886141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1747886140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8173b2a8dbe2d2d48995bb2ba9a49ff1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  asset: {fileID: 11400000, guid: 8490e297b7c24a2f08d931d2ff15e04c, type: 2}
+  sceneNameWhenExported: Main_Hifi
+--- !u!4 &1747886142
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1747886140}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1753396582
 GameObject:
   m_ObjectHideFlags: 0
@@ -20375,3 +20421,4 @@ SceneRoots:
   - {fileID: 205232325}
   - {fileID: 8038935058151864997}
   - {fileID: 1481220764}
+  - {fileID: 1747886142}
