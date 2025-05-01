@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 1417416859832869957}
   - component: {fileID: 7713761904855266876}
   - component: {fileID: -1453043563560659911}
+  - component: {fileID: 8286239161144458673}
   m_Layer: 20
   m_Name: Stirring Spoon
   m_TagString: Untagged
@@ -309,7 +310,7 @@ AudioSource:
   m_GameObject: {fileID: 3346479498654514216}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 474551606755464513, guid: c11f044c1a705e53b829b62ef4f19f5d, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
@@ -317,7 +318,7 @@ AudioSource:
   m_Pitch: 1
   Loop: 0
   Mute: 0
-  Spatialize: 0
+  Spatialize: 1
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
@@ -397,6 +398,29 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8286239161144458673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3346479498654514216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d22efc58951b56cc9209d8d3b8a5947, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  randomLayers: 0
+  velocityLayers:
+  - layerName: 
+    minVelocity: 0.7
+    maxVelocity: 3
+    samples:
+    - {fileID: 8300000, guid: 1233fd0095904ec4bbb6d162071306d3, type: 3}
+  debugLog: 0
+  minVolume: 0.1
+  maxVolume: 1
+  maxScalingVelocity: 10
 --- !u!1 &7268439855043682715
 GameObject:
   m_ObjectHideFlags: 0

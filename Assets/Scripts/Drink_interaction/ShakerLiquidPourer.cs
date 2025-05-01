@@ -1,4 +1,5 @@
 using Assets.Scripts.Ingridence;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
@@ -140,6 +141,8 @@ public class ShakerLiquidPourer : LiquidPourer
         if (strainer)
         {
             IngredientBase ingredientBase = base.getIngredientBase();
+            if (ingredientBase == null)
+                return base.getIngredientBase();
             ingredientBase.step.action = DrinkAction.Strained;
             return ingredientBase;
         }

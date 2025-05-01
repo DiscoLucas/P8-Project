@@ -482,6 +482,7 @@ GameObject:
   - component: {fileID: 2335455714566932885}
   - component: {fileID: 1248875990432968789}
   - component: {fileID: 8434378074089329005}
+  - component: {fileID: 528597777291865488}
   m_Layer: 0
   m_Name: GlassHighball
   m_TagString: Glass
@@ -726,7 +727,6 @@ MonoBehaviour:
   unitsPerMilliliter: 0.01
   maxFillInMl: 350
   gameSettings: {fileID: 0}
-  maxFillInMl: 300
   outputColor: {r: 1, g: 1, b: 1, a: 1}
   glassType: 0
   garnish: {fileID: 0}
@@ -807,7 +807,7 @@ AudioSource:
   m_GameObject: {fileID: 4853984616962189934}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 474551606755464513, guid: c11f044c1a705e53b829b62ef4f19f5d, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
@@ -815,7 +815,7 @@ AudioSource:
   m_Pitch: 1
   Loop: 0
   Mute: 0
-  Spatialize: 0
+  Spatialize: 1
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
@@ -895,6 +895,88 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &528597777291865488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853984616962189934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59c3684b22f00604a97bb68037fcf4cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  directBinaural: 1
+  interpolation: 0
+  perspectiveCorrection: 0
+  distanceAttenuation: 1
+  distanceAttenuationInput: 0
+  distanceAttenuationValue: 1
+  airAbsorption: 0
+  airAbsorptionInput: 0
+  airAbsorptionLow: 1
+  airAbsorptionMid: 1
+  airAbsorptionHigh: 1
+  directivity: 0
+  directivityInput: 0
+  dipoleWeight: 0
+  dipolePower: 0
+  directivityValue: 1
+  occlusion: 1
+  occlusionInput: 0
+  occlusionType: 0
+  occlusionRadius: 1
+  occlusionSamples: 16
+  occlusionValue: 1
+  transmission: 0
+  transmissionType: 0
+  transmissionInput: 0
+  transmissionLow: 1
+  transmissionMid: 1
+  transmissionHigh: 1
+  maxTransmissionSurfaces: 1
+  directMixLevel: 1
+  reflections: 0
+  reflectionsType: 0
+  useDistanceCurveForReflections: 0
+  currentBakedSource: {fileID: 0}
+  reverbTimeLow: 0
+  reverbTimeMid: 0
+  reverbTimeHigh: 0
+  hybridReverbEQLow: 1
+  hybridReverbEQMid: 1
+  hybridReverbEQHigh: 1
+  hybridReverbDelay: 0
+  applyHRTFToReflections: 0
+  reflectionsMixLevel: 1
+  pathing: 0
+  pathingProbeBatch: {fileID: 0}
+  pathValidation: 1
+  findAlternatePaths: 1
+  pathingEQ:
+  - 1
+  - 1
+  - 1
+  pathingSH:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  applyHRTFToPathing: 0
+  pathingMixLevel: 1
 --- !u!1 &5957247925458544653
 GameObject:
   m_ObjectHideFlags: 0

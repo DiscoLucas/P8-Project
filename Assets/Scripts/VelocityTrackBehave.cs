@@ -29,8 +29,8 @@ public class VelocityTrackBehave : MonoBehaviour
         }
         int randomIndex = Random.Range(0, spoonPlaceSounds.Count);
         AudioClip randomSound = spoonPlaceSounds[randomIndex];
-        audioSource.PlayOneShot(randomSound, spoonVolume);
+        //audioSource.PlayOneShot(randomSound, spoonVolume);
         audioSource.pitch = Random.Range(minPitch, maxPitch);
-        audioSource.PlayOneShot(spoonPlaceSound, spoonVolume);
+        //audioSource.PlayOneShot(spoonPlaceSound, spoonVolume);
     }
 }
