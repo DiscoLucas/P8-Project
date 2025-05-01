@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 using System.Threading.Tasks;
 using System;
-
+[DefaultExecutionOrder(-1)]
 public class GameManager : SingletonPersistent<GameManager>
 {
     [Header("Game settings")]

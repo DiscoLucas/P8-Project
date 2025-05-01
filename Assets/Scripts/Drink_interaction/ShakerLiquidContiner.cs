@@ -50,7 +50,6 @@ public class ShakerLiquidContiner : LiquidContainerLimited
         if(pouringSession && hapticCoroutine != null){
                 pouringSession = false;
         }
-        Debug.Log($"FixedUpdate: newIngredientsNeedShaking: {newIngredientsNeedShaking}, shakeCount: {shakeCount}");
         if (newIngredientsNeedShaking && shakerLiquidPourer != null && shakerLiquidPourer.canShake())
         {
             Debug.Log("Shake detected in FixedUpdate!");

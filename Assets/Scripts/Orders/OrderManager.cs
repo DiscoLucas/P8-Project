@@ -56,7 +56,9 @@ public class OrderManager : MonoBehaviour
             Debug.LogError("Game settings have not been assigned in the inspector.");
 
         GameManager.Instance.onGameStart.AddListener(createOrder);
+        Debug.Log("Subsribed to game start event.");
         GameManager.Instance.onGameStart.AddListener(onGameStart);
+        Debug.Log("Subsribed to game start event.");
        
     }
 
@@ -72,6 +74,7 @@ public class OrderManager : MonoBehaviour
     }
 
     public void onGameStart(){
+        Debug.Log("Game started, starting order generation.");
          StartCoroutine(TrackRoundTime());
     }
     /// <summary>
