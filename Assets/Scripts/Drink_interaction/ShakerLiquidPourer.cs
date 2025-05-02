@@ -1,3 +1,4 @@
+using Assets.Scripts.Drink_interaction;
 using Assets.Scripts.Ingridence;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -162,5 +163,12 @@ public class ShakerLiquidPourer : LiquidPourer
         if (liquidContainer != null)
             haveEnoughtLiqquid = liquidContainer.canPoourer();
         return isPouring && haveEnoughtLiqquid && (strainer || !(lower_cap && upper_cap));
+    }
+
+    public override void clearContainer()
+    {
+        liquidContainer.ingredients.Clear();
+        LiquidContainerLimited lc = liquidContainer as LiquidContainerLimited;
+        lc.clearIce();
     }
 }

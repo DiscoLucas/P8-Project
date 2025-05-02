@@ -32,14 +32,6 @@ public class MainMenuUIController : MonoBehaviour
         errorText.gameObject.SetActive(false);
         startButton.onClick.AddListener(HandleStartExperiment);
 
-        // Session Number Setup
-#if UNITY_EDITOR
-        // In Editor, force session number to 1 and disable controls
-        sessionNumberField.text = "1";
-        sessionNumberField.interactable = false;
-        incrementSessionButton.interactable = false;
-        decrementSessionButton.interactable = false;
-#else
         // In Build, initialize to 1 and enable controls
         sessionNumberField.text = "1";
         sessionNumberField.interactable = true; // Ensure interactable in build
@@ -49,7 +41,6 @@ public class MainMenuUIController : MonoBehaviour
         incrementSessionButton.onClick.AddListener(IncrementSessionNumber);
         sessionNumberField.onValueChanged.AddListener(ValidateSessionNumberInput); // Add listener for direct input validation
         UpdateDecrementButtonState(1); // Initial state check for decrement button
-#endif
 
         if (loadingOverlay) loadingOverlay.SetActive(false);
     }
