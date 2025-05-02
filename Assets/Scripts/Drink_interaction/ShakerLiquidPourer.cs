@@ -22,7 +22,7 @@ public class ShakerLiquidPourer : LiquidPourer
     [SerializeField] protected Transform pourPointClosed;
 
     [Header("Shacker Lid Sounds")]
-    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioSource shaker_audioSource;
     [SerializeField] AudioClip lidCloseSound;
     [SerializeField] AudioClip lidOpenSound;
     [SerializeField] AudioClip capCloseSound;
@@ -78,8 +78,8 @@ public class ShakerLiquidPourer : LiquidPourer
         else
         {
             set_lower_cap(true);
-            audioSource.pitch = Random.Range(shackerLidsMinPitch, shackerLidsMaxPitch);
-            audioSource.PlayOneShot(capCloseSound, shackerLidsVolume);
+            shaker_audioSource.pitch = Random.Range(shackerLidsMinPitch, shackerLidsMaxPitch);
+            shaker_audioSource.PlayOneShot(capCloseSound, shackerLidsVolume);
             Debug.Log("Strainer detached.");
         }
     }
@@ -89,22 +89,22 @@ public class ShakerLiquidPourer : LiquidPourer
         set_lower_cap(false);
         set_strainer(false);
         set_lower_cap(false);
-        audioSource.pitch = Random.Range(shackerLidsMinPitch, shackerLidsMaxPitch);
-        audioSource.PlayOneShot(capOpenSound, shackerLidsVolume);
+        shaker_audioSource.pitch = Random.Range(shackerLidsMinPitch, shackerLidsMaxPitch);
+        shaker_audioSource.PlayOneShot(capOpenSound, shackerLidsVolume);
     }
 
     private void OnUpperSocketSelectEntered(SelectEnterEventArgs args)
     {
         set_upper_cap(true);
-        audioSource.pitch = Random.Range(shackerLidsMinPitch, shackerLidsMaxPitch);
-        audioSource.PlayOneShot(lidCloseSound, shackerLidsVolume);
+        shaker_audioSource.pitch = Random.Range(shackerLidsMinPitch, shackerLidsMaxPitch);
+        shaker_audioSource.PlayOneShot(lidCloseSound, shackerLidsVolume);
     }
 
     private void OnUpperSocketSelectExited(SelectExitEventArgs args)
     {
         set_upper_cap(false);
-        audioSource.pitch = Random.Range(shackerLidsMinPitch, shackerLidsMaxPitch);
-        audioSource.PlayOneShot(lidOpenSound, shackerLidsVolume);
+        shaker_audioSource.pitch = Random.Range(shackerLidsMinPitch, shackerLidsMaxPitch);
+        shaker_audioSource.PlayOneShot(lidOpenSound, shackerLidsVolume);
     }
 
     public void set_lower_cap(bool value)
@@ -167,8 +167,8 @@ public class ShakerLiquidPourer : LiquidPourer
 
     public override void clearContainer()
     {
-        liquidContainer.ingredients.Clear();
+      /*  liquidContainer.ingredients.Clear();
         LiquidContainerLimited lc = liquidContainer as LiquidContainerLimited;
-        lc.clearIce();
+        lc.clearIce();*/
     }
 }

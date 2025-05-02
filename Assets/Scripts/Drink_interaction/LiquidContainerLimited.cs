@@ -165,8 +165,6 @@ namespace Assets.Scripts.Drink_interaction
                 Debug.Log($"Glass is full! Cannot add more {ingredient.Name}.");
                 return;
             }
-            if(ingredient.Type != IngredientType.Garnish)
-                fillAmount += actualAddedAmount;
 
             if (ingredients.ContainsKey(ingredient.Name))
                 ingredients[ingredient.Name].Amount += actualAddedAmount;
@@ -175,7 +173,7 @@ namespace Assets.Scripts.Drink_interaction
                 ingredients[ingredient.Name].Amount = actualAddedAmount;
                 orderCounter++;
             }
-            
+            fillAmount += actualAddedAmount;
             actualAddedAmount = ConvertToMilliliters(actualAddedAmount);
             updateLiquidDisplay();
             sendOneShotHaptic(fillHapticIntensity, fillHapticDuration);
@@ -482,7 +480,13 @@ namespace Assets.Scripts.Drink_interaction
             if(iceFill.childCount > 0 || iceFill.childCount < (iceCount+1)){
                 iceCount++;
                 iceFill.GetChild(iceCount).gameObject.SetActive(true);
-                AddIngredient(ice, ice.Amount, out float actualAddedAmount);
+                if(ingredients.ContainsKey(ice.Name)){
+                    ingredients[ice.Name].Amount += ConvertToInternalUnits(ice.Amount);
+                }else{
+                    ingredients[ice.Name] = ice.copy();
+                    ingredients[ice.Name].Amount = ConvertToInternalUnits(ice.Amount);
+                }
+                //AddIngredient(ice, ice.Amount, out float actualAddedAmount);
                 int randomIndex = UnityEngine.Random.Range(0, iceSounds.Count);
                 iceSound = iceSounds[randomIndex];
                 audioSource.clip = iceSound;
