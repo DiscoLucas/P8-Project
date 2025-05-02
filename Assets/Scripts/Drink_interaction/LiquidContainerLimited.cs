@@ -74,42 +74,42 @@ namespace Assets.Scripts.Drink_interaction
         [SerializeField] float minPitch = 0.8f;
         [SerializeField] AudioSource audioSource;
 
-        public virtual void setGarnish(GameObject garnish)
+        public virtual void setGarnish(GameObject new_garnish)
         {
-            GarnishContainer gc = garnish.GetComponent<GarnishContainer>();
+            GarnishContainer gc = new_garnish.GetComponent<GarnishContainer>();
             IngredientBase ib;
             if (gc != null)
             {
                 ib = gc.ingredientScribtiableObject.ingredientBase.copy();
             }else{
-                ib = new IngredientBase(garnish.name, 1, IngredientType.Garnish, Color.white);
+                ib = new IngredientBase(new_garnish.name, 1, IngredientType.Garnish, Color.white);
                 Debug.Log("Garnish not found, using default: " + ib.Name);
             }
             ib.solid = true;
             garnishIngredient = ib;
-            AddIngredient(ib, 1);
+            AddIngredient(ib, 30);
 
-            Debug.Log("Garnish set: " + garnish.name);
-            this.garnish = garnish;
-            garnish.transform.SetParent(this.transform);
+            Debug.Log("Garnish set: " + new_garnish.name);
+            this.garnish = new_garnish;
 
-            //Orientation & Freezing
-            garnish.transform.SetParent(garnishPoint);
-            garnish.transform.localPosition = Vector3.zero;
 
-            if(garnish.gameObject.TryGetComponent<XRGrabInteractable>(out XRGrabInteractable grab))
+            if(new_garnish.gameObject.TryGetComponent<XRGrabInteractable>(out XRGrabInteractable grab))
             {
                 Destroy(grab);
             }
-            if(garnish.gameObject.TryGetComponent<Rigidbody>(out Rigidbody rb))
+            if(new_garnish.gameObject.TryGetComponent<Rigidbody>(out Rigidbody rb))
             {
                 Destroy(rb);
             }
-            if(garnish.gameObject.TryGetComponent<Collider>(out Collider col))
+            if(new_garnish.gameObject.TryGetComponent<Collider>(out Collider col))
             {
                 Destroy(col);
             }
             hasGarnish = true;
+
+            //Orientation & Freezing
+            new_garnish.transform.parent = garnishPoint;
+            new_garnish.transform.localPosition = Vector3.zero;
         }
 
         public void clearIce(){
@@ -153,9 +153,12 @@ namespace Assets.Scripts.Drink_interaction
                 Debug.LogWarning("Input amount must be greater than 0.");
                 return;
             }
+            if(ingredient.Type == IngredientType.Garnish){
+                Debug.Log("[GARNISH] Adding ingredient: " + ingredient.Name + " amount: " + inputAmount);
+            }
 
             int garnishCount = hasGarnish ? 1 : 0;
-            float availableSpace = (maxFill+ garnishCount) - fillAmount;
+            float availableSpace = maxFill - fillAmount;
             actualAddedAmount = Mathf.Min(ConvertToInternalUnits(inputAmount), availableSpace);
 
             if (actualAddedAmount <= 0)
@@ -166,15 +169,19 @@ namespace Assets.Scripts.Drink_interaction
                 return;
             }
 
-            if (ingredients.ContainsKey(ingredient.Name))
+            if (ingredients.ContainsKey(ingredient.Name)){
                 ingredients[ingredient.Name].Amount += actualAddedAmount;
+                Debug.Log("[Add ingredient]Adding to ingredient: " + ingredient.Name + " order: " + orderCounter);
+            }
             else {
                 ingredients[ingredient.Name] = ingredient.copy();
                 ingredients[ingredient.Name].Amount = actualAddedAmount;
                 orderCounter++;
+                Debug.Log("[Add ingredient]Adding ingredient: " + ingredient.Name + " order: " + orderCounter);
             }
             fillAmount += actualAddedAmount;
             actualAddedAmount = ConvertToMilliliters(actualAddedAmount);
+            Debug.Log($"[Add ingredient]Liquid added: {ingredient.Name} ({actualAddedAmount}ml). Total: {fillAmount}/{maxFill}");
             updateLiquidDisplay();
             sendOneShotHaptic(fillHapticIntensity, fillHapticDuration);
                 
@@ -219,6 +226,7 @@ namespace Assets.Scripts.Drink_interaction
                     // If emptied, remove the ingredient entry entirely
                     if (ingredients[pouredMixture.Name].Amount <= 0)
                     {
+                        Debug.Log($"[Removing ingreidents] Ingredient emptied: {pouredMixture.Name}");
                         ingredients.Remove(pouredMixture.Name);
                     }
                 }
@@ -252,6 +260,7 @@ namespace Assets.Scripts.Drink_interaction
                     if(ingredient == null)
                         continue;
                     if (fillAmount <= 0){
+                        Debug.Log($"[Removing ingreidents] was flagged because fill amount is 0 or less: {kvp.Key}");
                         removeKeys.Add(kvp.Key);
                         continue;
                     }
@@ -269,19 +278,22 @@ namespace Assets.Scripts.Drink_interaction
                         IngredientBase ind = ingredient.copy();
                         ingredientsList.Add(ind.Name,ind);
                     }
-
-                    ingredient.Amount -= subtractAmount;
+                    if(removeAmount)
+                        ingredient.Amount -= subtractAmount;
 
                     if(ingredient.Amount <= 0)
                     {
+                        Debug.Log($"[Removing ingreidents] ingriedent was flagged because it was less then zero: {kvp.Key} amount: {ingredient.Amount}");
                         removeKeys.Add(kvp.Key);
                     }
                     color = new Color(color.r + (ingredient.Color.r * coloramout), color.g + (ingredient.Color.g * coloramout), color.b + (ingredient.Color.b * coloramout), color.a + (ingredient.Color.a * coloramout));
+                    pouredMixture.ingredients = ingredientsList;
                 }
 
                 // Remove any emptied ingredients from the container
                 foreach (string key in removeKeys)
                 {
+                    Debug.Log($"[Removing ingreidents] Ingredient emptied: {key}");
                     ingredients.Remove(key);
                 }
 
@@ -290,7 +302,8 @@ namespace Assets.Scripts.Drink_interaction
                 pouredMixture.Color = color;
 
                 // Reduce container's fill amount by poured internal units
-                fillAmount = MathF.Max(0, fillAmount - internalUnitPourAmount);
+                if(removeAmount)
+                    fillAmount = MathF.Max(0, fillAmount - internalUnitPourAmount);
             }
 
             // Cleanup: if container is emptied, remove any zero or null ingredients
@@ -480,12 +493,7 @@ namespace Assets.Scripts.Drink_interaction
             if(iceFill.childCount > 0 || iceFill.childCount < (iceCount+1)){
                 iceCount++;
                 iceFill.GetChild(iceCount).gameObject.SetActive(true);
-                if(ingredients.ContainsKey(ice.Name)){
-                    ingredients[ice.Name].Amount += ConvertToInternalUnits(ice.Amount);
-                }else{
-                    ingredients[ice.Name] = ice.copy();
-                    ingredients[ice.Name].Amount = ConvertToInternalUnits(ice.Amount);
-                }
+                AddIngredient(ice, ice.Amount, out float actualAddedAmount);
                 //AddIngredient(ice, ice.Amount, out float actualAddedAmount);
                 int randomIndex = UnityEngine.Random.Range(0, iceSounds.Count);
                 iceSound = iceSounds[randomIndex];
