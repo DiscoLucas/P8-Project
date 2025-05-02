@@ -226,8 +226,29 @@ public class GameManager : SingletonPersistent<GameManager>
         // recipeManager?.gameObject.SetActive(true);
         Time.timeScale = 1f;
         isPaused = false;
-        onGameStart.Invoke(); // Invoke game start event *after* scene is loaded and state entered
+
+
+        StartCoroutine(DelayedGameStart()); // Invoke game start event *after* scene is loaded and state entered
     }
+    public void readyToStartGame()
+    {
+        readyToStart = true;
+    }
+
+    bool readyToStart = false;
+    private IEnumerator DelayedGameStart()
+    {
+        yield return new WaitForSeconds(0.5f); // Wait for a short duration to ensure everything is set up
+        while (!readyToStart)
+        {
+            yield return null; // Wait until the game is ready to start
+        }
+        Debug.Log("Invoke the on game start event.");
+        onGameStart.Invoke();
+        yield return null;
+        
+    }
+
 
     private void PauseGame(State<string, string> state)
     {
