@@ -12,6 +12,7 @@ using UnityEngine.XR.Interaction.Toolkit.Inputs.Haptics;
 using Unity.VisualScripting;
 using System;
 using UnityEngine.InputSystem.XR.Haptics;
+using System.ComponentModel;
 public class LiquidPourer : MonoBehaviour
 {
     [Header("Game settings")]
@@ -32,7 +33,7 @@ public class LiquidPourer : MonoBehaviour
     [SerializeField] protected LayerMask collisionLayers;
     //11 ml er second (Husk at gangee med deltatime)
     [Tooltip("The amount of liquid to pour per second. Normale rate is 11ml/s")]
-    [SerializeField] protected float pour_Amount = 11f;
+    [SerializeField] protected float pour_Amount_ = 30f;
     [Tooltip("Defines how strictly the liquid must hit the top of the glass to be considered valid. A value closer to 1 means only near-perfect top hits count, while lower values allow slight angles.")]
     [SerializeField] protected float hitThreashold = 0.5f;
     [SerializeField]
@@ -155,6 +156,7 @@ public class LiquidPourer : MonoBehaviour
             calculatePouringSpeed();
             emitParticles();
             detectCollision();
+            cleanContainer();
             playAudio();
             
             if (hapticCoroutine == null)
@@ -173,6 +175,11 @@ public class LiquidPourer : MonoBehaviour
             stopHapticFeedback();
             currentPourSessionAmout = 0f;
         }
+    }
+
+    private void cleanContainer()
+    {
+        liquidContainer.cleanContainer();
     }
 
     internal void stopHapticFeedback()
@@ -281,12 +288,14 @@ public class LiquidPourer : MonoBehaviour
                     if (Vector3.Dot(hit.normal, glassUp) > hitThreashold)
                     {
                         IngredientBase pouredMixture = getIngredientBase();
-                        Debug.Log("Pouring into glass: " + glass?.name + " pour mixture: " + pouredMixture?.Name);
+                        
                         if (pouredMixture != null)
                         {
                             float actialAmount = 0;
-                            float currentPourAmount = pour_Amount*Time.fixedDeltaTime;
+                            float currentPourAmount = pour_Amount_*Time.fixedDeltaTime;
                             glass.AddIngredient(pouredMixture, currentPourAmount, out actialAmount);
+                            Debug.Log($"[DEBUG] pour_Amount_: {pour_Amount_}, Time.fixedDeltaTime: {Time.fixedDeltaTime}, currentPourAmount: {currentPourAmount}");
+                            Debug.Log("Pouring into glass: " + glass?.name + " pour mixture: " + pouredMixture?.Name + " amount: " + actialAmount + " currentPourAmount: " + currentPourAmount);
                             if(lastGlass != glass)
                             {
                                 currentPourSessionAmout = 0f;
@@ -297,17 +306,18 @@ public class LiquidPourer : MonoBehaviour
                             {
                                 ShowFillAmountText($"Pouring: {currentPourSessionAmout:F2}ml");
                             }
+                            Debug.Log($"[DEBUG] Adding ingredient: {pouredMixture?.Name}, currentPourAmount: {currentPourAmount}, actualAmount: {actialAmount}");
                         }
                     }
                 } else if (deepleteWithooutConatiner){
                     // Deplete the liquid in the container
-                    liquidContainer.depleateLiqued(pour_Amount);
+                    liquidContainer.depleateLiqued(pour_Amount_);
                     if(lastGlass != glass)
                     {
                         currentPourSessionAmout = 0f;
                         lastGlass = glass;
                     }
-                    currentPourSessionAmout += pour_Amount*Time.fixedDeltaTime;
+                    currentPourSessionAmout += pour_Amount_*Time.fixedDeltaTime;
 
                     // Update the fill amount text
                     if (fillamountText != null)
@@ -333,7 +343,9 @@ public class LiquidPourer : MonoBehaviour
     }
     internal virtual IngredientBase getIngredientBase()
     {
-        return liquidContainer.createPouredMixture(pour_Amount);
+        IngredientBase pouredMixture = liquidContainer.createPouredMixture(pour_Amount_*Time.fixedDeltaTime, true);
+        Debug.Log($"[DEBUG] Poured mixture: {pouredMixture?.Name}, Amount: {pouredMixture?.Amount}");
+        return pouredMixture;
     }
 
 
@@ -372,7 +384,7 @@ public class LiquidPourer : MonoBehaviour
     /// </summary>
     public void depleateLiqued()
     {
-        liquidContainer.depleateLiqued(pour_Amount);
+        liquidContainer.depleateLiqued(pour_Amount_);
     }
 
     internal IEnumerator HapticFeedbackRoutine(bool needToFireHaptic)

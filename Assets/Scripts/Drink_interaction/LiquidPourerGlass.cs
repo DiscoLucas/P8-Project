@@ -49,7 +49,7 @@ public class LiquidPourerGlass : LiquidPourer
             LiquidContainerLimited targetContainer = hit.collider.GetComponent<LiquidContainerLimited>();
             if (targetContainer != null)
             {
-                IngredientBase pouredMixture = liquidContainer.createPouredMixture(transferAmount);
+                IngredientBase pouredMixture = liquidContainer.createPouredMixture(transferAmount,true);
                 if (pouredMixture != null)
                 {
                     targetContainer.AddIngredient(pouredMixture, transferAmount);

@@ -17,7 +17,7 @@ public class ShakerLiquidContiner : LiquidContainerLimited
     private Vector3 lastDirection;
 
     [Header("Shacker Audio or smthin")]
-    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioSource shakeaudioSource;
     [SerializeField] AudioClip shakeSound;
     [SerializeField] float shakeVolume = 1f;
     [SerializeField] float shackerMaxPitch = 1.2f;
@@ -72,12 +72,12 @@ public class ShakerLiquidContiner : LiquidContainerLimited
             Debug.Log($"Shake detected! Count: {shakeCount}");
 
             // Play audio
-            if (!audioSource.isPlaying) // Prevent overlapping
+            if (!shakeaudioSource.isPlaying) // Prevent overlapping
             {
-                audioSource.clip = shakeSound;
-                audioSource.volume = shakeVolume;
-                audioSource.pitch = Random.Range(shackerMinPitch, shackerMaxPitch);
-                audioSource.PlayOneShot(shakeSound);
+                shakeaudioSource.clip = shakeSound;
+                shakeaudioSource.volume = shakeVolume;
+                shakeaudioSource.pitch = Random.Range(shackerMinPitch, shackerMaxPitch);
+                shakeaudioSource.PlayOneShot(shakeSound);
             }
 
             // Haptic feedback

@@ -138,15 +138,21 @@ public class ShakerLiquidPourer : LiquidPourer
 
     internal override IngredientBase getIngredientBase()
     {
+        // Call base.getIngredientBase() only once and store the result
+        IngredientBase ingredientBase = base.getIngredientBase();
+
+        // If no ingredient base is returned, exit early
+        if (ingredientBase == null)
+            return null;
+
+
+        // If the strainer is active, modify the action to "Strained"
         if (strainer)
         {
-            IngredientBase ingredientBase = base.getIngredientBase();
-            if (ingredientBase == null)
-                return base.getIngredientBase();
             ingredientBase.step.action = DrinkAction.Strained;
-            return ingredientBase;
         }
-        return base.getIngredientBase();
+
+        return ingredientBase;
     }
 
     override internal bool isPouring()
@@ -155,6 +161,6 @@ public class ShakerLiquidPourer : LiquidPourer
         bool haveEnoughtLiqquid = false;
         if (liquidContainer != null)
             haveEnoughtLiqquid = liquidContainer.canPoourer();
-        return isPouring && haveEnoughtLiqquid && !(upper_cap && !strainer);
+        return isPouring && haveEnoughtLiqquid && (strainer || !(lower_cap && upper_cap));
     }
 }

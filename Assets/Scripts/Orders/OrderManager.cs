@@ -69,6 +69,8 @@ public class OrderManager : MonoBehaviour
 
     private void OnDisable()
     {
+        if (GameManager.Instance == null) return;
+        
         GameManager.Instance.onGameStart.RemoveListener(createOrder);
         GameManager.Instance.onGameStart.RemoveListener(onGameStart);
     }

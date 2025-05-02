@@ -74,11 +74,8 @@ namespace Assets.Scripts.Drink_interaction
             }
         }
 
-        public override IngredientBase createPouredMixture(float pourAmount)
+        public override IngredientBase createPouredMixture(float pourAmount,bool removeAmount)
         {
-            if (fillAmount <= 0)
-                return null;
-
             return ingredient;
         }
 

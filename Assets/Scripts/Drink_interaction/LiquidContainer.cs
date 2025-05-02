@@ -35,11 +35,20 @@ public class LiquidContainer : MonoBehaviour
     }
     public float ConvertToInternalUnits(float milliliters)
     {
+        if (milliliters < 0 || float.IsNaN(milliliters)){
+            Debug.LogError($"Invalid value for conversion: {milliliters}");
+            return 0;
+        }
+
         return milliliters * unitsPerMilliliter;
     }
 
     public float ConvertToMilliliters(float internalUnits)
     {
+        if (internalUnits < 0 || float.IsNaN(internalUnits)){
+            Debug.LogError($"Invalid value for conversion: {internalUnits}");
+            return 0;
+        }
         return internalUnits / unitsPerMilliliter;
     }
     internal virtual void drinkOnStart() { //This is our actual start() function
@@ -54,6 +63,10 @@ public class LiquidContainer : MonoBehaviour
             setDrinkDisplay(true);
 
         }
+    }
+
+    public virtual void cleanContainer()
+    {
     }
 
     public virtual void deactivateDrinkDisplay(HoverExitEventArgs arg0)
@@ -158,7 +171,7 @@ public class LiquidContainer : MonoBehaviour
         if (fillAmount <= 0) return;
 
         float totalLiquid = fillAmount;
-        float actualPouredAmount = Mathf.Min(amount, totalLiquid);
+        float actualPouredAmount = Mathf.Min(ConvertToInternalUnits(amount), totalLiquid);
 
         foreach (var kvp in ingredients.ToList()) // ToList() prevents modifying while iterating
         {
@@ -187,7 +200,7 @@ public class LiquidContainer : MonoBehaviour
     /// </summary>
     /// <param name="pourAmount">Amount that needs to be poured out </param>
     /// <returns></returns>
-    public virtual IngredientBase createPouredMixture(float pourAmount)
+    public virtual IngredientBase createPouredMixture(float pourAmount, bool removeAmount)
     {
        return null;
     }
