@@ -156,7 +156,6 @@ public class LiquidPourer : MonoBehaviour
             calculatePouringSpeed();
             emitParticles();
             detectCollision();
-            cleanContainer();
             playAudio();
             
             if (hapticCoroutine == null)
@@ -174,9 +173,13 @@ public class LiquidPourer : MonoBehaviour
 
             stopHapticFeedback();
             currentPourSessionAmout = 0f;
+    
+            //
         }
     }
+    public virtual void clearContainer(){
 
+    }
     private void cleanContainer()
     {
         liquidContainer.cleanContainer();
