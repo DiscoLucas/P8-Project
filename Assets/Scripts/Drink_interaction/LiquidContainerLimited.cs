@@ -233,13 +233,6 @@ namespace Assets.Scripts.Drink_interaction
             // Case: multiple ingredients—create a mixed output
             else if (ingredients.Count > 1)
             {
-                // Get ingredients in the desired order for mixing
-                List<IngredientBase> orderedIngredients = getIngreidentsAsOrderedeList();
-                if (orderedIngredients.Count == 0)
-                {
-                    Debug.LogError("No ingredients in orderedIngredients. Cannot divide by zero.");
-                    return null;
-                }
 
                 // Create a new IngredientBase for the mixed output
                 pouredMixture = new IngredientBase(
@@ -254,52 +247,38 @@ namespace Assets.Scripts.Drink_interaction
 
                 // Initialize blended color accumulator
                 Color color = new Color(0, 0, 0, 0);
-                // Split the internal units equally among all ingredients
-                float equalAmount = internalUnitPourAmount / orderedIngredients.Count;
-                List<string> removeKeys = new List<string>();
-
-                // Iterate over each ingredient to build the mixture
-                foreach (IngredientBase ingredient in orderedIngredients)
+                List<String> removeKeys = new List<string>();
+                foreach (var kvp in ingredients)
                 {
-                    if (ingredient.Amount > 0)
-                    {
-                        // Determine how much to pour from this ingredient
-                        float amountToAdd = Mathf.Min(ingredient.Amount, equalAmount);
-
-                        // Copy and set amount on pouredMixture's internal list
-                        pouredMixture.ingredients[ingredient.Name] = ingredient.copy();
-                        pouredMixture.ingredients[ingredient.Name].Amount = 
-                            ConvertToMilliliters(amountToAdd);
-
-                        // Calculate weighting based on proportion of total fill
-                        float ingredientRatio = ingredient.Amount / fillAmount;
-
-                        // Accumulate color channels by weighted average
-                        color = new Color(
-                            color.r + ingredient.Color.r * ingredientRatio,
-                            color.g + ingredient.Color.g * ingredientRatio,
-                            color.b + ingredient.Color.b * ingredientRatio,
-                            color.a + ingredient.Color.a * ingredientRatio
-                        );
-
-                        Debug.Log($"[DEBUG] Adding ingredient: {ingredient.Name}, Amount: {pouredMixture.ingredients[ingredient.Name].Amount}ml");
-
-                        if (removeAmount)
-                        {
-                            // Subtract used portion from source
-                            ingredients[ingredient.Name].Amount = 
-                                Mathf.Max(0,
-                                    ingredients[ingredient.Name].Amount - amountToAdd
-                                );
-                            // If emptied or invalid, mark for removal
-                            if (ingredients[ingredient.Name].Amount <= 0
-                                || float.IsInfinity(ingredients[ingredient.Name].Amount)
-                                || float.IsNaN(ingredients[ingredient.Name].Amount))
-                            {
-                                removeKeys.Add(ingredient.Name);
-                            }
-                        }
+                    IngredientBase ingredient = kvp.Value;
+                    if(ingredient == null)
+                        continue;
+                    if (fillAmount <= 0){
+                        removeKeys.Add(kvp.Key);
+                        continue;
                     }
+                        
+                    float proporation = ingredient.Amount / fillAmount;
+                    float subtractAmount = internalUnitPourAmount * proporation;
+                    float coloramout = ingredient.Amount/ fillAmount;
+                    SerializedDictionary<string, IngredientBase> ingredientsList = pouredMixture.ingredients;
+                    if (ingredientsList.ContainsKey(ingredient.Name))
+                    {
+                        ingredientsList[ingredient.Name].Amount += subtractAmount;
+                    }
+                    else
+                    {
+                        IngredientBase ind = ingredient.copy();
+                        ingredientsList.Add(ind.Name,ind);
+                    }
+
+                    ingredient.Amount -= subtractAmount;
+
+                    if(ingredient.Amount <= 0)
+                    {
+                        removeKeys.Add(kvp.Key);
+                    }
+                    color = new Color(color.r + (ingredient.Color.r * coloramout), color.g + (ingredient.Color.g * coloramout), color.b + (ingredient.Color.b * coloramout), color.a + (ingredient.Color.a * coloramout));
                 }
 
                 // Remove any emptied ingredients from the container
