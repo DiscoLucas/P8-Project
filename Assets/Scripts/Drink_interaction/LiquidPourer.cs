@@ -174,9 +174,13 @@ public class LiquidPourer : MonoBehaviour
 
             stopHapticFeedback();
             currentPourSessionAmout = 0f;
+            clearContainer();
+
         }
     }
+    public virtual void clearContainer(){
 
+    }
     private void cleanContainer()
     {
         liquidContainer.cleanContainer();

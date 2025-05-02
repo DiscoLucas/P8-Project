@@ -111,6 +111,17 @@ namespace Assets.Scripts.Drink_interaction
             }
             hasGarnish = true;
         }
+
+        public void clearIce(){
+            if(iceFill != null){
+                foreach (Transform child in iceFill)
+                {
+                    child.gameObject.SetActive(false);
+                }
+            }
+            iceCount = 0;
+            hasIce = false;
+        }
         void OnCollisionEnter(Collision collision)
         {
             if(collision.gameObject.tag == "Garnish" && !hasGarnish){
@@ -173,37 +184,56 @@ namespace Assets.Scripts.Drink_interaction
         #endregion
         
         #region create poured mixture
-        public override IngredientBase createPouredMixture(float pourAmount, bool removeAmount)
+        public override IngredientBase createPouredMixture(float pourAmount, bool removeAmount)  //can I rename removeAmount to isRemoving??? - Casper
         {
-            float internalUnitPourAmount = Mathf.Min(ConvertToInternalUnits(pourAmount), (maxFill - fillAmount));
-            float pourAmountinML = ConvertToMilliliters(internalUnitPourAmount);
-            IngredientBase pouredMixture = null;
+            // Convert desired pour amount to internal units
+            float internalUnitPourAmount = Mathf.Min(
+                ConvertToInternalUnits(pourAmount),  // Convert from external units (ml) to game's internal unit
+                (maxFill - fillAmount)               // Ensure we don't over-pour beyond the container's capacity
+            );
 
+            // Finally, define this number
+            float pourAmountinML = ConvertToMilliliters(internalUnitPourAmount);
+
+            IngredientBase pouredMixture = null;    // Will hold our resulting poured ingredient(s)
+
+            // Guard clause: if there are no ingredients, log warning and return null
             if (ingredients.Count <= 0)
             {
                 Debug.LogWarning("No ingredients to pour from " + transform.name);
                 return null;
             }
+            // Case: only a single ingredient in the container
             else if (ingredients.Count == 1)
             {
+                // Copy the single ingredient's value
                 pouredMixture = ingredients.First().Value.copy();
+                // Set the amount of the poured copy to the requested ml amount
                 pouredMixture.Amount = pourAmountinML;
 
                 if (removeAmount)
                 {
-                    ingredients[pouredMixture.Name].Amount = Mathf.Max(0, ingredients[pouredMixture.Name].Amount - internalUnitPourAmount);
+                    // Subtract the internal units poured from the source ingredient
+                    ingredients[pouredMixture.Name].Amount = 
+                        Mathf.Max(0,
+                            ingredients[pouredMixture.Name].Amount - internalUnitPourAmount
+                        );
+                    // If emptied, remove the ingredient entry entirely
                     if (ingredients[pouredMixture.Name].Amount <= 0)
                     {
                         ingredients.Remove(pouredMixture.Name);
                     }
                 }
 
+                // Reduce the container's fill amount by what was poured
                 fillAmount = MathF.Max(0, fillAmount - internalUnitPourAmount);
-                
+
                 Debug.Log($"[DEBUG] Single ingredient poured: {pouredMixture.Name}, Amount: {pouredMixture.Amount}ml");
             }
+            // Case: multiple ingredients—create a mixed output
             else if (ingredients.Count > 1)
             {
+                // Get ingredients in the desired order for mixing
                 List<IngredientBase> orderedIngredients = getIngreidentsAsOrderedeList();
                 if (orderedIngredients.Count == 0)
                 {
@@ -211,37 +241,60 @@ namespace Assets.Scripts.Drink_interaction
                     return null;
                 }
 
+                // Create a new IngredientBase for the mixed output
                 pouredMixture = new IngredientBase(
-                    "Mixture",
-                    pourAmountinML,
+                    "Mixture",                // Name of the mixed ingredient
+                    pourAmountinML,            // Total amount in ml
                     IngredientType.MixedLiquid,
-                    Color.yellow,
+                    Color.yellow,              // Default placeholder color; will blend below
                     0,
                     0,
                     DrinkAction.None
                 );
+
+                // Initialize blended color accumulator
                 Color color = new Color(0, 0, 0, 0);
+                // Split the internal units equally among all ingredients
                 float equalAmount = internalUnitPourAmount / orderedIngredients.Count;
-                List<String> removeKeys = new List<string>();
+                List<string> removeKeys = new List<string>();
+
+                // Iterate over each ingredient to build the mixture
                 foreach (IngredientBase ingredient in orderedIngredients)
                 {
                     if (ingredient.Amount > 0)
                     {
+                        // Determine how much to pour from this ingredient
                         float amountToAdd = Mathf.Min(ingredient.Amount, equalAmount);
+
+                        // Copy and set amount on pouredMixture's internal list
                         pouredMixture.ingredients[ingredient.Name] = ingredient.copy();
-                        pouredMixture.ingredients[ingredient.Name].Amount = ConvertToMilliliters(amountToAdd);
+                        pouredMixture.ingredients[ingredient.Name].Amount = 
+                            ConvertToMilliliters(amountToAdd);
+
+                        // Calculate weighting based on proportion of total fill
                         float ingredientRatio = ingredient.Amount / fillAmount;
+
+                        // Accumulate color channels by weighted average
                         color = new Color(
                             color.r + ingredient.Color.r * ingredientRatio,
                             color.g + ingredient.Color.g * ingredientRatio,
                             color.b + ingredient.Color.b * ingredientRatio,
                             color.a + ingredient.Color.a * ingredientRatio
                         );
+
                         Debug.Log($"[DEBUG] Adding ingredient: {ingredient.Name}, Amount: {pouredMixture.ingredients[ingredient.Name].Amount}ml");
+
                         if (removeAmount)
                         {
-                            ingredients[ingredient.Name].Amount = Mathf.Max(0, ingredients[ingredient.Name].Amount - amountToAdd);
-                            if (ingredients[ingredient.Name].Amount <= 0||float.IsInfinity(ingredients[ingredient.Name].Amount - amountToAdd)|| float.IsNaN(ingredients[ingredient.Name].Amount - amountToAdd))
+                            // Subtract used portion from source
+                            ingredients[ingredient.Name].Amount = 
+                                Mathf.Max(0,
+                                    ingredients[ingredient.Name].Amount - amountToAdd
+                                );
+                            // If emptied or invalid, mark for removal
+                            if (ingredients[ingredient.Name].Amount <= 0
+                                || float.IsInfinity(ingredients[ingredient.Name].Amount)
+                                || float.IsNaN(ingredients[ingredient.Name].Amount))
                             {
                                 removeKeys.Add(ingredient.Name);
                             }
@@ -249,25 +302,39 @@ namespace Assets.Scripts.Drink_interaction
                     }
                 }
 
+                // Remove any emptied ingredients from the container
                 foreach (string key in removeKeys)
                 {
                     ingredients.Remove(key);
                 }
+
+                // Ensure the final alpha channel has a minimum visibility
                 color = new Color(color.r, color.g, color.b, Mathf.Max(0.4f, color.a));
                 pouredMixture.Color = color;
+
+                // Reduce container's fill amount by poured internal units
                 fillAmount = MathF.Max(0, fillAmount - internalUnitPourAmount);
             }
-            if(fillAmount <= 0){
-                    for(int i = 0; i < ingredients.Count; i++){
-                        if(ingredients.ElementAt(i).Value.Amount <= 0 || ingredients.ElementAt(i).Value == null){
-                            ingredients.Remove(ingredients.ElementAt(i).Key);
-                            i= 0;
-                        }
+
+            // Cleanup: if container is emptied, remove any zero or null ingredients
+            if (fillAmount <= 0)
+            {
+                for (int i = 0; i < ingredients.Count; i++)
+                {
+                    var entry = ingredients.ElementAt(i);
+                    if (entry.Value == null || entry.Value.Amount <= 0)
+                    {
+                        ingredients.Remove(entry.Key);
+                        i = 0; // Restart iteration since collection changed
                     }
                 }
+            }
+
+            // Return the newly created poured mixture (single or mixed)
             return pouredMixture;
         }
         #endregion
+
 
         public override Color getLiquidColor()
         {
