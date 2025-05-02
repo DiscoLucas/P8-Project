@@ -204,12 +204,6 @@ namespace Assets.Scripts.Drink_interaction
             }
             else if (ingredients.Count > 1)
             {
-                List<IngredientBase> orderedIngredients = getIngreidentsAsOrderedeList();
-                if (orderedIngredients.Count == 0)
-                {
-                    Debug.LogError("No ingredients in orderedIngredients. Cannot divide by zero.");
-                    return null;
-                }
 
                 pouredMixture = new IngredientBase(
                     "Mixture",
@@ -221,32 +215,38 @@ namespace Assets.Scripts.Drink_interaction
                     DrinkAction.None
                 );
                 Color color = new Color(0, 0, 0, 0);
-                float equalAmount = internalUnitPourAmount / orderedIngredients.Count;
                 List<String> removeKeys = new List<string>();
-                foreach (IngredientBase ingredient in orderedIngredients)
+                foreach (var kvp in ingredients)
                 {
-                    if (ingredient.Amount > 0)
-                    {
-                        float amountToAdd = Mathf.Min(ingredient.Amount, equalAmount);
-                        pouredMixture.ingredients[ingredient.Name] = ingredient.copy();
-                        pouredMixture.ingredients[ingredient.Name].Amount = ConvertToMilliliters(amountToAdd);
-                        float ingredientRatio = ingredient.Amount / fillAmount;
-                        color = new Color(
-                            color.r + ingredient.Color.r * ingredientRatio,
-                            color.g + ingredient.Color.g * ingredientRatio,
-                            color.b + ingredient.Color.b * ingredientRatio,
-                            color.a + ingredient.Color.a * ingredientRatio
-                        );
-                        Debug.Log($"[DEBUG] Adding ingredient: {ingredient.Name}, Amount: {pouredMixture.ingredients[ingredient.Name].Amount}ml");
-                        if (removeAmount)
-                        {
-                            ingredients[ingredient.Name].Amount = Mathf.Max(0, ingredients[ingredient.Name].Amount - amountToAdd);
-                            if (ingredients[ingredient.Name].Amount <= 0||float.IsInfinity(ingredients[ingredient.Name].Amount - amountToAdd)|| float.IsNaN(ingredients[ingredient.Name].Amount - amountToAdd))
-                            {
-                                removeKeys.Add(ingredient.Name);
-                            }
-                        }
+                    IngredientBase ingredient = kvp.Value;
+                    if(ingredient == null)
+                        continue;
+                    if (fillAmount <= 0){
+                        removeKeys.Add(kvp.Key);
+                        continue;
                     }
+                        
+                    float proporation = ingredient.Amount / fillAmount;
+                    float subtractAmount = internalUnitPourAmount * proporation;
+                    float coloramout = ingredient.Amount/ fillAmount;
+                    SerializedDictionary<string, IngredientBase> ingredientsList = pouredMixture.ingredients;
+                    if (ingredientsList.ContainsKey(ingredient.Name))
+                    {
+                        ingredientsList[ingredient.Name].Amount += subtractAmount;
+                    }
+                    else
+                    {
+                        IngredientBase ind = ingredient.copy();
+                        ingredientsList.Add(ind.Name,ind);
+                    }
+
+                    ingredient.Amount -= subtractAmount;
+
+                    if(ingredient.Amount <= 0)
+                    {
+                        removeKeys.Add(kvp.Key);
+                    }
+                    color = new Color(color.r + (ingredient.Color.r * coloramout), color.g + (ingredient.Color.g * coloramout), color.b + (ingredient.Color.b * coloramout), color.a + (ingredient.Color.a * coloramout));
                 }
 
                 foreach (string key in removeKeys)
