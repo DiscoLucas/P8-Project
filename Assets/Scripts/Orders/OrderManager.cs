@@ -53,18 +53,18 @@ public class OrderManager : MonoBehaviour
         if (gameSettings == null)
             gameSettings = GameManager.Instance.gameSettings;
         else
-            Debug.LogError("Game settings have not been assigned in the inspector.");
+            Debug.LogError("[Order manager] Game settings have not been assigned in the inspector.");
 
-        GameManager.Instance.onGameStart.AddListener(createOrder);
-        Debug.Log("Subsribed to game start event.");
-        GameManager.Instance.onGameStart.AddListener(onGameStart);
-        Debug.Log("Subsribed to game start event.");
+        GameManager.Instance.readyToStartGame();
        
     }
 
     private void OnEnable()
     {
-
+        GameManager.Instance.onGameStart.AddListener(createOrder);
+        Debug.Log("[Order manager]Subsribed to game start event.");
+        GameManager.Instance.onGameStart.AddListener(onGameStart);
+        Debug.Log("[Order manager]Subsribed to game start event.");
     }
 
     private void OnDisable()
