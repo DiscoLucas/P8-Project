@@ -165,18 +165,18 @@ public class RecipeManager : MonoBehaviour
             {
                 CultureInfo culture = new CultureInfo("en-US");
                 string[] data = new string[labels.Length];
-                data[0] = idealNames.Count.ToString(culture);
-                data[1] = actualNames.Count.ToString(culture);
-                data[2] = wrongIngredients.Count.ToString(culture);
-                data[3] = totalOverpour.ToString(culture);
-                data[4] = totalUnderpour.ToString(culture);;
-                data[5] = totalDeviation.ToString(culture);;
-                data[6] = totalScore.ToString(culture);;
+                data[0] = "c"+idealNames.Count.ToString(culture);
+                data[1] = "c"+actualNames.Count.ToString(culture);
+                data[2] = "c"+wrongIngredients.Count.ToString(culture);
+                data[3] = "p"+totalOverpour.ToString(culture);
+                data[4] = "p"+totalUnderpour.ToString(culture);;
+                data[5] = "p"+totalDeviation.ToString(culture);;
+                data[6] = "s"+totalScore.ToString(culture);;
                 data[7] = (correctGlass ? 1 : 0).ToString(culture);;
-                data[8] = mishandledIngredientCount.ToString(culture);;
-                data[9] = sumIdealAmount.ToString(culture);;
-                data[10] = sumActualAmount.ToString(culture);;
-                data[11] = timeTaken.ToString(culture);;
+                data[8] = "c"+mishandledIngredientCount.ToString(culture);;
+                data[9] = "a"+sumIdealAmount.ToString(culture);;
+                data[10] = "a"+sumActualAmount.ToString(culture);;
+                data[11] = "t"+timeTaken.ToString(culture);;
                 PerformanceRecorder.Instance.RecordStreamData(streamName, data);
             }
         }catch(System.Exception e){
