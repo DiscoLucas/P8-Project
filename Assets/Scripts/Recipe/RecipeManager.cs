@@ -5,6 +5,7 @@ using AYellowpaper.SerializedCollections;
 using JetBrains.Annotations;
 using Meta.XR.ImmersiveDebugger.Gizmo;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Unity.XR.CoreUtils.Collections;
 using UnityEngine;
@@ -162,19 +163,20 @@ public class RecipeManager : MonoBehaviour
         try{
             if (performanceRecorder != null)
             {
-                float[] data = new float[labels.Length];
-                data[0] = idealNames.Count;
-                data[1] = actualNames.Count;
-                data[2] = wrongIngredients.Count;
-                data[3] = totalOverpour;
-                data[4] = totalUnderpour;
-                data[5] = totalDeviation;
-                data[6] = totalScore;
-                data[7] = correctGlass ? 1 : 0;
-                data[8] = mishandledIngredientCount;
-                data[9] = sumIdealAmount;
-                data[10] = sumActualAmount;
-                data[11] = timeTaken;
+                CultureInfo culture = new CultureInfo("en-US");
+                string[] data = new string[labels.Length];
+                data[0] = idealNames.Count.ToString(culture);
+                data[1] = actualNames.Count.ToString(culture);
+                data[2] = wrongIngredients.Count.ToString(culture);
+                data[3] = totalOverpour.ToString(culture);
+                data[4] = totalUnderpour.ToString(culture);;
+                data[5] = totalDeviation.ToString(culture);;
+                data[6] = totalScore.ToString(culture);;
+                data[7] = (correctGlass ? 1 : 0).ToString(culture);;
+                data[8] = mishandledIngredientCount.ToString(culture);;
+                data[9] = sumIdealAmount.ToString(culture);;
+                data[10] = sumActualAmount.ToString(culture);;
+                data[11] = timeTaken.ToString(culture);;
                 PerformanceRecorder.Instance.RecordStreamData(streamName, data);
             }
         }catch(System.Exception e){
