@@ -1040,6 +1040,10 @@ PrefabInstance:
       propertyPath: m_MovementType
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 926725371225166667, guid: ca4cc7de1b5af1a4db2d8d7a5b5b5f20, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 948213031116323629, guid: ca4cc7de1b5af1a4db2d8d7a5b5b5f20, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1100,6 +1104,10 @@ PrefabInstance:
       propertyPath: debugGlassMenu
       value: 
       objectReference: {fileID: 1690349996}
+    - target: {fileID: 1266697004337916710, guid: ca4cc7de1b5af1a4db2d8d7a5b5b5f20, type: 3}
+      propertyPath: shakeaudioSource
+      value: 
+      objectReference: {fileID: 450167945}
     - target: {fileID: 1266697004337916710, guid: ca4cc7de1b5af1a4db2d8d7a5b5b5f20, type: 3}
       propertyPath: shakerLiquidPourer
       value: 
@@ -4421,6 +4429,11 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!82 &450167945 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 1990483210950847081, guid: ca4cc7de1b5af1a4db2d8d7a5b5b5f20, type: 3}
+  m_PrefabInstance: {fileID: 97741888}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &467511378
 GameObject:
   m_ObjectHideFlags: 0
@@ -12239,7 +12252,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6119433399291725308, guid: 499f1f77c6bc82e4abd91ab54debe2af, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.472
+      value: -0.243
       objectReference: {fileID: 0}
     - target: {fileID: 6119433399291725308, guid: 499f1f77c6bc82e4abd91ab54debe2af, type: 3}
       propertyPath: m_LocalRotation.w
