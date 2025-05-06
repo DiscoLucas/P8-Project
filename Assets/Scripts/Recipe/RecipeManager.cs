@@ -45,7 +45,7 @@ public class RecipeManager : MonoBehaviour
         if (PerformanceRecorder.Instance != null)
         {
            
-            PerformanceRecorder.Instance.InitializeLSLStream(streamName, "Behavorial metrics", labels.Length, LSL.LSL.IRREGULAR_RATE, 
+            PerformanceRecorder.Instance.InitializeLSLStream(streamName, "BehavorialMetrics", 12, LSL.LSL.IRREGULAR_RATE, 
             LSL.channel_format_t.cf_float32, labels );
         }
         phaseManager = FindAnyObjectByType<PhaseManager>();
