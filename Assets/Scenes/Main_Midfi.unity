@@ -1465,6 +1465,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 926725371225166667, guid: ca4cc7de1b5af1a4db2d8d7a5b5b5f20, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 948213031116323629, guid: ca4cc7de1b5af1a4db2d8d7a5b5b5f20, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1513,6 +1517,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1266697004337916710, guid: ca4cc7de1b5af1a4db2d8d7a5b5b5f20, type: 3}
+      propertyPath: shakeaudioSource
+      value: 
+      objectReference: {fileID: 97741889}
     - target: {fileID: 1338135573716211752, guid: ca4cc7de1b5af1a4db2d8d7a5b5b5f20, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3086,6 +3094,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca4cc7de1b5af1a4db2d8d7a5b5b5f20, type: 3}
+--- !u!82 &97741889 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 1990483210950847081, guid: ca4cc7de1b5af1a4db2d8d7a5b5b5f20, type: 3}
+  m_PrefabInstance: {fileID: 97741888}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &97741893 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7187584410889527467, guid: ca4cc7de1b5af1a4db2d8d7a5b5b5f20, type: 3}
@@ -13069,7 +13082,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6119433399291725308, guid: 499f1f77c6bc82e4abd91ab54debe2af, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.472
+      value: -0.271
       objectReference: {fileID: 0}
     - target: {fileID: 6119433399291725308, guid: 499f1f77c6bc82e4abd91ab54debe2af, type: 3}
       propertyPath: m_LocalRotation.w
