@@ -1,0 +1,105 @@
+sequenceDiagram
+    participant Notebook as Notebook Execution
+    participant MainBlock as Main Processing Block
+    participant proc_subj_data as process_subject_data()
+    participant extract_xdf as extract_bvp_and_markers_from_xdf()
+    participant pyxdf as pyxdf.load_xdf()
+    participant get_hrv as get_hrv_metrics()
+    participant filter_bvp as filter_bvp()
+    participant scipy as scipy.signal
+    participant heartpy as heartpy.process()
+    participant neurokit as neurokit2.hrv()
+    participant pd as pandas
+    participant statsmodels as statsmodels.mixedlm()
+
+    Notebook->>MainBlock: Start data processing
+    MainBlock->>MainBlock: Iterate session_folders (os.scandir)
+    loop For each session_folder
+        MainBlock->>MainBlock: Iterate subject_folders_map (os.scandir, re.search)
+        loop For each subject_id
+            MainBlock->>MainBlock: Find baseline_filepath & task_filepath (glob.glob)
+            alt baseline_filepath AND task_filepath exist
+                MainBlock->>proc_subj_data: Call(subject_id, baseline_filepath, task_filepath)
+                
+                proc_subj_data->>proc_subj_data: Determine condition
+                
+                %% Baseline Processing
+                proc_subj_data->>extract_xdf: Call(baseline_filepath)
+                extract_xdf->>pyxdf: load_xdf(baseline_filepath)
+                pyxdf-->>extract_xdf: streams, header
+                extract_xdf-->>proc_subj_data: bvp_baseline, ts_baseline, ...
+                
+                alt bvp_baseline data exists
+                    proc_subj_data->>get_hrv: Call(bvp_baseline, ts_baseline, fs)
+                    get_hrv->>filter_bvp: Call(bvp_baseline, fs)
+                    filter_bvp->>scipy: butter()
+                    scipy-->>filter_bvp: filter_coeffs (b,a)
+                    filter_bvp->>scipy: filtfilt(coeffs, bvp_baseline)
+                    scipy-->>filter_bvp: filtered_signal
+                    filter_bvp-->>get_hrv: filtered_bvp_baseline
+                    get_hrv->>heartpy: process(filtered_bvp_baseline, fs)
+                    heartpy-->>get_hrv: wd, m (peaks)
+                    get_hrv->>neurokit: hrv(ibi_ms, ...)
+                    neurokit-->>get_hrv: hrv_indices
+                    get_hrv-->>proc_subj_data: baseline_hrv_metrics
+                    proc_subj_data->>proc_subj_data: Store baseline_hrv_metrics
+                else No baseline BVP
+                    proc_subj_data->>proc_subj_data: Log warning
+                end
+
+                %% Task Processing
+                proc_subj_data->>extract_xdf: Call(task_filepath)
+                extract_xdf->>pyxdf: load_xdf(task_filepath)
+                pyxdf-->>extract_xdf: streams, header
+                extract_xdf-->>proc_subj_data: bvp_task, ts_task, ...
+
+                alt bvp_task data exists
+                    proc_subj_data->>get_hrv: Call(bvp_task, ts_task, fs)
+                    get_hrv->>filter_bvp: Call(bvp_task, fs)
+                    filter_bvp->>scipy: butter()
+                    scipy-->>filter_bvp: filter_coeffs (b,a)
+                    filter_bvp->>scipy: filtfilt(coeffs, bvp_task)
+                    scipy-->>filter_bvp: filtered_signal
+                    filter_bvp-->>get_hrv: filtered_bvp_task
+                    get_hrv->>heartpy: process(filtered_bvp_task, fs)
+                    heartpy-->>get_hrv: wd, m (peaks)
+                    get_hrv->>neurokit: hrv(ibi_ms, ...)
+                    neurokit-->>get_hrv: hrv_indices
+                    get_hrv-->>proc_subj_data: task_hrv_metrics
+                    proc_subj_data->>proc_subj_data: Store task_hrv_metrics
+                else No task BVP
+                    proc_subj_data->>proc_subj_data: Log warning
+                end
+                
+                proc_subj_data->>pd: pd.DataFrame(results_list)
+                pd-->>proc_subj_data: subject_hrv_df
+                proc_subj_data-->>MainBlock: subject_hrv_df
+                MainBlock->>MainBlock: Append subject_hrv_df to all_participant_dfs
+            else Missing files
+                MainBlock->>MainBlock: Log skipping subject
+            end
+        end
+    end
+    
+    alt all_participant_dfs is not empty
+        MainBlock->>pd: pd.concat(all_participant_dfs)
+        pd-->>MainBlock: final_df
+    else
+        MainBlock->>pd: pd.DataFrame() (empty)
+        pd-->>MainBlock: final_df (empty)
+    end
+    MainBlock-->>Notebook: final_df
+
+    %% Statistical Modeling Phase
+    Notebook->>Notebook: Check final_df for validity
+    alt final_df is valid and has HRV_RMSSD
+        Notebook->>Notebook: Prepare model_df (dropna, astype)
+        Notebook->>statsmodels: mixedlm("HRV_RMSSD ~ C(Phase)*C(Condition)", model_df, groups="ParticipantID")
+        statsmodels-->>Notebook: model_lmm
+        Notebook->>model_lmm: fit()
+        model_lmm-->>Notebook: result_lmm
+        Notebook->>result_lmm: summary()
+        result_lmm-->>Notebook: Print summary
+    else final_df is not valid
+        Notebook->>Notebook: Print "Skipping statistical analysis"
+    end
