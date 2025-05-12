@@ -66,5 +66,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-print(count_words_in_markdown_cells("/home/mitchell/Documents/Projects/P8-Project/Dataprocessing Pipeline/SPIS Project.ipynb"))
+    
+    # Uncomment the following line for debugging purposes:
+    # print(count_words_in_markdown_cells("/home/mitchell/Documents/Projects/P8-Project/Dataprocessing Pipeline/SPIS Project.ipynb"))
