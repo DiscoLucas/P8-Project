@@ -26,7 +26,9 @@ public class MainMenuUIController : MonoBehaviour
         {   // Obscured condition names as to not affect the experiment
             "Condition 0",
             "Condition 1",
-            "Condition 2"
+            "Condition 2",
+            "Condition low dif",
+            "Condition high dif",
         });
 
         errorText.gameObject.SetActive(false);

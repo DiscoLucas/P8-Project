@@ -20,6 +20,10 @@ public class PhaseManager : MonoBehaviour
 
     [SerializeField]
     bool randomOrder = false;
+
+    [SerializeField]
+    bool changePhaseOnRecipeComplete = true;
+
     void Start()
     {
         GameManager.Instance.phaseManager = this;
@@ -211,7 +215,9 @@ public class PhaseManager : MonoBehaviour
     }
 
     public void updatePhaseIndex(){
-        if(!randomOrder){
+        if(!changePhaseOnRecipeComplete){
+            GameManager.Instance.onGamePhaseChange.Invoke();
+        }else if(!randomOrder){
             currentPhaseIndex++;
             GameManager.Instance.onGamePhaseChange.Invoke();
             if(currentPhaseIndex >= phases.Length ){

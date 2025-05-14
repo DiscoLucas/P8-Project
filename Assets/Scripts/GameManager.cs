@@ -186,7 +186,8 @@ public class GameManager : SingletonPersistent<GameManager>
             case Condition.LowFi: return "Main_LoFI";
             case Condition.MediumFi: return "Main_Midfi";
             case Condition.HighFi: return "Main_Hifi";
-            case Condition.Random_order_HighFi: return "Main_Hifi_Random_order";
+            case Condition.HighFi_low_difficulty: return "Main_Hifi_dif_1";
+            case Condition.HighFi_high_difficulty: return "Main_Hifi_dif_3"; 
             default:
                 Debug.LogError($"Unknown condition: {condition}. Going back home.");
                 return "MainMenu"; // Fallback scene
@@ -464,5 +465,6 @@ public enum Condition
     LowFi,
     MediumFi,
     HighFi,
-    Random_order_HighFi,
+    HighFi_low_difficulty,
+    HighFi_high_difficulty,
 }
