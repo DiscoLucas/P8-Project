@@ -18,6 +18,12 @@ public class PhaseManager : MonoBehaviour
     [SerializeField]
     private TextAsset recipesXmlFile;
 
+    [SerializeField]
+    bool randomOrder = false;
+
+    [SerializeField]
+    bool changePhaseOnRecipeComplete = true;
+
     void Start()
     {
         GameManager.Instance.phaseManager = this;
@@ -209,10 +215,18 @@ public class PhaseManager : MonoBehaviour
     }
 
     public void updatePhaseIndex(){
-        currentPhaseIndex++;
-        GameManager.Instance.onGamePhaseChange.Invoke();
-        if(currentPhaseIndex >= phases.Length ){
-            currentPhaseIndex = 0; 
+        if(!changePhaseOnRecipeComplete){
+            GameManager.Instance.onGamePhaseChange.Invoke();
+        }else if(!randomOrder){
+            currentPhaseIndex++;
+            GameManager.Instance.onGamePhaseChange.Invoke();
+            if(currentPhaseIndex >= phases.Length ){
+                currentPhaseIndex = 0; 
+            }
+        }else{
+            int newPhaseIndex = Random.Range(0, phases.Length);
+            currentPhaseIndex = newPhaseIndex;
+            GameManager.Instance.onGamePhaseChange.Invoke();
         }
     }
 }
